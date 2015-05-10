@@ -75,7 +75,6 @@ License
 --------------------
 This package is free and open source software, licensed under GPL (>= 2).
 
-References
---------------------
+
 [BK2015]: http:// "Some arxiv link"
 [DY09]: http://www.sciencedirect.com/science/article/pii/S016920701100032X "Diebold, F. X., Yilmaz, K., Better to give than to receive: Predictive directional measurement of volatility spillovers"
