@@ -1,7 +1,7 @@
 fftSpillover
 ==================
 
-A package implementing the spillover definitions from Krehlik, Barunik (2015) and the traditional definitions of Diebold, Yilmaz (2009, 2012). See the papers for detailed description
+A package implementing the spillover definitions from Barunik, Krehlik (2015) and the traditional definitions of Diebold, Yilmaz (2009, 2012). See the papers for detailed description
 
 Installation
 ------------------
