@@ -1,12 +1,12 @@
 fftSpillover
 ==================
 
-A package implementing the spillover definitions from Barunik, Krehlik (2015) and the traditional definitions of Diebold, Yilmaz (2009, 2012). See the papers for detailed description
+A package implementing frequency dependent spillovers due to [Barunik, Krehlik (2015)][BK2015] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description
 
 Installation
 ------------------
 
-Be sure to have installed the `devtools` package that allows you to install packages from Github directly. In future, we plan to release the package through the standard CRAN respository, however, at the moment this way is the prefered one.
+Be sure to have installed the `devtools` package that allows you to install packages from Github directly. In future, we plan to release the package through the standard CRAN repository, however, at the moment this way is the preferred one.
 
 To install the current version
 
@@ -29,6 +29,8 @@ For the illustration purposes we include some simulated data.
 library(vars)
 library(fftSpillover)
 data(exampleSim)
+# Shorten the data, rolling estimation takes quite some time
+exampleSim <- exampleSim[1:600,]
 # Compute the VAR(2) estimate with constant and save results
 est <- VAR(exampleSim, p = 2, type = "const")
 
@@ -65,10 +67,15 @@ If you have more cores at your disposal as is usual in the computers nowadays, i
 ````{r}
 library(parallel)
 cl <- makeCluster(4) # Assign R cores to the job
-spilloverRollingfftDY12(d, p = 2, type = "const", window = 200, n.ahead = 100, partition = bounds, cluster = cl)
+spilloverRollingfftDY12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, partition = bounds, cluster = cl)
 stopCluster()
 ````
 
 License
 --------------------
 This package is free and open source software, licensed under GPL (>= 2).
+
+References
+--------------------
+[BK2015]: http:// "Some arxiv link"
+[DY09]: http://www.sciencedirect.com/science/article/pii/S016920701100032X "Diebold, F. X., Yilmaz, K., Better to give than to receive: Predictive directional measurement of volatility spillovers"
