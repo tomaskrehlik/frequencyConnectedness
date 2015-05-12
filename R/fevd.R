@@ -22,7 +22,7 @@ fevd <- function(est, n.ahead = 100) {
 
 	enum <- Reduce('+', lapply(ir, function(i) (K%*%t(i))^2))
 	
-	return(sapply(1:est$K, function(i) enum[,i]/(denom[i])))
+	return(t(sapply(1:est$K, function(i) enum[,i]/(denom[i]))))
 }
 
 

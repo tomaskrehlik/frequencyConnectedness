@@ -43,21 +43,21 @@ spilloverRolling <- function(func, data, p, type, window, n.ahead, table = F, cl
 	}
 }
 
-spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition, table = F, cluster = NULL) {
+spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition, absolute, table = F, cluster = NULL) {
 	f <- get(func)
 	if (table) {
 		if (is.null(cluster)) {
-			return(lapply(0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition)))
+			return(lapply(0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute)))
 		} else {
-			clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf"), envir=environment())
-			return(parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table)))
+			clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds"), envir=environment())
+			return(parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute)))
 		}	
 	} else {
 		if (is.null(cluster)) {
-			return(sapply(0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition)))
+			return(sapply(0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute)))
 		} else {
-			clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf"), envir=environment())
-			return(parSapply(cl = cluster, 0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table)))
+			clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds"), envir=environment())
+			return(parSapply(cl = cluster, 0:(nrow(data)-window), function(j) f(VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute)))
 		}
 	}
 	
@@ -71,11 +71,11 @@ spilloverDY12 <- function(est, n.ahead = 100, table = F) {
 	return(spillover("genFEVD", est, n.ahead, table))
 }
 
-spilloverfftDY09 <- function(est, n.ahead = 100, partition, table = F, absolute = T) {
+spilloverBK09 <- function(est, n.ahead = 100, partition, table = F, absolute = T) {
 	return(spilloverFft("fftFEVD", est = est, n.ahead = n.ahead, partition = partition, table = table, absolute = absolute))
 }
 
-spilloverfftDY12 <- function(est, n.ahead = 100, partition, table = F, absolute = T) {
+spilloverBK12 <- function(est, n.ahead = 100, partition, table = F, absolute = T) {
 	return(spilloverFft("fftGenFEVD", est, n.ahead, partition, table, absolute))
 }
 
@@ -87,10 +87,10 @@ spilloverRollingDY12 <- function(data, p, type, window, n.ahead, table = F, clus
 	return(spilloverRolling("spilloverDY12", data, p, type, window, n.ahead, table = F, cluster = NULL))
 }
 
-spilloverRollingfftDY09 <- function(data, p, type, window, n.ahead, partition, table = F, cluster = NULL) {
-	return(spilloverRollingFft("spilloverfftDY09", data, p, type, window, n.ahead, partition, table = F, cluster = NULL))
+spilloverRollingBK09 <- function(data, p, type, window, n.ahead, partition, table = F, absolute, cluster = NULL) {
+	return(spilloverRollingFft("spilloverBK09", data, p, type, window, n.ahead, partition, table = F, absolute = absolute, cluster = cluster))
 }
 
-spilloverRollingfftDY12 <- function(data, p, type, window, n.ahead, partition, table = F, cluster = NULL) {
-	return(spilloverRollingFft("spilloverfftDY12", data, p, type, window, n.ahead, partition, table = F, cluster = NULL))
+spilloverRollingBK12 <- function(data, p, type, window, n.ahead, partition, table = F, absolute, cluster = NULL) {
+	return(spilloverRollingFft("spilloverBK12", data, p, type, window, n.ahead, partition, table = F, absolute = absolute, cluster = cluster))
 }

@@ -1,7 +1,7 @@
 fftSpillover
 ==================
 
-A package implementing frequency dependent spillovers due to [Barunik, Krehlik (2015)][BK2015] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description
+A package implementing frequency dependent spillovers due to [Barunik, Krehlik (2015)][BK2015] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description.
 
 Installation
 ------------------

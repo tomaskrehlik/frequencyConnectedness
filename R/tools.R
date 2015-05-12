@@ -29,5 +29,9 @@ getIndeces <- function(n.ahead, up, down) {
 #' @author Tomas Krehlik \email{tomas.krehlik@gmail.com}
 
 getPartition <- function(partition, n.ahead) {
-	return(lapply(1:(length(partition)-1), function(i) getIndeces(n.ahead+1, partition[i], partition[i+1])))
+	part <- lapply(1:(length(partition)-1), function(i) getIndeces(n.ahead+1, partition[i], partition[i+1]))
+	if (!all(sort(unique(do.call(c, part)))==(1:(n.ahead+1)))) {
+		warning("The selected partition does not cover the whole range.")
+	}
+	return(part)
 }
