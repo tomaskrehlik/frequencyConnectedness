@@ -44,22 +44,22 @@ spilloverDY12(est, n.ahead = 100, table = T)
 
 # Get the absolute FFT spillovers on partition (pi,pi/2), (pi/2, pi/4), (pi/4,0)
 bounds <- c(1.0001, 0.5, 0.25, 0)*pi # The 1.001 has to be there because otherwise it is an open interval
-spilloverfftDY09(est, n.ahead = 100, partition = bounds, absolute = T)
-spilloverfftDY12(est, n.ahead = 100, partition = bounds, absolute = T)
+spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = T)
+spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = T)
 
 # Check that they sum up to the original measures
-sum(spilloverfftDY09(est, n.ahead = 100, partition = bounds, absolute = T))
-sum(spilloverfftDY12(est, n.ahead = 100, partition = bounds, absolute = T))
+sum(spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = T))
+sum(spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = T))
 
 # Get the within FFT spillovers on the same partition
-spilloverfftDY09(est, n.ahead = 100, partition = bounds, absolute = F)
-spilloverfftDY12(est, n.ahead = 100, partition = bounds, absolute = F)
+spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = F)
+spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = F)
 
 # Both absolute and within spillovers can produce tables with parameter table = T
 
 # Get rolling window estimates
 spilloverRollingDY12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100)
-spilloverRollingfftDY12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, partition = bounds)
+spilloverRollingBK12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, partition = bounds)
 ````
 
 If you have more cores at your disposal as is usual in the computers nowadays, it is beneficial to use them through `parallel` package especially in case of rolling estimation. If you use two cores it usually almost doubles the speed. For example
@@ -67,7 +67,7 @@ If you have more cores at your disposal as is usual in the computers nowadays, i
 ````{r}
 library(parallel)
 cl <- makeCluster(4) # Assign R cores to the job
-spilloverRollingfftDY12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, partition = bounds, cluster = cl)
+spilloverRollingBK12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, partition = bounds, cluster = cl)
 stopCluster()
 ````
 
