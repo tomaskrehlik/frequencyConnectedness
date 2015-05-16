@@ -5,9 +5,10 @@
 #'
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
+#' @param no.corr boolean if the off-diagonal elements should be set to 0.
 #' @return a matrix that corresponds to contribution of ith variable to jth variance of forecast
 #' @export
-#' @author Tomas Krehlik \email{tomas.krehlik@gmail.com}
+#' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
 fevd <- function(est, n.ahead = 100, no.corr = F) {
 	ir <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
@@ -35,10 +36,11 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 #'
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
+#' @param no.corr boolean if the off-diagonal elements should be set to 0.
 #' @return a list of matrices that corresponds to contribution of ith variable to jth variance of forecast
 #'	 
 #' @export
-#' @author Tomas Krehlik \email{tomas.krehlik@gmail.com}
+#' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
 fftFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
@@ -47,7 +49,7 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	fftir <- lapply(1:(n.ahead+1), function(j) sapply(fftir, function(i) i[j,]))
 
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
-	Sigma <- (t(sapply(est$varresult, function(i) i$residuals)) %*% sapply(est$varresult, function(i) i$residuals))/nrow(sapply(est$varresult, function(i) i$residuals))
+	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
@@ -66,14 +68,16 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F) {
 #'
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
+#' @param no.corr boolean if the off-diagonal elements should be set to 0.
 #' @return a matrix that corresponds to contribution of ith variable to jth variance of forecast
+#'
 #' @export
-#' @author Tomas Krehlik \email{tomas.krehlik@gmail.com}
+#' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
 genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	Phi <- irf(est, n.ahead = n.ahead+1, boot = F, ortho = F)
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
-	Sigma <- (t(sapply(est$varresult, function(i) i$residuals)) %*% sapply(est$varresult, function(i) i$residuals))/nrow(sapply(est$varresult, function(i) i$residuals))
+	Sigma <- Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
@@ -94,10 +98,11 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 #'
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
+#' @param no.corr boolean if the off-diagonal elements should be set to 0.
 #' @return a list of matrices that corresponds to contribution of ith variable to jth variance of forecast
 #'	 
 #' @export
-#' @author Tomas Krehlik \email{tomas.krehlik@gmail.com}
+#' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
 fftGenFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
@@ -106,7 +111,7 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	fftir <- lapply(1:(n.ahead+1), function(j) sapply(fftir, function(i) i[j,]))
 
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
-	Sigma <- (t(sapply(est$varresult, function(i) i$residuals)) %*% sapply(est$varresult, function(i) i$residuals))/nrow(sapply(est$varresult, function(i) i$residuals))
+	Sigma <- Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
