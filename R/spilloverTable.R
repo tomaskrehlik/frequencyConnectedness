@@ -63,7 +63,7 @@ createSpilloverTable <- function(tot, decomposition_a, decomposition_r, nams, fo
 	t <- apply(matrix(do.call(c, Map(function(j) sprintf(format, j), total)), nrow = k+1, byrow = F), 1, function(i) paste(i, collapse = " & "))
 
 	tab <- zip2(t, absolute, relative)
-	row_names <- zip2(paste(c("\\multirow{*}{3}{"), c(nams, "To"), "}", sep = ""), rep(" ", length(nams)+1), rep(" ", length(nams)+1))
+	row_names <- zip2(paste(c("\\multirow{3}{*}{"), c(nams, "To"), "}", sep = ""), rep(" ", length(nams)+1), rep(" ", length(nams)+1))
 	tab <- paste(row_names, tab, collapse = " \\\\ \n ", sep = " & ")
 
 	tab <- str_replace_all(tab, "\n \\\\multirow\\{\\*\\}\\{3\\}\\{To\\}", "\n \\\\midrule \n \\\\multirow\\{\\*\\}\\{3\\}\\{To\\}")
