@@ -77,11 +77,14 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F) {
 genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	Phi <- irf(est, n.ahead = n.ahead+1, boot = F, ortho = F)
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
-	Sigma <- Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
+	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
+
+	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
+
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
-	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
+
 	enum <- Reduce('+', lapply(Phi, function(i) (i%*%Sigma)^2))
 	# print(enum)
 	# print(denom)
@@ -111,11 +114,14 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	fftir <- lapply(1:(n.ahead+1), function(j) sapply(fftir, function(i) i[j,]))
 
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
-	Sigma <- Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
+	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
+
+	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
+
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
-	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
+
 	enum <- lapply(fftir, function(i) (abs(i%*%Sigma))^2/(n.ahead+1))
 	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*sqrt(diag(Sigma)))))
 	tot <- apply(Reduce('+', a), 2, sum)
