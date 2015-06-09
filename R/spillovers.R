@@ -44,17 +44,17 @@ spillover <- function(func, est, n.ahead, table, no.corr = F) {
 #'
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr = F) {
+spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr = F, coint = F) {
 	f <- get(func)
 	if (table) {
-		decomp <- f(est, n.ahead, no.corr = no.corr)
+		decomp <- f(est, n.ahead, no.corr = no.corr, coint = coint)
 		return(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])))
 	} else {
 		if (absolute) {
-			decomp <- f(est, n.ahead, no.corr = no.corr)
+			decomp <- f(est, n.ahead, no.corr = no.corr, coint = coint)
 			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp)) ))
 		} else {
-			decomp <- f(est, n.ahead, no.corr = no.corr)
+			decomp <- f(est, n.ahead, no.corr = no.corr, coint = coint)
 			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) 1  - sum(diag(i))/sum(i) ))
 		}
 		
@@ -125,21 +125,21 @@ spilloverRolling <- function(func, data, p, type, window, n.ahead, no.corr, tabl
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 
-spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition, absolute, no.corr, table = F, cluster = NULL) {
+spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition, absolute, no.corr, coint, table = F, cluster = NULL) {
 	f <- get(func)
 	if (table) {
 		if (is.null(cluster)) {
-			return(lapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr)))
+			return(lapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr, coint = coint)))
 		} else {
-			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr"), envir=environment())
-			return(parallel::parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr)))
+			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr", "coint"), envir=environment())
+			return(parallel::parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr, coint = coint)))
 		}	
 	} else {
 		if (is.null(cluster)) {
 			return(sapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr)))
 		} else {
-			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr"), envir=environment())
-			return(parallel::parSapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr)))
+			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr", "coint"), envir=environment())
+			return(parallel::parSapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr, coint = coint)))
 		}
 	}
 	
@@ -209,8 +209,8 @@ spilloverDY12 <- function(est, n.ahead = 100, no.corr, table = F) {
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition, table = F, absolute = T) {
-	return(spilloverFft("fftFEVD", est = est, n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr))
+spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition, table = F, absolute = T, coint = F) {
+	return(spilloverFft("fftFEVD", est = est, n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr, coint = coint))
 }
 
 #' Computing the decomposed spillover from a generalized fevd as defined by Barunik, Krehlik (2015)
@@ -231,8 +231,8 @@ spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition, table = F, abs
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverBK12 <- function(est, n.ahead = 100, no.corr, partition, table = F, absolute = T) {
-	return(spilloverFft("fftGenFEVD", est, n.ahead, partition, table, absolute, no.corr = no.corr))
+spilloverBK12 <- function(est, n.ahead = 100, no.corr, partition, table = F, absolute = T, coint = F) {
+	return(spilloverFft("fftGenFEVD", est, n.ahead, partition, table, absolute, no.corr = no.corr, coint = coint))
 }
 
 #' Computing rolling spillover according to Diebold Yilmaz (2009)
@@ -323,8 +323,8 @@ spilloverRollingDY12 <- function(data, p, type, window, n.ahead, table = F, no.c
 #' bounds <- c(1.0001, 0.5, 0.25, 0)*pi
 #' plot.ts(t(spilloverRollingBK12(data, p = 1, type = "const", window = 200, n.ahead = 100, partition = bounds, absolute = F, table = F, no.corr = F)), type="l", plot.type = "single", col = c("red","blue","green"))
 
-spilloverRollingBK09 <- function(data, p, type, window, n.ahead, partition, table = F, no.corr, absolute, cluster = NULL) {
-	return(spilloverRollingFft("spilloverBK09", data, p, type, window, n.ahead, partition, table = table, absolute = absolute, cluster = cluster, no.corr = no.corr))
+spilloverRollingBK09 <- function(data, p, type, window, n.ahead, partition, table = F, no.corr, absolute, coint = F, cluster = NULL) {
+	return(spilloverRollingFft("spilloverBK09", data, p, type, window, n.ahead, partition, table = table, absolute = absolute, cluster = cluster, no.corr = no.corr, coint = coint))
 }
 
 #' Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2015)
@@ -350,8 +350,8 @@ spilloverRollingBK09 <- function(data, p, type, window, n.ahead, partition, tabl
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverRollingBK12 <- function(data, p, type, window, n.ahead, partition, table = F, no.corr, absolute, cluster = NULL) {
-	return(spilloverRollingFft("spilloverBK12", data, p, type, window, n.ahead, partition, table = table, absolute = absolute, cluster = cluster, no.corr = no.corr))
+spilloverRollingBK12 <- function(data, p, type, window, n.ahead, partition, table = F, no.corr, absolute, coint = F, cluster = NULL) {
+	return(spilloverRollingFft("spilloverBK12", data, p, type, window, n.ahead, partition, table = table, absolute = absolute, cluster = cluster, no.corr = no.corr, coint = coint))
 }
 
 

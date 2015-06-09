@@ -42,7 +42,7 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 #' @export
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
-fftFEVD <- function(est, n.ahead = 100, no.corr = F) {
+fftFEVD <- function(est, n.ahead = 100, no.corr = F, coint = F) {
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
 
 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
@@ -53,7 +53,11 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
-	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
+	if (coint) {
+		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1))[-1])))
+	} else {
+		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1)))))
+	}
 	enum <- lapply(fftir, function(i) (abs(i%*%t(chol(Sigma))))^2/(n.ahead+1))
 	a <- lapply(enum, function(i) t(sapply(1:est$K, function(j) i[j,]/(denom[j]))))
 
@@ -107,7 +111,7 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 #' @export
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
-fftGenFEVD <- function(est, n.ahead = 100, no.corr = F) {
+fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, coint = F) {
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
 
 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
@@ -116,15 +120,28 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
 	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
 
-	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
+	# print(diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) ))))
+
+	if (coint) {
+		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1))[-1])))
+	} else {
+		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1)))))
+	}	
 
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
 
+	# print(Sigma)
+
 	enum <- lapply(fftir, function(i) (abs(i%*%Sigma))^2/(n.ahead+1))
-	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*sqrt(diag(Sigma)))))
-	tot <- apply(Reduce('+', a), 2, sum)
+	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*sqrt(diag(Sigma))) ) )
+	if (coint) {
+		tot <- apply(Reduce('+', a[-1]), 2, sum)	
+	} else {
+		tot <- apply(Reduce('+', a), 2, sum)	
+	}
+	
 
 	a <- lapply(a, function(i) t(i)/tot)
 	return(a)
