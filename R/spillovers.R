@@ -52,7 +52,14 @@ spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr
 	} else {
 		if (absolute) {
 			decomp <- f(est, n.ahead, no.corr = no.corr, coint = coint)
-			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp)) ))
+			# print(sum(Reduce('+', decomp)))
+			# print(sum(Reduce('+', decomp[-1])))
+
+			if (coint) {
+				return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp[-1])) ))
+			} else {
+				return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp)) ))
+			}			
 		} else {
 			decomp <- f(est, n.ahead, no.corr = no.corr, coint = coint)
 			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) 1  - sum(diag(i))/sum(i) ))

@@ -127,7 +127,9 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, coint = F) {
 	} else {
 		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1)))))
 	}	
-
+	# cat("The weights are: ")
+	# cat(denom)
+	# cat("\n")
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
@@ -144,5 +146,6 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, coint = F) {
 	
 
 	a <- lapply(a, function(i) t(i)/tot)
+
 	return(a)
 }
