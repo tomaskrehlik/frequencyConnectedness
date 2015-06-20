@@ -137,14 +137,14 @@ spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition,
 		if (is.null(cluster)) {
 			return(lapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr)))
 		} else {
-			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr",), envir=environment())
+			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr"), envir=environment())
 			return(parallel::parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr)))
 		}	
 	} else {
 		if (is.null(cluster)) {
 			return(sapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr)))
 		} else {
-			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr",), envir=environment())
+			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr"), envir=environment())
 			return(parallel::parSapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr)))
 		}
 	}
