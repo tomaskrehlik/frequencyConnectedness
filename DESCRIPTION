@@ -1,4 +1,4 @@
-Package: fftSpillover
+Package: frequencyConnectedness
 Type: Package
 Title: Spectral decomposition of spillover
 Version: 0.1
