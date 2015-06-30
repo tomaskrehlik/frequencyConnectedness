@@ -4,7 +4,7 @@
 \alias{fftGenFEVD}
 \title{Compute a FFT transform of forecast error vector decomposition in generalised VAR scheme.}
 \usage{
-fftGenFEVD(est, n.ahead = 100, no.corr = F)
+fftGenFEVD(est, n.ahead = 100, no.corr = F, range)
 }
 \arguments{
 \item{est}{the VAR estimate from the vars package}

@@ -1,7 +1,7 @@
-# fftSpillover
+# frequencyConnectedness
 
 
-A package implementing frequency dependent spillovers due to [Barunik, Krehlik (2015)][BK2015] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description.
+A package implementing frequency dependent connectedness due to [Barunik, Krehlik (2015)][BK2015] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description.
 
 ## Installation
 
@@ -116,6 +116,17 @@ connectedness <- spilloverRollingBK12(exampleSim, p = 2, type = "const", window 
 plot.ts(t(sapply(connectedness, function(i) sapply(i, function(j) j[2,1]))), plot.type = "single", col = c("red","black","blue","green"))
 ````
 
+## Replication of paper and tests
+
+A release that reproduces the paper results with the original scripts will be tagged. The [original script](R/applications.R) can be found in the `R` folder and the header comment clearly indicates the tagged release (see the releases in the header of the file) with which it is supposed to work. Hence, the script might not work with the current version of the paper.
+
+Because the package might change in the future, there is a set of test to always preserve the integrity of the original functions. You can read what is tested in the [testfile](tests/testthat/test-basic.r). Also provided that you have the `testthat` package installed, you can run the tests yourself.
+
+````{r}
+library(frequencyConnectedness)
+library(testthat)
+test_package("frequencyConnectedness")
+````
 
 ## License
 

@@ -5,7 +5,7 @@
 \title{Create a latex spillover table like in Barunik, Krehlik (2015)}
 \usage{
 createSpilloverTable(tot, decomposition_a, decomposition_r, nams,
-  format = "\%1.2f", sep = " -- ")
+  format = "\%1.1f", sep = "-")
 }
 \arguments{
 \item{tot}{a matrix usually from spilloverDY12 or spilloverDY09}

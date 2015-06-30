@@ -32,6 +32,14 @@ We implement the parallel version for faster processing. The window is of fixed 
 and is rolled over the data. Interpretation of the other parameters is the same as in the
 standard computation of spillover.
 }
+\examples{
+w<-c(0,0)
+C<-rbind(c(1,0.0),c(0.0,1))
+A1<-rbind(c(0.9,0.09),c(0.09,0.9))
+A2<-rbind(c(0.9,0.03),c(0.03,0.9))
+data <- rbind(mAr.sim(w,A1,C,N=1000), mAr.sim(w,A2,C,N=1000))
+plot(spilloverRollingDY12(data, p = 1, type = "const", window = 200, n.ahead = 100, table = F, no.corr = F), type="l")
+}
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>
 }

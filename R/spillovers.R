@@ -20,7 +20,11 @@
 spillover <- function(func, est, n.ahead, table, no.corr = F) {
 	f <- get(func)
 	if (table) {
-		return(f(est, n.ahead, no.corr = no.corr))
+		a <- f(est, n.ahead, no.corr = no.corr)
+		if (class(est)%in%c("varest","vec2var")) {
+			rownames(a) <- colnames(a) <- colnames(est$y)
+		}
+		return(100*a)
 	} else {
 		return(100*(1 - sum(diag(f(est, n.ahead, no.corr = no.corr)))/est$K))
 	}
@@ -49,15 +53,15 @@ spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr
 	range <- sort(unique(do.call(c, getPartition(partition, n.ahead))))
 	if (table) {
 		decomp <- f(est, n.ahead, no.corr = no.corr, range = range)
-		return(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])))
+		if (class(est)%in%c("varest","vec2var")) {
+			for (i in 1:length(decomp)) {
+				rownames(decomp[[i]]) <- colnames(decomp[[i]]) <- colnames(est$y)
+			}
+		}
+		return(lapply(getPartition(partition, n.ahead), function(j) 100*Reduce('+', decomp[j])))
 	} else {
 		if (absolute) {
 			decomp <- f(est, n.ahead, no.corr = no.corr, range = range)
-			# print(sum(Reduce('+', decomp)))
-			# print(sum(Reduce('+', decomp[-1])))
-			# print(unique(unlist(getPartition(partition, n.ahead))))
-			# return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp[unique(unlist(getPartition(partition, n.ahead)))])) ))
-			
 			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp[range])) ))
 		} else {
 			decomp <- f(est, n.ahead, no.corr = no.corr, range = range)

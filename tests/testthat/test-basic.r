@@ -61,7 +61,7 @@ test_that("The BK absolute spillovers tables reconstruct perfectly in both cases
 	expect_equivalent(spilloverDY12(est, n.ahead = H, table = T, no.corr=F), Reduce('+', spilloverBK12(est, n.ahead = H, partition = bounds, absolute = T, table = T, no.corr=F)))
 })
 
-test_that("Test that spillovers are smaller than one", {
+test_that("Test that spillovers are smaller than hundred", {
 	data(exampleSim)
 	exampleSim <- exampleSim[1:100,]
 	est <- VAR(exampleSim, p = 4, type ="const")
@@ -70,8 +70,8 @@ test_that("Test that spillovers are smaller than one", {
 	bounds <- c(pi + 0.001, sort(runif(5, min = 0, max = pi), decreasing = T), 0)
 	H <- 200
 
-	expect_that(spilloverDY09(est, n.ahead = H, table = F, no.corr=F) < 1, is_true())
-	expect_that(spilloverDY12(est, n.ahead = H, table = F, no.corr=F) < 1, is_true())
+	expect_that(spilloverDY09(est, n.ahead = H, table = F, no.corr=F) < 100, is_true())
+	expect_that(spilloverDY12(est, n.ahead = H, table = F, no.corr=F) < 100, is_true())
 })
 
 

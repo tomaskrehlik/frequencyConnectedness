@@ -4,7 +4,7 @@
 \alias{fftFEVD}
 \title{Compute a FFT transform of forecast error vector decomposition in recursive identification scheme}
 \usage{
-fftFEVD(est, n.ahead = 100, no.corr = F)
+fftFEVD(est, n.ahead = 100, no.corr = F, range)
 }
 \arguments{
 \item{est}{the VAR estimate from the vars package}

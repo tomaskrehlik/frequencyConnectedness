@@ -1,13 +1,14 @@
 Package: frequencyConnectedness
 Type: Package
-Title: Spectral decomposition of spillover
+Title: Spectral decomposition of connectedness measures
 Version: 0.1
-Date: 2015-05-05
+Date: 2015-06-29
 Author: Tomas Krehlik
 Maintainer: Tomas Krehlik <krehlik@utia.cas.cz>
-Description: This package accompanies a paper dedicated to spectral deomposition of spillover measures and their interpretation. We implement all the developed estimators as well as the historical counterparts.
+Description: This package accompanies a paper dedicated to spectral deomposition of connectedness measures and their interpretation. We implement all the developed estimators as well as the historical counterparts.
 Depends:
 	vars,
+	urca,
 	parallel
 Suggests: 
 	testthat,
