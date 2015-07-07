@@ -133,5 +133,5 @@ test_package("frequencyConnectedness")
 This package is free and open source software, licensed under GPL (>= 2).
 
 
-[BK2015]: http:// "Some arxiv link"
+[BK2015]: http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2627599 "Barunik, J., Krehlk, T., Measuring the Frequency Dynamics of Financial and Macroeconomic Connectedness"
 [DY09]: http://www.sciencedirect.com/science/article/pii/S016920701100032X "Diebold, F. X., Yilmaz, K., Better to give than to receive: Predictive directional measurement of volatility spillovers"
