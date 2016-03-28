@@ -1,7 +1,7 @@
 Package: frequencyConnectedness
 Type: Package
 Title: Spectral decomposition of connectedness measures
-Version: 0.1
+Version: 0.1.5
 Date: 2015-06-29
 Author: Tomas Krehlik
 Maintainer: Tomas Krehlik <krehlik@utia.cas.cz>

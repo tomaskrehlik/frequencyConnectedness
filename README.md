@@ -45,16 +45,16 @@ est <- VAR(exampleSim, p = 2, type = "const")
 ````
 
 Then use the estimate to compute the connectedness measures.
-First, the traditional overall measures that are not frequency dependent as in Diebold and Yilmaz, also with the possibility to get the connectedness table.
+First, the traditional overall measures that are not frequency dependent as in Diebold and Yilmaz, also with the possibility to get the connectedness table and nulling the cross correlation elements.
 
 ````{r}
 # Compute traditional spillovers
-spilloverDY09(est, n.ahead = 100)
-spilloverDY12(est, n.ahead = 100)
+spilloverDY09(est, n.ahead = 100, no.corr = F)
+spilloverDY12(est, n.ahead = 100, no.corr = F)
 
 # Get the connectedness tables
-spilloverDY09(est, n.ahead = 100, table = T)
-spilloverDY12(est, n.ahead = 100, table = T)
+spilloverDY09(est, n.ahead = 100, table = T, no.corr = F)
+spilloverDY12(est, n.ahead = 100, table = T, no.corr = F)
 ````
 
 Next, we can decompose the measure on desired frequencies and get the frequency dependent measures.
@@ -62,16 +62,16 @@ Next, we can decompose the measure on desired frequencies and get the frequency 
 ````{r}
 # Get the frequency connectedness on partition (pi,pi/2), (pi/2, pi/4), (pi/4,0)
 bounds <- c(1.0001, 0.5, 0.25, 0)*pi # The 1.001 has to be there because otherwise it is an open interval
-spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = T)
-spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = T)
+spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = T, no.corr = F)
+spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = T, no.corr = F)
 
 # Check that they sum up to the original measures
-sum(spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = T))
-sum(spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = T))
+sum(spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = T, no.corr = F))
+sum(spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = T, no.corr = F))
 
 # Get the within FFT connectedness on the same partition
-spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = F)
-spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = F)
+spilloverBK09(est, n.ahead = 100, partition = bounds, absolute = F, no.corr = F)
+spilloverBK12(est, n.ahead = 100, partition = bounds, absolute = F, no.corr = F)
 
 # Both absolute and within connectedness can produce tables with parameter table = T
 ````

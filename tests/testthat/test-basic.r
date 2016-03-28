@@ -33,7 +33,7 @@ test_that("The DY12 spillover gives the proofed result table", {
 	data <- read.csv("simul_data.csv", header = F)
 	output <- as.matrix(read.csv("DY12output.csv", header = F))
 
-	expect_that(all(spilloverDY12(VAR(data, p = 2, type = "const"), 10, no.corr = F, table = T)-output < 1e-4), is_true())
+	expect_that(all(spilloverDY12(VAR(data, p = 2, type = "const"), 10, no.corr = F, table = T)/100-output < 1e-4), is_true())
 })
 
 context("Spillovers checks")

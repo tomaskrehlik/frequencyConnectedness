@@ -46,6 +46,7 @@ spillover <- function(func, est, n.ahead, table, no.corr = F) {
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
 #' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr = F) {
@@ -90,6 +91,8 @@ spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr
 #' 		set to zero
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#'
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverRolling <- function(func, data, p, type, window, n.ahead, no.corr, table = F, cluster = NULL) {
@@ -132,6 +135,8 @@ spilloverRolling <- function(func, data, p, type, window, n.ahead, no.corr, tabl
 #' 		set to zero
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#'
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 
@@ -139,10 +144,22 @@ spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition,
 	f <- get(func)
 	if (table) {
 		if (is.null(cluster)) {
-			return(lapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr)))
+			out <- lapply(0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, table = table, partition = partition, absolute = absolute, no.corr = no.corr))
+			if (class(data)=="zoo") {
+				out <- structure(list(Estimates = out, Dates = time(data)[window:nrow(data)], Bounds = partition), class = "connectedness_estimate")
+			} else {
+				out <- structure(list(Estimates = out, Dates = 1:(nrow(data)-window), Bounds = partition), class = "connectedness_estimate")
+			}
+			return(out)
 		} else {
 			parallel::clusterExport(cluster, c("data", "p", "type", "window", "n.ahead", "table", "f", "VAR", "fevd", "irf", "absolute", "bounds", "no.corr"), envir=environment())
-			return(parallel::parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr)))
+			out <- parallel::parLapply(cl = cluster, 0:(nrow(data)-window), function(j) f(vars::VAR(data[(1:window)+j,], p = p, type = type), n.ahead = n.ahead, partition = partition, table = table, absolute = absolute, no.corr = no.corr))
+			if (class(data)=="zoo") {
+				out <- structure(list(Estimates = out, Dates = time(data)[window:nrow(data)], Bounds = partition), class = "connectedness_estimate")
+			} else {
+				out <- structure(list(Estimates = out, Dates = 1:(nrow(data)-window), Bounds = partition), class = "connectedness_estimate")
+			}
+			return(out)
 		}	
 	} else {
 		if (is.null(cluster)) {
@@ -216,6 +233,8 @@ spilloverDY12 <- function(est, n.ahead = 100, no.corr, table = F) {
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
 #' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
@@ -237,6 +256,8 @@ spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition, table = F, abs
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
 #' @param absolute boolean defining whether to compute the within or absolute spillover
+#'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -322,6 +343,8 @@ spilloverRollingDY12 <- function(data, p, type, window, n.ahead, table = F, no.c
 #' @param absolute boolean defining whether to compute the within or absolute spillover
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @examples
@@ -356,6 +379,8 @@ spilloverRollingBK09 <- function(data, p, type, window, n.ahead, partition, tabl
 #' 		set to zero
 #' @param absolute boolean defining whether to compute the within or absolute spillover
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
+#'
+#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>

@@ -23,6 +23,9 @@ should be high enough so that it won't change with additional period}
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
 }
+\value{
+A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+}
 \description{
 This function is an internal implementation of the frequency spillover.
 We apply the identification scheme suggested by fevd to the frequency

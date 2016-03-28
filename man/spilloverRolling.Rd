@@ -28,6 +28,9 @@ set to zero}
 
 \item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
 }
+\value{
+A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+}
 \description{
 This function computes the rolling spillover using the standard VAR estimate.
 We implement the parallel version for faster processing. The window is of fixed window

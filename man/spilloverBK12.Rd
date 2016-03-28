@@ -22,6 +22,9 @@ set to zero}
 
 \item{absolute}{boolean defining whether to compute the within or absolute spillover}
 }
+\value{
+A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+}
 \description{
 This function is an internal implementation of the frequency spillover.
 We apply the identification scheme suggested by fevd to the frequency

@@ -14,7 +14,7 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 	ir <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
 
 	ir <- lapply(1:(n.ahead + 1), function(j) sapply(ir$irf, function(i) i[j,]))
-	sig <- (summary(est)$covres)
+	sig <- t(residuals(est)) %*% residuals(est)/nrow(residuals(est))
 	if (no.corr) {
 		sig <- diag(diag(sig))
 	}
