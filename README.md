@@ -113,7 +113,7 @@ In case we wanted the same information disaggregated over frequencies, we can us
 
 ````{r}
 connectedness <- spilloverRollingBK12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, no.corr = F, table = T, partition = bounds, absolute = T)
-plot.ts(t(sapply(connectedness, function(i) sapply(i, function(j) j[2,1]))), plot.type = "single", col = c("red","black","blue","green"))
+plot.ts(t(sapply(connectedness$Estimates, function(i) sapply(i, function(j) j[2,1]))), plot.type = "single", col = c("red","black","blue","green"))
 ````
 
 ## Replication of paper and tests
