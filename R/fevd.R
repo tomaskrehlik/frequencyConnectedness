@@ -43,6 +43,11 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
 fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
+	if (n.ahead < 100) {
+		warning("The frequency decomposition works with unconditional IRF. You have opted for 
+			IRF with horizon lower than 100 periods. This might cause trouble, some frequencies
+			might not be estimable depending on the bounds settings.")
+	}
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
 
 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
@@ -110,6 +115,11 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
 
 fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
+	if (n.ahead < 100) {
+		warning("The frequency decomposition works with unconditional IRF. You have opted for 
+			IRF with horizon lower than 100 periods. This might cause trouble, some frequencies
+			might not be estimable depending on the bounds settings.")
+	}
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
 
 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
