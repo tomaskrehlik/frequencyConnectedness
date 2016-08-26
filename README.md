@@ -102,7 +102,7 @@ In the forecoming the `data` variable is T by k matrix and we are estimating wit
 sapply(0:(nrow(data)-window), function(i) spilloverDY12(vec2var(ca.jo(data[1:window + i, ], K=2, ecdet = "trend"), r = 1), n.ahead = 200, table = F))
 ````
 ### Rolling window estimation of element of connectedness table
-Sometimes it is interesting to look at the development of the elements of the connectedness table itself. The function `spilloverRollingBK12` (or implementation of rolling estimation of other connectedness schemes) contains a parameter switch named `table` which is by default `FALSE`. If turned true, the rolling estimation returns a list which entry is the same as the value of `spilloverBK12` with the same parameter on the corresponding window of the data. For example, if we wanted to look at element 2,1 of the connectedness in the standard case
+Sometimes it is interesting to look at the development of the elements of the connectedness table itself. The function `spilloverRollingBK12` (or implementation of rolling estimation of other connectedness schemes) contains a parameter switch named `table` which is by default `FALSE`. If turned true, the rolling estimation returns a list which entry is the same as the value of `spilloverBK12` with the same parameter on the corresponding window of the data. For example, if we wanted to look at element 2,1 of the connectedness (shock FROM variable 1 (column 1) induces variance share TO variable 2 (row 2)) in the standard case
 
 ````{r}
 connectedness <- spilloverRollingDY12(exampleSim, p = 2, type = "const", window = 200, n.ahead = 100, no.corr = F, table = TRUE)
