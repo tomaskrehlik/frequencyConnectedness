@@ -95,7 +95,7 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	enum <- Reduce('+', lapply(Phi, function(i) (i%*%Sigma)^2))
 	# print(enum)
 	# print(denom)
-	a <- sapply(1:est$K, function(j) enum[j,]/(denom[j]*sqrt(diag(Sigma))))
+	a <- sapply(1:est$K, function(j) enum[j,]/(denom[j]*diag(Sigma)))
 	# print(a)
 	a <- t(apply(a, 2, function(i) i / sum(i) ))
 	return(a)
@@ -141,7 +141,7 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	# print(Sigma)
 
 	enum <- lapply(fftir, function(i) (abs(i%*%Sigma))^2/(n.ahead+1))
-	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*sqrt(diag(Sigma))) ) )
+	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*diag(Sigma)) ) )
 	tot <- apply(Reduce('+', a[range]), 2, sum)	
 	
 
