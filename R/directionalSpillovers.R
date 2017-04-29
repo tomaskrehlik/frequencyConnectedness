@@ -52,7 +52,6 @@ collapseBounds <- function(estimate, index_start, index_end) {
 
 collapseAll <- function(estimate) {
 	if (class(estimate) != "connectedness_estimate") stop("Provided object is not of class connectedness_estimate.")
-	if (index_start>=index_end) stop("Provided indeces do not make sense.")
 
 	return(collapseBounds(estimate, 1, length(estimate[["Bounds"]])-1))
 }
@@ -137,7 +136,7 @@ absolute_to <- function(listAtT) {
 within_pairwise <- function(listAtT) {
 	k <- nrow(listAtT[[1]])
 	nams <- colnames(listAtT[[1]])
-	combinations <- combn(nams, 2)
+	combinations <- utils::combn(nams, 2)
 	out <- lapply(listAtT, function(tab) apply(combinations, 2, function(i) 100 * (tab[i[1],i[2]] - tab[i[2],i[1]])/sum(tab)  ))
 	for (i in 1:length(out)) {
 		names(out[[i]]) <- apply(combinations, 2, function(i) paste(i, collapse = "-"))
@@ -155,7 +154,7 @@ within_pairwise <- function(listAtT) {
 absolute_pairwise <- function(listAtT) {
 	k <- nrow(listAtT[[1]])
 	nams <- colnames(listAtT[[1]])
-	combinations <- combn(nams, 2)
+	combinations <- utils::combn(nams, 2)
 	out <- lapply(listAtT, function(tab) apply(combinations, 2, function(i) (tab[i[1],i[2]] - tab[i[2],i[1]])/k  ))
 	for (i in 1:length(out)) {
 		names(out[[i]]) <- apply(combinations, 2, function(i) paste(i, collapse = "-"))
@@ -172,41 +171,19 @@ absolute_pairwise <- function(listAtT) {
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 get_type <- function(f, ce) {
-	require(zoo)
 	list <- ce[["Estimates"]]
 	if (!is.na(ce[["Bounds"]])) {
 		nams <- as.character(round(pi/ce[["Bounds"]]))
 	}
 	
-	est_type <- lapply(1:length(list[[1]]), function(h) zoo(t(sapply(lapply(list, function(k) f(k)), function(i) i[[h]])), order.by = ce[["Dates"]]))
-	if (!is.na(ce[["Bounds"]])) {
+	est_type <- lapply(1:length(list[[1]]), function(h) zoo::zoo(t(sapply(lapply(list, function(k) f(k)), function(i) i[[h]])), order.by = ce[["Dates"]]))
+	if (all(!is.na(ce[["Bounds"]]))) {
 		names(est_type) <- paste(nams[1:(length(nams)-1)], nams[2:length(nams)], sep = "-")
 	} else {
 		names(est_type) <- "Overall"
 	}
 	
   	return(est_type)
-}
-
-#' Function that plots various types of spillovers
-#'
-#' @param s a list of named matrices with spillovers
-#' @param otherAttributes other attributes that can be used to enhance plot
-#'
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
-
-plot_spills <- function(s, otherAttributes = NULL) {
-	require(reshape2)
-	require(ggplot2)
-	pltdata <- do.call(rbind, lapply(1:length(s), function(i) {a <- as.data.frame(s[[i]]); a$Date <- as.POSIXct(time(s[[i]])); a$Freq <- names(s)[[i]]; a}))
-	pltdata <- melt(pltdata, id.vars = c("Date", "Freq"))
-	pltdata$Freq <- factor(pltdata$Freq, levels = names(s))
-	p <- ggplot(data = pltdata, aes(x = Date, y = value)) + facet_grid(Freq ~ variable) + xlab("Time") + ylab("Spillover")
-	if (is.null(otherAttributes)) {
-		print(p + geom_line())	
-	} else {
-		print(p + geom_line() + otherAttributes)
-	}
 }
 
 #####################################################
@@ -315,6 +292,24 @@ get_within_pairwise <- function(ce) {
 	return(get_type(within_pairwise, ce))
 }
 
+#' Function that plots various types of spillovers
+#'
+#' @param s an object from the makeStructure function
+#' @param otherAttributes other attributes that can be used to enhance plot
+#'
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plot_spills <- function(s, otherAttributes = NULL) {
+	pltdata <- do.call(rbind, lapply(1:length(names(s)), function(i) data.frame(s[[i]], freq = names(s)[i], index = 1:nrow(s[[1]]))))
+	pltdata <- reshape2::melt(pltdata, id.vars = c("index", "freq"))
+	pltdata$freq <- factor(pltdata$freq, levels = names(s))
+	p <- ggplot2::ggplot(data = pltdata, ggplot2::aes_string(x = "index", y = "value")) + ggplot2::facet_grid(freq ~ variable) + ggplot2::xlab("Time") + ggplot2::ylab("Spillover")
+	if (is.null(otherAttributes)) {
+		print(p + ggplot2::geom_line())	
+	} else {
+		print(p + ggplot2::geom_line() + otherAttributes)
+	}
+}
+
 #' Function for convenient plotting
 #'
 #' @param ce takes in a structure of class connectedness_estimate
@@ -329,9 +324,9 @@ plotSpills <- function(ce, which = "absolute", type = "to", otherAttributes = NU
 	f <- match.fun(paste("get", which, type, sep = "_"))
 	s <- f(ce)
 	if (is.null(otherAttributes)) {
-		otherAttributes <- list(labs(title = get_title(which, type)))
+		otherAttributes <- list(ggplot2::labs(title = get_title(which, type)))
 	} else {
-		otherAttributes <- c(otherAttributes, list(labs(title = get_title(which, type))))
+		otherAttributes <- c(otherAttributes, list(ggplot2::labs(title = get_title(which, type))))
 	}
 	plot_spills(s, otherAttributes)
 }
@@ -346,15 +341,16 @@ get_title <- function(which, type) {
 #' of spillovers.
 #'
 #' @param ce takes in a structure of class connectedness_estimate
-#' @param which is either "absolute" or "within"
-#' @param type is one of the following: to, from, net, pairwise.
+#' @param file where the final plot should go
 #' @param otherAttributes other attributes that can be used to enhance plot
+#' @param height height of the plot
+#' @param width width of the plot
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 plotSpillsAll <- function(ce, file, otherAttributes = NULL, height = 7, width = 7) {
-	cairo_pdf(file, onefile = T, height = height, width = width)
+	grDevices::cairo_pdf(file, onefile = T, height = height, width = width)
 	apply(expand.grid(c("from", "to", "net", "pairwise"), c("absolute","within")), 1, function(i) plotSpills(ce, i[2], i[1], otherAttributes))
-	dev.off()
+	grDevices::dev.off()
 }

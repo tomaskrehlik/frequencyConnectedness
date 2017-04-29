@@ -9,7 +9,9 @@
 #' @return a matrix that corresponds to contribution of ith variable to jth variance of forecast
 #' @export
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
-
+#' @import vars
+#' @import urca
+#' @import stats
 fevd <- function(est, n.ahead = 100, no.corr = F) {
 	ir <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
 
@@ -37,11 +39,14 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
 #' @param no.corr boolean if the off-diagonal elements should be set to 0.
+#' @param range defines the frequency partitions to which the spillover should be decomposed
 #' @return a list of matrices that corresponds to contribution of ith variable to jth variance of forecast
 #'	 
 #' @export
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
-
+#' @import vars
+#' @import urca
+#' @import stats
 fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	if (n.ahead < 100) {
 		warning("The frequency decomposition works with unconditional IRF. You have opted for 
@@ -80,7 +85,9 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 #'
 #' @export
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
-
+#' @import vars
+#' @import urca
+#' @import stats
 genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	Phi <- irf(est, n.ahead = n.ahead+1, boot = F, ortho = F)
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
@@ -109,11 +116,14 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
 #' @param no.corr boolean if the off-diagonal elements should be set to 0.
+#' @param range defines the frequency partitions to which the spillover should be decomposed
 #' @return a list of matrices that corresponds to contribution of ith variable to jth variance of forecast
 #'	 
 #' @export
 #' @author Tomas Krehlik \email{tomas.krehlik@@gmail.com}
-
+#' @import vars
+#' @import urca
+#' @import stats
 fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	if (n.ahead < 100) {
 		warning("The frequency decomposition works with unconditional IRF. You have opted for 
@@ -149,42 +159,3 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 
 	return(a)
 }
-
-# fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, coint = F) {
-# 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
-
-# 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
-# 	fftir <- lapply(1:(n.ahead+1), function(j) sapply(fftir, function(i) i[j,]))
-
-# 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
-# 	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
-
-# 	# print(diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) ))))
-
-# 	if (coint) {
-# 		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1))[-1])))
-# 	} else {
-# 		denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1)))))
-# 	}	
-# 	# cat("The weights are: ")
-# 	# cat(denom)
-# 	# cat("\n")
-# 	if (no.corr) {
-# 		Sigma <- diag(diag(Sigma))
-# 	}
-
-# 	# print(Sigma)
-
-# 	enum <- lapply(fftir, function(i) (abs(i%*%Sigma))^2/(n.ahead+1))
-# 	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*sqrt(diag(Sigma))) ) )
-# 	if (coint) {
-# 		tot <- apply(Reduce('+', a[-1]), 2, sum)	
-# 	} else {
-# 		tot <- apply(Reduce('+', a), 2, sum)	
-# 	}
-	
-
-# 	a <- lapply(a, function(i) t(i)/tot)
-
-# 	return(a)
-# }

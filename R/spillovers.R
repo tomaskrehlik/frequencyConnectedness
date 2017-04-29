@@ -19,14 +19,14 @@
 
 spillover <- function(func, est, n.ahead, table, no.corr = F) {
 	f <- get(func)
+	tab <- f(est, n.ahead, no.corr = no.corr)
 	if (table) {
-		a <- f(est, n.ahead, no.corr = no.corr)
 		if (class(est)%in%c("varest","vec2var")) {
-			rownames(a) <- colnames(a) <- colnames(est$y)
+			rownames(tab) <- colnames(tab) <- colnames(est$y)
 		}
-		return(100*a)
+		return(100*tab)
 	} else {
-		return(100*(1 - sum(diag(f(est, n.ahead, no.corr = no.corr)))/est$K))
+		return(100*(1 - sum(diag(tab))/est$K))
 	}
 }
 
@@ -50,25 +50,30 @@ spillover <- function(func, est, n.ahead, table, no.corr = F) {
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr = F) {
-	f <- get(func)
-	range <- sort(unique(do.call(c, getPartition(partition, n.ahead))))
+	f <- get( func )
+	partition <- getPartition( partition, n.ahead )
+	
+	range <- sort( unique( do.call(c, partition) ) )
+	
+	decomp <- f(est, n.ahead, no.corr = no.corr, range = range)
+	if (class(est)%in%c("varest","vec2var")) {
+		for (i in 1:length(decomp)) {
+			rownames(decomp[[i]]) <- colnames(decomp[[i]]) <- colnames(est$y)
+		}
+	}
+	tables <- lapply(partition, function(j) 100*Reduce('+', decomp[j]))
+	
+	total_var <- sum(Reduce(`+`, tables))
+
 	if (table) {
-		decomp <- f(est, n.ahead, no.corr = no.corr, range = range)
-		if (class(est)%in%c("varest","vec2var")) {
-			for (i in 1:length(decomp)) {
-				rownames(decomp[[i]]) <- colnames(decomp[[i]]) <- colnames(est$y)
-			}
-		}
-		return(lapply(getPartition(partition, n.ahead), function(j) 100*Reduce('+', decomp[j])))
+		return(tables)
 	} else {
+		spill <- function(i) 100  - sum(diag(i))/sum(i)
 		if (absolute) {
-			decomp <- f(est, n.ahead, no.corr = no.corr, range = range)
-			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) sum(i)/est$K  - sum(diag(i))/sum(Reduce('+', decomp[range])) ))
+			return(sapply(tables, function(i) sum(i)/total_var * spill(i) ))
 		} else {
-			decomp <- f(est, n.ahead, no.corr = no.corr, range = range)
-			return(100*sapply(lapply(getPartition(partition, n.ahead), function(j) Reduce('+', decomp[j])), function(i) 1  - sum(diag(i))/sum(i) ))
+			return(sapply(tables, function(i) spill(i) ))
 		}
-		
 	}
 }
 
@@ -138,6 +143,7 @@ spilloverRolling <- function(func, data, p, type, window, n.ahead, no.corr, tabl
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' @import parallel
 
 
 spilloverRollingFft <- function(func, data, p, type, window, n.ahead, partition, absolute, no.corr, table = F, cluster = NULL) {
@@ -311,13 +317,6 @@ spilloverRollingDY09 <- function(data, p, type, window, n.ahead, table = F, no.c
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
-#' @examples
-#' w<-c(0,0)
-#' C<-rbind(c(1,0.0),c(0.0,1))
-#' A1<-rbind(c(0.9,0.09),c(0.09,0.9))
-#' A2<-rbind(c(0.9,0.03),c(0.03,0.9))
-#' data <- rbind(mAr.sim(w,A1,C,N=1000), mAr.sim(w,A2,C,N=1000))
-#' plot(spilloverRollingDY12(data, p = 1, type = "const", window = 200, n.ahead = 100, table = F, no.corr = F), type="l")
 
 spilloverRollingDY12 <- function(data, p, type, window, n.ahead, table = F, no.corr, cluster = NULL) {
 	return(spilloverRolling("spilloverDY12", data, p, type, window, n.ahead, table = table, cluster = cluster, no.corr = no.corr))
@@ -347,14 +346,6 @@ spilloverRollingDY12 <- function(data, p, type, window, n.ahead, table = F, no.c
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
-#' @examples
-#' w<-c(0,0)
-#' C<-rbind(c(1,0.0),c(0.0,1))
-#' A1<-rbind(c(0.9,0.09),c(0.09,0.9))
-#' A2<-rbind(c(-0.9,-0.09),c(-0.09,-0.9))
-#' data <- rbind(mAr.sim(w,A1,C,N=1000), mAr.sim(w,A2,C,N=1000))
-#' bounds <- c(1.0001, 0.5, 0.25, 0)*pi
-#' plot.ts(t(spilloverRollingBK12(data, p = 1, type = "const", window = 200, n.ahead = 100, partition = bounds, absolute = F, table = F, no.corr = F)), type="l", plot.type = "single", col = c("red","blue","green"))
 
 spilloverRollingBK09 <- function(data, p, type, window, n.ahead, partition, table = F, no.corr, absolute, cluster = NULL) {
 	return(spilloverRollingFft("spilloverBK09", data, p, type, window, n.ahead, partition, table = table, absolute = absolute, cluster = cluster, no.corr = no.corr))

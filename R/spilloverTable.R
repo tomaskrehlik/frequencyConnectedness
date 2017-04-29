@@ -11,7 +11,6 @@
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 createSpilloverTable <- function(tot, decomposition_a, decomposition_r, nams, format = "%1.1f", sep = "-") {
-	require(stringr)
 
 	zip <- function(i,j) {
 		output <- c()
@@ -68,8 +67,8 @@ createSpilloverTable <- function(tot, decomposition_a, decomposition_r, nams, fo
 	tab <- zip2(t, absolute, relative)
 	row_names <- zip2(paste(c("\\multirow{3}{*}{"), c(nams, "To Others"), "}", sep = ""), rep(" ", length(nams)+1), rep(" ", length(nams)+1))
 	tab <- paste(row_names, tab, collapse = " \\\\ \n ", sep = " & ")
-	tab <- str_replace_all(tab, "\n \\\\multirow\\{3\\}\\{\\*\\}", "[10pt]\n \\\\multirow\\{3\\}\\{\\*\\}")
-	tab <- str_replace_all(tab, "\\[10pt\\]\n \\\\multirow\\{3\\}\\{\\*\\}\\{To Others\\}", "\n \\\\midrule \n \\\\multirow\\{3\\}\\{\\*\\}\\{To\\}")
+	tab <- stringr::str_replace_all(tab, "\n \\\\multirow\\{3\\}\\{\\*\\}", "[10pt]\n \\\\multirow\\{3\\}\\{\\*\\}")
+	tab <- stringr::str_replace_all(tab, "\\[10pt\\]\n \\\\multirow\\{3\\}\\{\\*\\}\\{To Others\\}", "\n \\\\midrule \n \\\\multirow\\{3\\}\\{\\*\\}\\{To\\}")
 
 	return(paste(c("\\toprule", addeol(paste(c(" ",nams, "From Others"), collapse = " & ")), "\\midrule", addeol(tab), "\\bottomrule"), collapse = " \n"))
 
