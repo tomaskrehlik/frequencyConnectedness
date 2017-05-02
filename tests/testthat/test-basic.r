@@ -41,7 +41,7 @@ test_that("The DY12 spillover gives the proofed result table", {
 context("Spillovers checks")
 
 test_that("If bounds do not cover the whole partition, give warning", {	
-	bounds <- c(pi + 0.001, sort(runif(5, min = 0, max = pi), decreasing = T), 0.000001)
+	bounds <- c(pi + 0.001, 2.5530220, 1.8705131, 0.6906649, 0.4298473, 0.000001)
 
 	expect_warning(frequencyConnectedness::getPartition(bounds, 200), "The selected partition does not cover the whole range.")
 })
@@ -74,7 +74,7 @@ test_that("Test that spillovers are smaller than hundred", {
 	est <- VAR(exampleSim, p = 4, type ="const")
 
 	# Create random bounds that cover the whole range
-	bounds <- c(pi + 0.001, sort(runif(5, min = 0, max = pi), decreasing = T), 0)
+	bounds <- c(pi + 0.001, 2.5530220, 1.8705131, 0.6906649, 0.4298473, 0)
 	H <- 200
 
 	expect_that(frequencyConnectedness::spilloverDY09(est, n.ahead = H, table = F, no.corr=F) < 100, is_true())
