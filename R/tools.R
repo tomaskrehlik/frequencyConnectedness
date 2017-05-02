@@ -48,6 +48,10 @@ getPartition <- function(partition, n.ahead) {
 	if (length(unique(do.call(c, part))) != (n.ahead + 1)) {
 			warning("The selected partition does not cover the whole range.")
 	}
+	if (any(sapply(part, length)==0)) {
+		sprintf("The n.ahead steps does not allow to infer anything about the following interval (%f, %f).", partition[which(sapply(part, length)==0)], partition[which(sapply(part, length)==0)+1])
+		stop("Change the partition.")
+	}
 	return(part)
 }
 

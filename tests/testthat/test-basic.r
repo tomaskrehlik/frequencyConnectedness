@@ -51,13 +51,18 @@ test_that("If the partition is not decreasing, produce an error.", {
 	expect_error(frequencyConnectedness::getPartition(bounds, 300), "The bounds must be in decreasing order.")
 })
 
+test_that("If the bounds are too detailed for the number of steps ahead, produce an error.", {
+	bounds <- c(3.1425927, 2.5530220, 1.8705131, 0.6906649, 0.4298473, 0.4130271, 0.0000000)
+	expect_error(frequencyConnectedness::getPartition(bounds, 200))
+})
+
 test_that("The BK absolute spillovers tables reconstruct perfectly in both cases", {
 	data(exampleSim)
 	exampleSim <- exampleSim[1:100,]
 	est <- VAR(exampleSim, p = 4, type ="const")
 
 	# Create random bounds that cover the whole range
-	bounds <- c(pi + 0.001, sort(runif(5, min = 0, max = pi), decreasing = T), 0)
+	bounds <- c(pi + 0.001, 2.5530220, 1.8705131, 0.6906649, 0.4298473, 0)
 	H <- 200
 	expect_equivalent(frequencyConnectedness::spilloverDY09(est, n.ahead = H, table = T, no.corr=F), Reduce('+', frequencyConnectedness::spilloverBK09(est, n.ahead = H, partition = bounds, absolute = T, table = T, no.corr=F)))
 	expect_equivalent(frequencyConnectedness::spilloverDY12(est, n.ahead = H, table = T, no.corr=F), Reduce('+', frequencyConnectedness::spilloverBK12(est, n.ahead = H, partition = bounds, absolute = T, table = T, no.corr=F)))
