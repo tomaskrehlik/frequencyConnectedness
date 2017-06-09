@@ -1,0 +1,6 @@
+frequencyConnectedness v0.1.6 (Release date: 2017-06-09)
+==============
+
+Changes:
+
+* The BK and DY spillovers did not sum to the same values for cases when the parameter table = F. Added test case for this.
