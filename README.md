@@ -116,6 +116,37 @@ connectedness <- spilloverRollingBK12(exampleSim, p = 2, type = "const", window 
 plot.ts(t(sapply(connectedness$Estimates, function(i) sapply(i, function(j) j[2,1]))), plot.type = "single", col = c("red","black","blue","green"))
 ````
 
+## Using the structures to consistently get directional spillovers
+
+The following example shows, how to use the structures that are implemented, though, the code might be still in an early stage. The code uses the `ggplot2` library for plotting.
+
+````{r}
+library(frequencyConnectedness)
+
+# Lets take the example data
+data(exampleSim)
+exampleSim <- exampleSim[1:400,]
+
+# Some dummy dates
+library(lubridate)
+time <- date("2011-01-01") + 1:201
+
+tabs <- lapply(0:200, function(i) list(spilloverDY12(VAR(exampleSim[1:200 + i, ], p = 1, type = "const"), n.ahead = 600, no.corr = F, table = T)))
+aa <- makeStructure(tabs, dates = time, bounds = NA)
+get_within_from(aa)
+
+# or just plot them
+plotSpills(aa)
+
+bounds <- c(pi+0.0001, pi/2, 0)
+tabs2 <- lapply(0:200, function(i) spilloverBK12(VAR(exampleSim[1:200 + i, ], p = 1, type = "const"), n.ahead = 600, no.corr = F, table = T, partition = bounds))
+aa2 <- makeStructure(tabs2, dates = time, bounds = bounds)
+get_within_from(aa2)
+
+# or just plot them
+plotSpills(aa2)
+````
+
 ## Examples
 
 ````{r}

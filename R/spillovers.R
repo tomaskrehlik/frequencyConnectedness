@@ -68,11 +68,11 @@ spilloverFft <- function(func, est, n.ahead, partition, table, absolute, no.corr
 	if (table) {
 		return(tables)
 	} else {
-		spill <- function(i) 100  - sum(diag(i))/sum(i)
+		spill <- function(i) 1  - sum(diag(i))/sum(i)
 		if (absolute) {
-			return(sapply(tables, function(i) sum(i)/total_var * spill(i) ))
+			return(100*sapply(tables, function(i) sum(i)/total_var * spill(i) ))
 		} else {
-			return(sapply(tables, function(i) spill(i) ))
+			return(100*sapply(tables, function(i) spill(i) ))
 		}
 	}
 }

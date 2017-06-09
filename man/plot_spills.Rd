@@ -7,7 +7,7 @@
 plot_spills(s, otherAttributes = NULL)
 }
 \arguments{
-\item{s}{a list of named matrices with spillovers}
+\item{s}{an object from the makeStructure function}
 
 \item{otherAttributes}{other attributes that can be used to enhance plot}
 }

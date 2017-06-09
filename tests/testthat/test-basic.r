@@ -68,6 +68,18 @@ test_that("The BK absolute spillovers tables reconstruct perfectly in both cases
 	expect_equivalent(frequencyConnectedness::spilloverDY12(est, n.ahead = H, table = T, no.corr=F), Reduce('+', frequencyConnectedness::spilloverBK12(est, n.ahead = H, partition = bounds, absolute = T, table = T, no.corr=F)))
 })
 
+test_that("The BK absolute spillovers reconstruct perfectly in both cases", {
+	data(exampleSim)
+	exampleSim <- exampleSim[1:100,]
+	est <- VAR(exampleSim, p = 4, type ="const")
+
+	# Create random bounds that cover the whole range
+	bounds <- c(pi + 0.001, 2.5530220, 1.8705131, 0.6906649, 0.4298473, 0)
+	H <- 200
+	expect_equivalent(frequencyConnectedness::spilloverDY09(est, n.ahead = H, table = F, no.corr=F), Reduce('+', frequencyConnectedness::spilloverBK09(est, n.ahead = H, partition = bounds, absolute = T, table = F, no.corr=F)))
+	expect_equivalent(frequencyConnectedness::spilloverDY12(est, n.ahead = H, table = F, no.corr=F), Reduce('+', frequencyConnectedness::spilloverBK12(est, n.ahead = H, partition = bounds, absolute = T, table = F, no.corr=F)))
+})
+
 test_that("Test that spillovers are smaller than hundred", {
 	data(exampleSim)
 	exampleSim <- exampleSim[1:100,]
