@@ -169,6 +169,63 @@ data <- rbind(mAr.sim(w,A1,C,N=1000), mAr.sim(w,A2,C,N=1000))
 plot(spilloverRollingDY12(data, p = 1, type = "const", window = 200, n.ahead = 100, table = F, no.corr = F), type="l")
 ````
 
+## BigVAR integration
+
+The following example demonstrates the integration with `BigVAR` package:
+
+````{r}
+library(frequencyConnectedness)
+library(Quandl)
+library(BigVAR)
+# Gross Domestic Product (Relative to 2000)
+GDP = Quandl("FRED/GDP", type = "xts")
+GDP <- GDP/mean(GDP["2000"]) * 100
+# Transformation Code: First Difference of Logged Variables
+GDP <- diff(log(GDP))
+# Federal Funds Rate
+FFR = Quandl("FRED/FEDFUNDS", type = "xts", collapse = "quarterly")
+# Transformation Code: First Difference
+FFR <- diff(FFR)
+# CPI ALL URBAN CONSUMERS, relative to 1983
+CPI = Quandl("FRED/CPIAUCSL", type = "xts", collapse = "quarterly")
+CPI <- CPI/mean(CPI["1983"]) * 100
+# Transformation code: Second difference of logged variables
+CPI <- diff(log(CPI), 2)
+k = 3
+Y <- cbind(CPI, FFR, GDP)
+Y <- na.omit(Y)
+# Demean
+Y <- Y - (c(rep(1, nrow(Y)))) %*% t(c(apply(Y, 2, mean)))
+# Standarize Variance
+for (i in 1:k) {
+Y[, i] <- Y[, i]/apply(Y, 2, sd)[i]
+}
+
+# Set very small lambda (gran parameter) to mimic no penalty
+Model1 = constructModel(as.matrix(Y), p = 4, struct = "Basic", gran = c(0.00000000001), verbose = FALSE, VARX = list(), ownlambdas = T)
+Model1Results = cv.BigVAR(Model1)
+# Estimate using the standard VAR method
+estvars <- VAR(as.matrix(Y), p = 4)
+
+# Check if the results are approximately the same
+fevd(Model1Results)
+fevd(estvars)
+
+genFEVD(Model1Results)
+genFEVD(estvars)
+
+spilloverDY09(Model1Results, n.ahead = 100, no.corr = F)
+spilloverDY09(estvars, n.ahead = 100, no.corr = F)
+spilloverDY12(Model1Results, n.ahead = 100, no.corr = F)
+spilloverDY12(estvars, n.ahead = 100, no.corr = F)
+
+bounds <- c(pi+0.0001, pi/2, 0)
+spilloverBK09(Model1Results, absolute = T, n.ahead = 100, partition = bounds, no.corr = F)
+spilloverBK09(estvars, absolute = T, n.ahead = 100, partition = bounds, no.corr = F)
+spilloverBK12(Model1Results, absolute = T, n.ahead = 100, partition = bounds, no.corr = F)
+spilloverBK12(estvars, absolute = T, n.ahead = 100, partition = bounds, no.corr = F)
+````
+
 ## Replication of paper and tests
 
 A release that reproduces the paper results with the original scripts will be tagged. The [original script](R/applications.R) can be found in the `R` folder and the header comment clearly indicates the tagged release (see the releases in the header of the file) with which it is supposed to work. Hence, the script might not work with the current version of the paper.

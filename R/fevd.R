@@ -19,13 +19,14 @@ irf.bigvar <- function(est, n.ahead) {
 
 	H <- n.ahead
 	p <- est@lagmax
+	k <- nrow(B)
 	# Remove the constants
 	B <- B[,-1]
 	betas <- lapply(1:p, function(i) B[,1:nrow(B) + (i-1)*nrow(B)])
 
-	lags_obs <- c( 	lapply(1:3, function(i) matrix(0, nrow = 3, ncol = 3)), 
-					list(diag(3)), 
-					lapply(1:H, function(i) matrix(0, nrow = 3, ncol = 3)))
+	lags_obs <- c( 	lapply(1:(p-1), function(i) matrix(0, nrow = k, ncol = k)), 
+					list(diag(k)), 
+					lapply(1:H, function(i) matrix(0, nrow = k, ncol = k)))
 
 	for (i in 1:H) {
     	for (j in 1:p) {
@@ -35,7 +36,7 @@ irf.bigvar <- function(est, n.ahead) {
 
 	lags_obs <- lags_obs[p:length(lags_obs)]
 
-	return(list(irf = lapply(1:3, function(j) t(sapply(lags_obs, function(i) i[j,])))))
+	return(list(irf = lapply(1:k, function(j) t(sapply(lags_obs, function(i) i[j,])))))
 }
 
 
