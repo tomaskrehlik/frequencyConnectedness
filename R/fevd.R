@@ -1,3 +1,44 @@
+irf <- function(est, n.ahead, ...) {
+	if (class(est) %in% c("varest", "vec2var")) {
+		# cat("The model is from the vars package, using irf function from there.")
+		return(vars::irf(est, n.ahead = n.ahead, boot = F, ortho = F))
+	} else if (class(est)=="BigVAR.results") {
+		# cat("The model is from BigVAR package, using own irf function.")
+		return(irf.bigvar(est, n.ahead = n.ahead))
+	} else {
+		stop("Unsupported class of estimate")
+	}
+}
+
+setMethod("residuals", signature(object = "BigVAR.results"), function(object) {
+	object@resids
+})
+
+irf.bigvar <- function(est, n.ahead) {
+	B <- est@betaPred
+
+	H <- n.ahead
+	p <- est@lagmax
+	# Remove the constants
+	B <- B[,-1]
+	betas <- lapply(1:p, function(i) B[,1:nrow(B) + (i-1)*nrow(B)])
+
+	lags_obs <- c( 	lapply(1:3, function(i) matrix(0, nrow = 3, ncol = 3)), 
+					list(diag(3)), 
+					lapply(1:H, function(i) matrix(0, nrow = 3, ncol = 3)))
+
+	for (i in 1:H) {
+    	for (j in 1:p) {
+        	lags_obs[[p+i]] <- t(betas[[j]])%*%lags_obs[[p+i-j]] + lags_obs[[p+i]]
+    	}
+	}
+
+	lags_obs <- lags_obs[p:length(lags_obs)]
+
+	return(list(irf = lapply(1:3, function(j) t(sapply(lags_obs, function(i) i[j,])))))
+}
+
+
 #' Compute a forecast error vector decomposition in recursive identification scheme
 #'
 #' This function computes the standard forecast error vector decomposition given the 
@@ -27,7 +68,7 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 
 	enum <- Reduce('+', lapply(ir, function(i) (K%*%t(i))^2))
 	
-	return(t(sapply(1:est$K, function(i) enum[,i]/(denom[i]))))
+	return(t(sapply(1:ncol(enum), function(i) enum[,i]/(denom[i]))))
 }
 
 
@@ -67,7 +108,7 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1))[range])))
 	
 	enum <- lapply(fftir, function(i) (abs(i%*%t(chol(Sigma))))^2/(n.ahead+1))
-	a <- lapply(enum, function(i) t(sapply(1:est$K, function(j) i[j,]/(denom[j]))))
+	a <- lapply(enum, function(i) t(sapply(1:nrow(i), function(j) i[j,]/(denom[j]))))
 
 	return(a)
 }
@@ -102,7 +143,7 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 	enum <- Reduce('+', lapply(Phi, function(i) (i%*%Sigma)^2))
 	# print(enum)
 	# print(denom)
-	a <- sapply(1:est$K, function(j) enum[j,]/(denom[j]*diag(Sigma)))
+	a <- sapply(1:nrow(enum), function(j) enum[j,]/(denom[j]*diag(Sigma)))
 	# print(a)
 	a <- t(apply(a, 2, function(i) i / sum(i) ))
 	return(a)
@@ -151,7 +192,7 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	# print(Sigma)
 
 	enum <- lapply(fftir, function(i) (abs(i%*%Sigma))^2/(n.ahead+1))
-	a <- lapply(enum, function(i) sapply(1:est$K, function(j) i[j,]/(denom[j]*diag(Sigma)) ) )
+	a <- lapply(enum, function(i) sapply(1:nrow(i), function(j) i[j,]/(denom[j]*diag(Sigma)) ) )
 	tot <- apply(Reduce('+', a[range]), 2, sum)	
 	
 
