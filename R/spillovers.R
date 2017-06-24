@@ -26,7 +26,7 @@ spillover <- function(func, est, n.ahead, table, no.corr = F) {
 		}
 		return(100*tab)
 	} else {
-		return(100*(1 - sum(diag(tab))/est$K))
+		return(100*(1 - sum(diag(tab))/nrow(tab)))
 	}
 }
 
