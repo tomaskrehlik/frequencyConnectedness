@@ -162,7 +162,7 @@ spilloverBK12(oo, n.ahead = 100, no.corr = F, partition = bounds)
 # log(volatilities[apply(volatilities>0, 1, all),]) (we only use 1:150) because it takes a lot of time to fit
 # n.ahead, no.corr, and window are self explanatory.
 # name of the function to use for estimation is the big_var_est.
-sp <- spilloverRollingBK09(log(volatilities[apply(volatilities>0, 1, all),])[1:150, ], n.ahead = 100, no.corr = F, "big_var_est", params_est = list(), window = 100)
+sp <- spilloverRollingBK12(log(volatilities[apply(volatilities>0, 1, all),])[1:150, ], n.ahead = 100, no.corr = F, func_est = "big_var_est", params_est = list(), window = 100, partition = bounds)
 
 plotOverall(sp)
 
@@ -170,12 +170,12 @@ plotOverall(sp)
 plotTo(sp, which = 1:5)
 
 # You can extract the to spillovers
-head(to(sp))
+head(to(sp)[[1]])
 ````
 
 If you have more cores at your disposal as is usual in the computers nowadays, it is beneficial to use them through `parallel` package especially in case of rolling estimation. If you use two cores it usually almost doubles the speed. For example
 
-````{r}
+````{r, eval = F}
 library(parallel)
 cl <- makeCluster(4) # Assign R cores to the job
 
@@ -188,7 +188,9 @@ stopCluster()
 
 ## Replication of paper and tests
 
-A release that reproduces the paper results with the original scripts will be tagged. The [original script](R/applications.R) can be found in the `R` folder and the header comment clearly indicates the tagged release (see the releases in the header of the file) with which it is supposed to work. Hence, the script might not work with the current version of the paper.
+I will release later some codes that replicat papers that we wrote using this package and the methodology.
+
+If you would be interested in having your script included, write me an e-mail, or create an issue.
 
 Because the package might change in the future, there is a set of test to always preserve the integrity of the original functions. You can read what is tested in the [testfile](tests/testthat/test-basic.r). Also provided that you have the `testthat` package installed, you can run the tests yourself.
 
