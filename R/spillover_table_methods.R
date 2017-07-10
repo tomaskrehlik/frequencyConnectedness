@@ -1,0 +1,201 @@
+#' @export
+print.spillover_table <- function(x) {
+    require(knitr)
+    options(knitr.kable.NA = '')
+    tables <- x$tables
+    cat(sprintf("Spillover table for day: %s \n\n", as.character(x$date)))
+    if (length(x$bounds)==2) {
+        cat(sprintf("The spillover table has no frequency bands, standard Diebold & Yilmaz.\n"))
+    } else {
+        cat(sprintf("The spillover table has %d frequency bands.\n", length(x$bounds) - 1))
+    }
+    
+    if (length(x$bounds)==2) {        
+        output <- rbind(
+            cbind(
+                100 * x$tables[[1]], 
+                FROM = from(x, within = F)[[1]]), 
+            TO = c(
+                to(x, within = F)[[1]], 
+                overall(x, within = F)[[1]]
+                )
+            )
+        print(kable(output, format = "markdown", digits = 2))    
+    } else {
+        for (i in 1:length(tables)) {
+            cat(sprintf("\n\nThe spillover table for band: %.2f to %.2f\n", x$bounds[i], x$bounds[i+1]))
+            cat(sprintf("Roughly corresponds to %.0f days to %.0f days.\n", round(pi/x$bounds[i]), round(pi/x$bounds[i+1])))
+            output <- rbind(
+                cbind(
+                    100 * x$tables[[i]], 
+                    FROM_ABS = from(x, within = F)[[i]], 
+                    FROM_WTH = from(x, within = T)[[i]]), 
+                TO_ABS = c(
+                    to(x, within = F)[[i]], 
+                    overall(x, within = F)[[i]],
+                    NA
+                    ),
+                TO_WTH = c(
+                    to(x, within = T)[[i]], 
+                    NA,
+                    overall(x, within = T)[[i]]
+                    )
+                )
+            print(kable(output, format = "markdown", digits = 2))    
+        }
+    }
+}
+
+#' @export
+overall.spillover_table <- function(x, within = F) {
+    tables <- x$tables
+    assets <- colnames(tables[[1]])
+    if (within) {
+        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        return(
+            lapply(
+                tables, 
+                function(i) 
+                    100 * ( sum( i ) - sum( diag( i ) ) ) / sum(i)
+                )
+            )
+    } else {
+        return(
+            lapply(
+                tables, 
+                function(i) 
+                    100 * sum( sum( i ) - sum( diag( i ) ) ) / length(assets)
+                )
+            )
+    }
+}
+
+# compare_overall <- function(spillover_table, ...) UseMethod("compare_overall", spillover_table, ...)
+
+# compare_overall.spillover_table <- function(x) {
+#     if (check_that_it_is_not_fft(x)) {
+#         kable(do.call(rbind, to(x, absolute = T)), digits = 2, 
+#     } else {
+#         stop("The estimate is not frequency based, there is nothing to compare.")
+#     }
+# }
+
+
+#' @export
+to.spillover_table <- function(x, within = F) {
+    tables <- x$tables
+    assets <- colnames(tables[[1]])
+    if (within) {
+        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        return(
+            lapply(
+                tables, 
+                function(i) sapply(
+                    assets, 
+                    function(j) 
+                    100 * sum( i[-which(assets==j), j] ) / sum(i)
+                    )
+                )
+            )
+    } else {
+        return(
+            lapply(
+                tables, 
+                function(i) sapply(
+                    assets, 
+                    function(j) 
+                    100 * sum( i[-which(assets==j), j] ) / length(assets)
+                    )
+                )
+            )
+    }
+}
+
+
+#' @export
+from.spillover_table <- function(x, within = F) {
+    tables <- x$tables
+    assets <- colnames(tables[[1]])
+    if (within) {
+        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        return(
+            lapply(
+                tables, 
+                function(i) sapply(
+                    assets, 
+                    function(j) 
+                    100 * sum( i[j, -which(assets==j)] ) / sum(i)
+                    )
+                )
+            )
+    } else {
+        return(
+            lapply(
+                tables, 
+                function(i) sapply(
+                    assets, 
+                    function(j) 
+                    100 * sum( i[j, -which(assets==j)]) / length(assets)
+                    )
+                )
+            )
+    }
+}
+
+
+#' @export
+pairwise.spillover_table <- function(x, within = F) {
+    tables <- x$tables
+    assets <- colnames(tables[[1]])
+    combinations <- utils::combn(assets, 2)
+
+# within = T
+    if (within) {
+        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        out <- lapply(
+            tables, 
+            function(tab) apply(
+                combinations, 2, 
+                function(i) 
+                100 * ( tab[i[1], i[2]] - tab[i[2], i[1]] ) / sum(tab) 
+                )
+            )    
+    } else {
+        out <- lapply(
+            tables, 
+            function(tab) apply(
+                combinations, 2, 
+                function(i) 
+                100 * ( tab[i[1], i[2]] - tab[i[2], i[1]] ) / length(assets) 
+                )
+            )   
+    }
+    
+    for (i in 1:length(out)) {
+        names(out[[i]]) <- apply(combinations, 2, function(i) paste(i, collapse = "-"))
+    }
+    return(out)
+}
+
+
+#' @export
+net.spillover_table <- function(x, within = F) {
+    if (check_that_it_is_not_fft(x) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    t <- to(x, within)
+    f <- from(x, within)
+    out <- lapply(1:length(t), function(i) t[[i]] - f[[i]])
+    names(out) <- names(t)
+    return(out)    
+}
+
+
+#' @export
+collapseBounds.spillover_table <- function(x, which) {
+    orig <- 1:length(x$tables)
+    di <- setdiff(orig, which)
+
+    x$tables <- c(x$tables[di[di<max(which)]], list(Reduce(`+`, x$tables[which])), x$tables[di[di>max(which)]])
+    x$bounds <- x$bounds[-which[2:length(which)]]
+
+    return(x)
+}

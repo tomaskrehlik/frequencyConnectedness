@@ -4,7 +4,7 @@
 \alias{spillover}
 \title{Computing spillover from a fevd}
 \usage{
-spillover(func, est, n.ahead, table, no.corr = F)
+spillover(func, est, n.ahead, no.corr = F)
 }
 \arguments{
 \item{func}{name of the function that returns FEVD for the estimtate est}
@@ -14,10 +14,10 @@ spillover(func, est, n.ahead, table, no.corr = F)
 \item{n.ahead}{how many periods ahead should the FEVD be computed, generally this number
 should be high enough so that it won't change with additional period}
 
-\item{table}{boolean whether the full spillover table should be returned}
-
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
+
+\item{table}{boolean whether the full spillover table should be returned}
 }
 \description{
 This function is an internal implementation of the spillover.

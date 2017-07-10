@@ -55,40 +55,6 @@ getPartition <- function(partition, n.ahead) {
 	return(part)
 }
 
-#' Compute from others spillovers from the estimates
-#'
-#' This function does the computation of the from others spillovers from the
-#' estimate of connectedness table
-#'
-#' @param estimate an outcome from either frequency based or standard connectedness measures
-#' @return either a vector or list of from others spillovers depending on input.
-#'
-#' @export
-#' @author Tomas Krehlik \email{tomas.krehlik@@sorgmail.com}
-
-fromSpillovers <- function(estimate) {
-	if(class(estimate)=="list") {
-		return(sapply(estimate, function(i) rowSums(i) - diag(i)))
-	} else {
-		return(rowSums(estimate) - diag(estimate))
-	}
-} 
-
-#' Compute to others spillovers from the estimates
-#'
-#' This function does the computation of the to others spillovers from the
-#' estimate of connectedness table
-#'
-#' @param estimate an outcome from either frequency based or standard connectedness measures
-#' @return either a vector or list of to others spillovers depending on input.
-#'
-#' @export
-#' @author Tomas Krehlik \email{tomas.krehlik@@sorgmail.com}
-
-toSpillovers <- function(estimate) {
-	if(class(estimate)=="list") {
-		return(sapply(estimate, function(i) colSums(i) - diag(i)))
-	} else {
-		return(colSums(estimate) - diag(estimate))
-	}
-} 
+check_that_it_is_not_fft <- function(sp_tab) {
+    return(length(sp_tab$bounds)<3)
+}

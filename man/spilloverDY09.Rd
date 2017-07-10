@@ -4,7 +4,7 @@
 \alias{spilloverDY09}
 \title{Computing spillover from a fevd according to Diebold Yilmaz (2009)}
 \usage{
-spilloverDY09(est, n.ahead = 100, no.corr, table = F)
+spilloverDY09(est, n.ahead = 100, no.corr)
 }
 \arguments{
 \item{est}{the estimate of a system, typically VAR estimate in our case}

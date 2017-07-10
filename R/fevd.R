@@ -22,7 +22,7 @@ irf.bigvar <- function(est, n.ahead) {
 	k <- nrow(B)
 	# Remove the constants
 	B <- B[,-1]
-	betas <- lapply(1:p, function(i) B[,1:nrow(B) + (i-1)*nrow(B)])
+	betas <- lapply(1:p, function(i) B[,1:k + (i-1)*k])
 
 	lags_obs <- c( 	lapply(1:(p-1), function(i) matrix(0, nrow = k, ncol = k)), 
 					list(diag(k)), 

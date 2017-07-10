@@ -4,7 +4,7 @@
 \alias{spilloverFft}
 \title{Computing the decomposed spillover from a fevd}
 \usage{
-spilloverFft(func, est, n.ahead, partition, table, absolute, no.corr = F)
+spilloverFft(func, est, n.ahead, partition, no.corr = F)
 }
 \arguments{
 \item{func}{name of the function that returns FEVD for the estimtate est}
@@ -16,12 +16,12 @@ should be high enough so that it won't change with additional period}
 
 \item{partition}{defines the frequency partitions to which the spillover should be decomposed}
 
+\item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
+set to zero}
+
 \item{table}{boolean whether the full spillover table should be returned}
 
 \item{absolute}{boolean defining whether to compute the within or absolute spillover}
-
-\item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
-set to zero}
 }
 \value{
 A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.

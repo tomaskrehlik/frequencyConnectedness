@@ -1,0 +1,207 @@
+# frequencyConnectedness
+[![Build Status](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)
+
+A package implementing frequency dependent connectedness due to [Barunik, Krehlik (2015)][BK2015] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description.
+
+## NOTICE
+
+There is a new version of the interface coming with the version `0.2.0`. If you implemented anything prior to this version, you can install the older stable version using
+
+```{r, eval = F}
+# install.packages("devtools")
+library(devtools)
+install_github("tomaskrehlik/frequencyConnectedness", tag = "0.1.6") 
+```
+
+## Installation
+
+The stable version can be installed from `CRAN` by the standard means of using `install.packages("frequencyConnectedness")`. If there is any other development version, you can install it using the following instructions.
+
+Be sure to have installed the `devtools` package that allows you to install packages from Github directly. To install the version from branch `dev` do
+
+````{r, eval = F}
+# install.packages("devtools")
+library(devtools)
+install_github("tomaskrehlik/frequencyConnectedness", tag = "dev") 
+````
+
+## Usage
+
+Currently the package works in close cooperation with the `vars`, `urca`, and `BigVAR` packages. In general, if you have any model that can produce the forecast error variance decomposition, it can be relatively easily made to work with this package. Let me know by filing an issue, if that is the case and I will try to incorporate it. 
+
+For the time being the following is available:
+
+- Traditional estimation of VAR
+- Fitting of the VECM model
+- Using `BigVAR` to fit VAR models with various penalization schemes
+
+For the illustration purposes we include some simulated data and volatilities data from the [Ox-Man institute](http://realized.oxford-man.ox.ac.uk/).
+
+Let's walk through some basics. First load packages and get some data.
+
+````{r}
+library(frequencyConnectedness)
+data(exampleSim)
+# Shorten the data, rolling estimation takes quite some time
+exampleSim <- exampleSim[1:600,]
+````
+
+Then compute a system estimate on which the computation of connectedness is based:
+
+````{r}
+# Compute the VAR(2) estimate with constant and save results
+est <- VAR(exampleSim, p = 2, type = "const")
+# Alternatively, you could use VECM
+# est <- vec2var(ca.jo(exampleSim, ecdet = "trend", K = 2), r = 1)
+````
+
+Then use the estimate to compute the connectedness measures.
+First, the traditional overall measures that are not frequency dependent as in Diebold and Yilmaz, also with the possibility of nullifying the cross correlation elements. These commands print out the table and all the relevant measures.
+
+````{r}
+# Compute traditional spillovers
+spilloverDY09(est, n.ahead = 100, no.corr = F)
+spilloverDY12(est, n.ahead = 100, no.corr = F)
+spilloverDY09(est, n.ahead = 100, no.corr = T)
+spilloverDY12(est, n.ahead = 100, no.corr = T)
+````
+
+If you save them, you can use the functions `overall, to, from, net, pairwise` to extract the spillovers in numeric form
+
+````{r}
+sp <- spilloverDY12(est, n.ahead = 100, no.corr = T)
+overall(sp)
+to(sp)
+from(sp)
+net(sp)
+pairwise(sp)
+````
+
+Next, we can decompose the measure on desired frequencies and get the frequency dependent measures.
+
+````{r}
+# Get the frequency connectedness on partition (pi,pi/4), (pi/4,0), roughly
+# corresponding to movements of 1 to 4 days and 4 to longer.
+bounds <- c(pi+0.00001, pi/4, 0)
+spilloverBK09(est, n.ahead = 100, no.corr = F, partition = bounds)
+spilloverBK12(est, n.ahead = 100, no.corr = F, partition = bounds)
+
+spilloverBK09(est, n.ahead = 100, no.corr = T, partition = bounds)
+spilloverBK12(est, n.ahead = 100, no.corr = T, partition = bounds)
+````
+
+Note that the bounds should cover the range `(1.001, 0)*pi`, because the overall variance of the system is computed over these frequencies. (So if you wanted to remove the trend from computations, you could use `(1.001, 0.01)*pi` and the computation will ignore the variance created around the zero frequency.) Again, if you save the outputs from the `spillover....` function, you can evaluate the `overall, to, from, net, pairwise` to get the relevant tables.
+
+Moreover, if you want to aggregate the behaviour of some of the bands, you can do:
+
+````{r}
+# Get the frequency connectedness on partition (pi,pi/4), (pi/4,0), roughly
+# corresponding to movements of 1 to 4 days and 4 to longer.
+bounds <- c(pi+0.00001, pi/4, pi/10, 0)
+
+spilloverBK12(est, n.ahead = 100, no.corr = F, partition = bounds)
+collapseBounds(spilloverBK12(est, n.ahead = 100, no.corr = F, partition = bounds), 1:2)
+````
+
+
+
+In many cases, one is interested in the dynamics of the connectedness. This can be achieved within the package by the following commands.
+
+````{r}
+# Get the rolling window estimates
+params_est = list(p = 2, type = "const")
+sp <- spilloverRollingDY09(exampleSim, n.ahead = 100, no.corr = F, "VAR", params_est = params_est, window = 100)
+# alternatively for co-integration you could do
+# coint_est <- function(data, r) {
+#     return(vec2var(ca.jo(data, ecdet = "trend", K = 2), r = r))
+# }
+# params_est = list(r = 1)
+# sp <- spilloverRollingDY09(exampleSim, n.ahead = 100, no.corr = F, "coint_est", params_est = params_est, window = 100)
+````
+
+In general, the `spilloverRolling....` function takes the following arguments:
+
+- data, as `exampleSim`
+- the arguments for relevant spillover function, as `n.ahead, no.corr`, and alternatively `partition` in case of the `BK` variant.
+- window, what window you should roll
+- name of function used for estimates, in this case `"VAR"`, and list of parameters for this function called `params_est`
+
+Using this, one can plot the resulting spillover measures.
+
+````{r}
+plotOverall(sp)
+plotTo(sp)
+plotFrom(sp)
+plotNet(sp)
+plotPairwise(sp)
+````
+
+It is generally not a good idea to print all the spillover tables as they are not informative.
+
+To make your own rolling estimate, let's follow this example. First, we start with construction of unconditional estimate and then use the same function for the rolling estimate. We perform VAR-LASSO estimation on a big system of log-volatilities of financial indices with automatic selection of the LASSO penalty using cross-validation.
+
+````{r}
+# Example of usage of BigVAR package on the volatilities data that are included
+data(volatilities)
+
+big_var_est <- function(data) {
+    Model1 = constructModel(as.matrix(data), p = 4, struct = "Basic", gran = c(50, 50), VARX = list(), verbose = F)
+    Model1Results = cv.BigVAR(Model1)
+}
+
+# Perform the estimation
+oo <- big_var_est(log(volatilities[apply(volatilities>0, 1, all),]))
+
+spilloverDY12(oo, n.ahead = 100, no.corr = F)
+spilloverBK12(oo, n.ahead = 100, no.corr = F, partition = bounds)
+
+# Now use the same function to perform the rolling estimation.
+# The original estimation call was:
+# big_var_est(log(volatilities[apply(volatilities>0, 1, all),]))
+# so our data are:
+# log(volatilities[apply(volatilities>0, 1, all),]) (we only use 1:150) because it takes a lot of time to fit
+# n.ahead, no.corr, and window are self explanatory.
+# name of the function to use for estimation is the big_var_est.
+sp <- spilloverRollingBK09(log(volatilities[apply(volatilities>0, 1, all),])[1:150, ], n.ahead = 100, no.corr = F, "big_var_est", params_est = list(), window = 100)
+
+plotOverall(sp)
+
+# I only plot 5 of the To indicators as plotting all of them is not nice
+plotTo(sp, which = 1:5)
+
+# You can extract the to spillovers
+head(to(sp))
+````
+
+If you have more cores at your disposal as is usual in the computers nowadays, it is beneficial to use them through `parallel` package especially in case of rolling estimation. If you use two cores it usually almost doubles the speed. For example
+
+````{r}
+library(parallel)
+cl <- makeCluster(4) # Assign R cores to the job
+
+...
+code from previous box
+...
+
+stopCluster()
+````
+
+## Replication of paper and tests
+
+A release that reproduces the paper results with the original scripts will be tagged. The [original script](R/applications.R) can be found in the `R` folder and the header comment clearly indicates the tagged release (see the releases in the header of the file) with which it is supposed to work. Hence, the script might not work with the current version of the paper.
+
+Because the package might change in the future, there is a set of test to always preserve the integrity of the original functions. You can read what is tested in the [testfile](tests/testthat/test-basic.r). Also provided that you have the `testthat` package installed, you can run the tests yourself.
+
+````{r}
+library(frequencyConnectedness)
+library(testthat)
+test_package("frequencyConnectedness")
+````
+
+## License
+
+This package is free and open source software, licensed under GPL (>= 2).
+
+
+[BK2015]: http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2627599 "Barunik, J., Krehlk, T., Measuring the Frequency Dynamics of Financial and Macroeconomic Connectedness"
+[DY09]: http://www.sciencedirect.com/science/article/pii/S016920701100032X "Diebold, F. X., Yilmaz, K., Better to give than to receive: Predictive directional measurement of volatility spillovers"

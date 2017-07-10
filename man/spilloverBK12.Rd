@@ -4,8 +4,7 @@
 \alias{spilloverBK12}
 \title{Computing the decomposed spillover from a generalized fevd as defined by Barunik, Krehlik (2015)}
 \usage{
-spilloverBK12(est, n.ahead = 100, no.corr, partition, table = F,
-  absolute = T)
+spilloverBK12(est, n.ahead = 100, no.corr, partition)
 }
 \arguments{
 \item{est}{the estimate of a system, typically VAR estimate in our case}
