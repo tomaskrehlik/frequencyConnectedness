@@ -55,21 +55,36 @@ irf.bigvar <- function(est, n.ahead) {
 #' @import urca
 #' @import stats
 fevd <- function(est, n.ahead = 100, no.corr = F) {
-	ir <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
-
-	ir <- lapply(1:(n.ahead + 1), function(j) sapply(ir$irf, function(i) i[j,]))
-	sig <- t(residuals(est)) %*% residuals(est)/nrow(residuals(est))
+	# Get the unorthogonalized impulse responses (essentially Wold decomposition
+	# coefficients thats why the name Phi.)
+	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
+	# Extract them from standard format
+	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
+	# Estimate the covariance matrix of the residuals
+	Sigma <- t(residuals(est)) %*% residuals(est)/nrow(residuals(est))
+	# Eliminate the off-diagonal elements of the covariance matrix to only
+	# see the effects of the coefficients
+	# This is primarily useful for Lasso.
 	if (no.corr) {
-		sig <- diag(diag(sig))
+		Sigma <- diag(diag(Sigma))
 	}
-
-	denom <- diag(Reduce('+', lapply(ir, function(i) i%*%sig%*%t(i))))
-
-	K <- chol(sig)
-
-	enum <- Reduce('+', lapply(ir, function(i) (K%*%t(i))^2))
+	# Estimate the denominator of the ration of FEVD.
+	denom <- diag(Reduce('+', lapply(Phi, function(i) i%*%Sigma%*%t(i))))
 	
-	return(t(sapply(1:ncol(enum), function(i) enum[,i]/(denom[i]))))
+
+	# This computes the enumerator, essentially compute all the elements of the
+	# sum and then reduce them using the sum operator.
+	enum <- Reduce('+', lapply(Phi, function(i) 
+		( chol(Sigma) %*% t(i) )^2 
+		)
+	)
+	
+	# Compute the ration and return the matrix.
+	return(
+		t(
+			sapply(1:ncol(enum), function(i)  enum[,i]/denom[i] )
+			)
+		)
 }
 
 
@@ -90,28 +105,45 @@ fevd <- function(est, n.ahead = 100, no.corr = F) {
 #' @import urca
 #' @import stats
 fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
+	# Warn if the n.ahead is too low.
 	if (n.ahead < 100) {
 		warning("The frequency decomposition works with unconditional IRF. You have opted for 
 			IRF with horizon lower than 100 periods. This might cause trouble, some frequencies
 			might not be estimable depending on the bounds settings.")
 	}
+	# Get the unorthogonalized impulse responses (essentially Wold decomposition
+	# coefficients thats why the name Phi.)
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
-
+	# Get the Fourier transform of the impulse responses
 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
+	# Transform them into shape we work with
 	fftir <- lapply(1:(n.ahead+1), function(j) sapply(fftir, function(i) i[j,]))
-
-	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
+	# Estimate the covariance matrix of the residuals
 	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
+	# Eliminate the off-diagonal elements of the covariance matrix to only
+	# see the effects of the coefficients
+	# This is primarily useful for Lasso.
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
-	
-	denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1))[range])))
-	
-	enum <- lapply(fftir, function(i) (abs(i%*%t(chol(Sigma))))^2/(n.ahead+1))
-	a <- lapply(enum, function(i) t(sapply(1:nrow(i), function(j) i[j,]/(denom[j]))))
+	# Here I compute the variance, and only include the frequencies mentioned
+	# in range. This is because of the co-integration setting, where I want to
+	# only standardize by variance from some frequency to 2π.
+	denom <- diag(
+		Re(
+			Reduce('+', lapply(fftir, function(i) 
+				i %*% Sigma %*% t(Conj(i)) / (n.ahead + 1)
+				)[range])
+			)
+		)
+	# Compute the enumerator of the ration for every given frequency
+	enum <- lapply(fftir, function(i) 
+			( abs( i %*% t(chol(Sigma)) ) )^2 / (n.ahead+1) 
+		)
+	# Compute the whole table by division of the individual elements.
+	tab <- lapply(enum, function(i) t(sapply(1:nrow(i), function(j) i[j,]/(denom[j]))))
 
-	return(a)
+	return(tab)
 }
 
 
@@ -119,6 +151,12 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 #'
 #' This function computes the standard forecast error vector decomposition given the 
 #' estimate of the VAR.
+#' There are common complaints and requests whether the computation is ok and why
+#' it does not follow the original Pesaran Shin (1998) article. So let me clear two things
+#' out. First, the σ in the equation on page 20 refers to elements of Σ, not standard
+#' deviation. Second, the indexing is wrong, it should be σ_jj not σ_ii. Look, for example,
+#' to Diebold and Yilmaz (2012) or ECB WP by Dees, Holly, Pesaran, and Smith (2007)
+#' for the correct version.
 #'
 #' @param est the VAR estimate from the vars package
 #' @param n.ahead how many periods ahead should be taken into account
@@ -131,23 +169,36 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 #' @import urca
 #' @import stats
 genFEVD <- function(est, n.ahead = 100, no.corr = F) {
-	Phi <- irf(est, n.ahead = n.ahead+1, boot = F, ortho = F)
+	# Get the unorthogonalized impulse responses (essentially Wold decomposition
+	# coefficients thats why the name Phi.)
+	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
+	# Extract them from standard format
 	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
+	# Estimate the covariance matrix
 	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
-
-	denom <- diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) )))
-
+	# Remove the individual elements, if needed.
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
-
+	# Compute the variance for standardization
+	# One wants to do this before nullifying the elements, because otherwise
+	# the ratios could get weird in principle.
+	denom <- diag(
+		Reduce('+', lapply(Phi, function(i) 
+			i %*% Sigma %*% t(i) 
+			)
+		)
+		)
+	
+	# Compute the enumerator of the ration, see for example D&Y 2012
 	enum <- Reduce('+', lapply(Phi, function(i) (i%*%Sigma)^2))
-	# print(enum)
-	# print(denom)
-	a <- sapply(1:nrow(enum), function(j) enum[j,]/(denom[j]*diag(Sigma)))
-	# print(a)
-	a <- t(apply(a, 2, function(i) i / sum(i) ))
-	return(a)
+	# Compute the elements of the FEVD
+	tab <- sapply(1:nrow(enum), function(j) 
+		enum[j,] / ( denom[j] * diag(Sigma) )
+		)
+	# Standardize rows as they don't have to add up to one.
+	tab <- t(apply(tab, 2, function(i) i / sum(i) ))
+	return(tab)
 }
 
 #' Compute a FFT transform of forecast error vector decomposition in generalised VAR scheme.
@@ -167,37 +218,52 @@ genFEVD <- function(est, n.ahead = 100, no.corr = F) {
 #' @import urca
 #' @import stats
 fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
+	# Warn if the n.ahead is too low.
 	if (n.ahead < 100) {
 		warning("The frequency decomposition works with unconditional IRF. You have opted for 
 			IRF with horizon lower than 100 periods. This might cause trouble, some frequencies
 			might not be estimable depending on the bounds settings.")
 	}
+	# Get the unorthogonalized impulse responses (essentially Wold decomposition
+	# coefficients thats why the name Phi.)
 	Phi <- irf(est, n.ahead = n.ahead, boot = F, ortho = F)
-
+	# Get the Fourier transform of the impulse responses
 	fftir <- lapply(Phi$irf, function(i) apply(i, 2, fft))
+	# Transform them into shape we work with
 	fftir <- lapply(1:(n.ahead+1), function(j) sapply(fftir, function(i) i[j,]))
-
-	Phi <- lapply(1:(n.ahead + 1), function(j) sapply(Phi$irf, function(i) i[j,]))
+	# Estimate the covariance matrix
 	Sigma <- t(residuals(est))%*%residuals(est) / nrow(residuals(est))
-
-	# print(diag(Reduce('+', lapply(Phi, function(i) i %*% Sigma %*% t(i) ))))
-	denom <- diag(Re(Reduce('+', lapply(fftir, function(i) i %*% Sigma %*% t(Conj(i) )/(n.ahead + 1))[range])))
-
-	# cat("The weights are: ")
-	# cat(denom)
-	# cat("\n")
+	# Remove the individual elements, if needed.
 	if (no.corr) {
 		Sigma <- diag(diag(Sigma))
 	}
-
-	# print(Sigma)
-
-	enum <- lapply(fftir, function(i) (abs(i%*%Sigma))^2/(n.ahead+1))
-	a <- lapply(enum, function(i) sapply(1:nrow(i), function(j) i[j,]/(denom[j]*diag(Sigma)) ) )
-	tot <- apply(Reduce('+', a[range]), 2, sum)	
-	
-
-	a <- lapply(a, function(i) t(i)/tot)
-
-	return(a)
+	# Compute the variance for standardization
+	# One wants to do this before nullifying the elements, because otherwise
+	# the ratios could get weird in principle.
+	# Here I compute the variance, and only include the frequencies mentioned
+	# in range. This is because of the co-integration setting, where I want to
+	# only standardize by variance from some frequency to 2π.
+	denom <- diag(
+		Re(
+			Reduce('+', lapply(fftir, function(i) 
+				i %*% Sigma %*% t( Conj(i) ) / (n.ahead + 1)
+				)[range]
+			)
+		)
+		)
+	# Compute the enumerator of the equation
+	enum <- lapply(fftir, function(i) 
+		( abs( i %*% Sigma ) )^2 / (n.ahead+1)
+		)
+	# Compute the fevd table be dividing the individual elements
+	tab <- lapply(enum, function(i) 
+			sapply(1:nrow(i), function(j) 
+					i[j, ] / ( denom[j] * diag(Sigma) ) 
+				) 
+		)
+	# Compute the totals over the range for standardization
+	tot <- apply(Reduce('+', tab[range]), 2, sum)	
+	# Standardize so that it sums up to one row-wise
+	tab <- lapply(tab, function(i) t(i)/tot)
+	return(tab)
 }

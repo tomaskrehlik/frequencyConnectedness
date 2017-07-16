@@ -1,3 +1,15 @@
+#' Function to compute overall spillovers
+#' 
+#' Taking in list_of_spillovers, the function computes the overall spillovers
+#' for all the individual spillover_table.
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the overall spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 overall.list_of_spills <- function(x, within = F) {
     T <- length(x$list_of_tables)
@@ -14,6 +26,18 @@ overall.list_of_spills <- function(x, within = F) {
     return(out)
 }
 
+#' Function to compute to spillovers
+#' 
+#' Taking in list_of_spillovers, the function computes the to spillovers
+#' for all the individual spillover_table.
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the to spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 to.list_of_spills <- function(x, within = F) {
     T <- length(x$list_of_tables)
@@ -30,6 +54,18 @@ to.list_of_spills <- function(x, within = F) {
     return(out)
 }
 
+#' Function to compute from spillovers
+#' 
+#' Taking in list_of_spillovers, the function computes the from spillovers
+#' for all the individual spillover_table.
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the from spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 from.list_of_spills <- function(x, within = F) {
     T <- length(x$list_of_tables)
@@ -46,6 +82,18 @@ from.list_of_spills <- function(x, within = F) {
     return(out)
 }
 
+#' Function to compute net spillovers
+#' 
+#' Taking in list_of_spillovers, the function computes the net spillovers
+#' for all the individual spillover_table.
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the net spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 net.list_of_spills <- function(x, within = F) {
     T <- length(x$list_of_tables)
@@ -62,6 +110,18 @@ net.list_of_spills <- function(x, within = F) {
     return(out)
 }
 
+#' Function to compute pairwise spillovers
+#' 
+#' Taking in list_of_spillovers, the function computes the pairwise spillovers
+#' for all the individual spillover_table.
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the pairwise spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 pairwise.list_of_spills <- function(x, within = F) {
     T <- length(x$list_of_tables)
@@ -78,12 +138,37 @@ pairwise.list_of_spills <- function(x, within = F) {
     return(out)
 }
 
+#' Function to collapse bounds
+#' 
+#' Taking in list_of_spills, if the individual spillover_tables are frequency 
+#' based, it allows you to collapse several frequency bands into one.
+#' 
+#' @param x a list_of_spills object, ideally from the provided estimation 
+#'      functions
+#' @param which which frequency bands to collapse. Should be a sequence like 1:2
+#'      or 1:5, etc.
+#' 
+#' @return list_of_spills with less frequency bands.
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 collapseBounds.list_of_spills <- function(x, which) {
     x$lists_of_tables <- lapply(x$lists_of_tables, function(i) collapseBounds(i, which))
     return(x)
 }
 
+#' Function to plot overall spillovers
+#' 
+#' Taking in list_of_spillovers, the function plots the overall spillovers
+#' using the plot.zoo function
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a plot of overall spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 plotOverall.list_of_spills <- function(x, within = F) {
     spills <- overall(x, within)
@@ -97,6 +182,18 @@ plotOverall.list_of_spills <- function(x, within = F) {
     }
 }
 
+#' Function to plot to spillovers
+#' 
+#' Taking in list_of_spillovers, the function plots the to spillovers
+#' using the plot.zoo function
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a plot of to spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]])) {
     spills <- to(x, within)
@@ -110,6 +207,18 @@ plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables
     }
 }
 
+#' Function to plot from spillovers
+#' 
+#' Taking in list_of_spillovers, the function plots the from spillovers
+#' using the plot.zoo function
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a plot of from spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]])) {
     spills <- from(x, within)
@@ -123,6 +232,18 @@ plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tabl
     }
 }
 
+#' Function to plot net spillovers
+#' 
+#' Taking in list_of_spillovers, the function plots the net spillovers
+#' using the plot.zoo function
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a plot of net spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]])) {
     spills <- net(x, within)
@@ -136,6 +257,19 @@ plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_table
     }
 }
 
+
+#' Function to plot pairwise spillovers
+#' 
+#' Taking in list_of_spillovers, the function plots the pairwise spillovers
+#' using the plot.zoo function
+#' 
+#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a plot of pairwise spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 plotPairwise.list_of_spills <- function(x, within = F, which = 1:ncol(utils::combn(nrow(x$list_of_tables[[1]]$tables[[1]]), 2))) {
     spills <- pairwise(x, within)
@@ -149,6 +283,16 @@ plotPairwise.list_of_spills <- function(x, within = F, which = 1:ncol(utils::com
     }
 }
 
+#' Function to not print the list_of_spills object
+#' 
+#' Usually it is not a good idea to print the list_of_spills object, hence
+#' this function implements warning and shows how to print them individually
+#' if the user really wants to.
+#' 
+#' @param x a list_of_spills object, ideally from the provided estimation 
+#'      functions
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 print.list_of_spills <- function(x) {
     cat("Surpressing printing of all the spillover tables, usually it is not a good\n

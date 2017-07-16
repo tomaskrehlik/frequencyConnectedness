@@ -16,15 +16,13 @@ should be high enough so that it won't change with additional period}
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
 
+\item{func_est}{a name of the function to estimate with, for example "var" for VAR from vars package}
+
+\item{params_est}{a list of the parameters to pass to the function besides the data that are passed as a first element.}
+
 \item{window}{length of the window to be rolled}
 
 \item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
-
-\item{p}{lags in the VAR estimate.}
-
-\item{type}{which type of VAR to use, see help for VAR from vars package}
-
-\item{table}{boolean whether the full spillover table should be returned}
 }
 \description{
 This function computes the rolling spillover using the standard VAR estimate.

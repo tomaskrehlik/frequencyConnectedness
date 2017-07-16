@@ -1,3 +1,13 @@
+#' Function to print the spillover table object
+#' 
+#' The function takes as an argument the spillover_table object and prints it
+#' nicely to the console. While doing that it also computes all the neccessary
+#' measures.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 print.spillover_table <- function(x) {
     require(knitr)
@@ -46,6 +56,18 @@ print.spillover_table <- function(x) {
     }
 }
 
+#' Function to compute overall spillovers
+#' 
+#' Taking in spillover_table, the function computes the overall spillover.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the overall spillover
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 overall.spillover_table <- function(x, within = F) {
     tables <- x$tables
@@ -70,17 +92,19 @@ overall.spillover_table <- function(x, within = F) {
     }
 }
 
-# compare_overall <- function(spillover_table, ...) UseMethod("compare_overall", spillover_table, ...)
 
-# compare_overall.spillover_table <- function(x) {
-#     if (check_that_it_is_not_fft(x)) {
-#         kable(do.call(rbind, to(x, absolute = T)), digits = 2, 
-#     } else {
-#         stop("The estimate is not frequency based, there is nothing to compare.")
-#     }
-# }
-
-
+#' Function to compute to spillovers
+#' 
+#' Taking in spillover_table, the function computes the to spillover.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the to spillover
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 to.spillover_table <- function(x, within = F) {
     tables <- x$tables
@@ -112,6 +136,18 @@ to.spillover_table <- function(x, within = F) {
 }
 
 
+#' Function to compute from spillovers
+#' 
+#' Taking in spillover_table, the function computes the from spillover.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the from spillover
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 from.spillover_table <- function(x, within = F) {
     tables <- x$tables
@@ -143,13 +179,24 @@ from.spillover_table <- function(x, within = F) {
 }
 
 
+#' Function to compute pairwise spillovers
+#' 
+#' Taking in spillover_table, the function computes the pairwise spillover.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the pairwise spillover
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 pairwise.spillover_table <- function(x, within = F) {
     tables <- x$tables
     assets <- colnames(tables[[1]])
     combinations <- utils::combn(assets, 2)
 
-# within = T
     if (within) {
         if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
         out <- lapply(
@@ -178,6 +225,18 @@ pairwise.spillover_table <- function(x, within = F) {
 }
 
 
+#' Function to compute net spillovers
+#' 
+#' Taking in spillover_table, the function computes the net spillover.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' @param within whether to compute the within spillovers if the spillover
+#'      tables are frequency based.
+#' 
+#' @return a list containing the net spillover
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 net.spillover_table <- function(x, within = F) {
     if (check_that_it_is_not_fft(x) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
@@ -189,6 +248,19 @@ net.spillover_table <- function(x, within = F) {
 }
 
 
+#' Function to collapse bounds
+#' 
+#' Taking in spillover_table, if the spillover_table is frequency based, it 
+#' allows you to collapse several frequency bands into one.
+#' 
+#' @param x a spillover_table object, ideally from the provided estimation 
+#'      functions
+#' @param which which frequency bands to collapse. Should be a sequence like 1:2
+#'      or 1:5, etc.
+#' 
+#' @return spillover_table with less frequency bands.
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 collapseBounds.spillover_table <- function(x, which) {
     orig <- 1:length(x$tables)

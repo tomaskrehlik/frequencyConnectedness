@@ -11,9 +11,9 @@
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
+#' @return spillover_table object
 #'
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
@@ -38,13 +38,11 @@ spillover <- function(func, est, n.ahead, no.corr = F) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
-#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#' @return spillover_table object
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverFft <- function(func, est, n.ahead, partition, no.corr = F) {
@@ -80,9 +78,9 @@ spilloverFft <- function(func, est, n.ahead, partition, no.corr = F) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
+#' @return spillover_table object
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -106,6 +104,7 @@ spilloverDY09 <- function(est, n.ahead = 100, no.corr) {
 #' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
+#' @return spillover_table object
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -123,13 +122,11 @@ spilloverDY12 <- function(est, n.ahead = 100, no.corr) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
-#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#' @return spillover_table object
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -147,13 +144,11 @@ spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
-#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+#' @return spillover_table object
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>

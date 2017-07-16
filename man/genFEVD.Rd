@@ -19,6 +19,12 @@ a matrix that corresponds to contribution of ith variable to jth variance of for
 \description{
 This function computes the standard forecast error vector decomposition given the 
 estimate of the VAR.
+There are common complaints and requests whether the computation is ok and why
+it does not follow the original Pesaran Shin (1998) article. So let me clear two things
+out. First, the σ in the equation on page 20 refers to elements of Σ, not standard
+deviation. Second, the indexing is wrong, it should be σ_jj not σ_ii. Look, for example,
+to Diebold and Yilmaz (2012) or ECB WP by Dees, Holly, Pesaran, and Smith (2007)
+for the correct version.
 }
 \author{
 Tomas Krehlik \email{tomas.krehlik@gmail.com}

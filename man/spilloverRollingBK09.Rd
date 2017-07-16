@@ -18,17 +18,13 @@ set to zero}
 
 \item{partition}{defines the frequency partitions to which the spillover should be decomposed}
 
+\item{func_est}{a name of the function to estimate with, for example "var" for VAR from vars package}
+
+\item{params_est}{a list of the parameters to pass to the function besides the data that are passed as a first element.}
+
 \item{window}{length of the window to be rolled}
 
 \item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
-
-\item{p}{lags in the VAR estimate.}
-
-\item{type}{which type of VAR to use, see help for VAR from vars package}
-
-\item{table}{boolean whether the full spillover table should be returned}
-
-\item{absolute}{boolean defining whether to compute the within or absolute spillover}
 }
 \value{
 A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.

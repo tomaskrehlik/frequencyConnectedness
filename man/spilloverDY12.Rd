@@ -17,6 +17,9 @@ set to zero}
 
 \item{table}{boolean whether the full spillover table should be returned}
 }
+\value{
+spillover_table object
+}
 \description{
 This function is an internal implementation of the spillover.
 The spillover is in general defined as the contribution of the other variables

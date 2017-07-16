@@ -16,13 +16,9 @@ should be high enough so that it won't change with additional period}
 set to zero}
 
 \item{partition}{defines the frequency partitions to which the spillover should be decomposed}
-
-\item{table}{boolean whether the full spillover table should be returned}
-
-\item{absolute}{boolean defining whether to compute the within or absolute spillover}
 }
 \value{
-A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
+spillover_table object
 }
 \description{
 This function is an internal implementation of the frequency spillover.

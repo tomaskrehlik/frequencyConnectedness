@@ -16,14 +16,8 @@ spilloverRolling(func_spill, params_spill, func_est, params_est, data, window,
 
 \item{func}{name of the function that returns FEVD for the estimtate est}
 
-\item{p}{lags in the VAR estimate.}
-
-\item{type}{which type of VAR to use, see help for VAR from vars package}
-
 \item{n.ahead}{how many periods ahead should the FEVD be computed, generally this number
 should be high enough so that it won't change with additional period}
-
-\item{table}{boolean whether the full spillover table should be returned}
 
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
