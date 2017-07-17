@@ -4,11 +4,13 @@
 \alias{print.list_of_spills}
 \title{Function to not print the list_of_spills object}
 \usage{
-\method{print}{list_of_spills}(x)
+\method{print}{list_of_spills}(x, ...)
 }
 \arguments{
 \item{x}{a list_of_spills object, ideally from the provided estimation 
 functions}
+
+\item{...}{for the sake of CRAN not to complain}
 }
 \description{
 Usually it is not a good idea to print the list_of_spills object, hence

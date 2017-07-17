@@ -5,21 +5,20 @@
 #' and is rolled over the data. Interpretation of the other parameters is the same as in the
 #' standard computation of spillover.
 #' 
-#' @param func name of the function that returns FEVD for the estimtate est
+#' @param func_spill name of the function that returns FEVD for the estimtate est
+#' @param func_est name of the function to do the estimation with
+#' @param params_spill a list of parameters passed to the spillover function
+#' @param params_est a list of parameters passed to the estimation function
 #' @param data variable containing the dataset
 #' @param window length of the window to be rolled
-#' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
-#'      should be high enough so that it won't change with additional period
-#' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
-#'      set to zero
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
+#' @import pbapply
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverRolling <- function(func_spill, params_spill, func_est, params_est, data, window, cluster = NULL, verbose = T) {
-    require(pbapply)
+spilloverRolling <- function(func_spill, params_spill, func_est, params_est, data, window, cluster = NULL) {
     # Get the spillover estimation function
     spill <- get(func_spill)
     # Get the estimation function
@@ -35,10 +34,10 @@ spilloverRolling <- function(func_spill, params_spill, func_est, params_est, dat
         parallel::clusterExport(cluster, c("data", "spill_est_call"), envir=environment())
     }
 
-    out <- pblapply(0:(nrow(data)-window), spill_est_call, cl = cluster)
+    out <- pbapply::pblapply(0:(nrow(data)-window), spill_est_call, cl = cluster)
 
     if (class(data)=="zoo") {
-        dates <- index(data)[window:nrow(data)]
+        dates <- zoo::index(data)[window:nrow(data)]
         for (i in 1:length(out)) {
             out[[i]]$date <- as.POSIXct(dates[i])
         }

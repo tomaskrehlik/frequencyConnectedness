@@ -6,12 +6,13 @@
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the overall spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-overall.list_of_spills <- function(x, within = F) {
+overall.list_of_spills <- function(x, within = F, ...) {
     T <- length(x$list_of_tables)
     n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
     if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
@@ -20,7 +21,7 @@ overall.list_of_spills <- function(x, within = F) {
     dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
-            out[[i]] <- zoo(out[[i]], order.by = dates)
+            out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
         }
     }
     return(out)
@@ -34,12 +35,13 @@ overall.list_of_spills <- function(x, within = F) {
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the to spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-to.list_of_spills <- function(x, within = F) {
+to.list_of_spills <- function(x, within = F, ...) {
     T <- length(x$list_of_tables)
     n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
     if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
@@ -48,7 +50,7 @@ to.list_of_spills <- function(x, within = F) {
     dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
-            out[[i]] <- zoo(out[[i]], order.by = dates)
+            out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
         }
     }
     return(out)
@@ -62,12 +64,13 @@ to.list_of_spills <- function(x, within = F) {
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the from spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-from.list_of_spills <- function(x, within = F) {
+from.list_of_spills <- function(x, within = F, ...) {
     T <- length(x$list_of_tables)
     n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
     if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
@@ -76,7 +79,7 @@ from.list_of_spills <- function(x, within = F) {
     dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
-            out[[i]] <- zoo(out[[i]], order.by = dates)
+            out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
         }
     }
     return(out)
@@ -90,12 +93,13 @@ from.list_of_spills <- function(x, within = F) {
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the net spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-net.list_of_spills <- function(x, within = F) {
+net.list_of_spills <- function(x, within = F, ...) {
     T <- length(x$list_of_tables)
     n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
     if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
@@ -104,7 +108,7 @@ net.list_of_spills <- function(x, within = F) {
     dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
-            out[[i]] <- zoo(out[[i]], order.by = dates)
+            out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
         }
     }
     return(out)
@@ -118,12 +122,13 @@ net.list_of_spills <- function(x, within = F) {
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the pairwise spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-pairwise.list_of_spills <- function(x, within = F) {
+pairwise.list_of_spills <- function(x, within = F, ...) {
     T <- length(x$list_of_tables)
     n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
     if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
@@ -132,7 +137,7 @@ pairwise.list_of_spills <- function(x, within = F) {
     dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
-            out[[i]] <- zoo(out[[i]], order.by = dates)
+            out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
         }
     }
     return(out)
@@ -147,12 +152,13 @@ pairwise.list_of_spills <- function(x, within = F) {
 #'      functions
 #' @param which which frequency bands to collapse. Should be a sequence like 1:2
 #'      or 1:5, etc.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return list_of_spills with less frequency bands.
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-collapseBounds.list_of_spills <- function(x, which) {
+collapseBounds.list_of_spills <- function(x, which, ...) {
     x$lists_of_tables <- lapply(x$lists_of_tables, function(i) collapseBounds(i, which))
     return(x)
 }
@@ -160,23 +166,24 @@ collapseBounds.list_of_spills <- function(x, which) {
 #' Function to plot overall spillovers
 #' 
 #' Taking in list_of_spillovers, the function plots the overall spillovers
-#' using the plot.zoo function
+#' using the zoo::plot.zoo function
 #' 
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a plot of overall spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotOverall.list_of_spills <- function(x, within = F) {
+plotOverall.list_of_spills <- function(x, within = F, ...) {
     spills <- overall(x, within)
     if (length(spills)==1) {
-        plot.zoo(spills[[1]], main = "Overall spillovers", ylab = "")
+        zoo::plot.zoo(spills[[1]], main = "Overall spillovers", ylab = "")
     } else {
         for (i in 1:length(spills)) {
-            plot.zoo(spills[[i]], main = sprintf("Overall spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]), ylab = "")
+            zoo::plot.zoo(spills[[i]], main = sprintf("Overall spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]), ylab = "")
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -185,23 +192,25 @@ plotOverall.list_of_spills <- function(x, within = F) {
 #' Function to plot to spillovers
 #' 
 #' Taking in list_of_spillovers, the function plots the to spillovers
-#' using the plot.zoo function
+#' using the zoo::plot.zoo function
 #' 
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param which a vector with indices specifying which plots to plot.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a plot of to spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]])) {
+plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...) {
     spills <- to(x, within)
     if (length(spills)==1) {
-        plot.zoo(spills[[1]][,which], main = "To spillovers")
+        zoo::plot.zoo(spills[[1]][,which], main = "To spillovers")
     } else {
         for (i in 1:length(spills)) {
-            plot.zoo(spills[[i]][,which], main = sprintf("To spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("To spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -210,23 +219,25 @@ plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables
 #' Function to plot from spillovers
 #' 
 #' Taking in list_of_spillovers, the function plots the from spillovers
-#' using the plot.zoo function
+#' using the zoo::plot.zoo function
 #' 
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param which a vector with indices specifying which plots to plot.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a plot of from spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]])) {
+plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...) {
     spills <- from(x, within)
     if (length(spills)==1) {
-        plot.zoo(spills[[1]][,which], main = "From spillovers")
+        zoo::plot.zoo(spills[[1]][,which], main = "From spillovers")
     } else {
         for (i in 1:length(spills)) {
-            plot.zoo(spills[[i]][,which], main = sprintf("From spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("From spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -235,23 +246,25 @@ plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tabl
 #' Function to plot net spillovers
 #' 
 #' Taking in list_of_spillovers, the function plots the net spillovers
-#' using the plot.zoo function
+#' using the zoo::plot.zoo function
 #' 
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param which a vector with indices specifying which plots to plot.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a plot of net spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]])) {
+plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...) {
     spills <- net(x, within)
     if (length(spills)==1) {
-        plot.zoo(spills[[1]][,which], main = "Net spillovers")
+        zoo::plot.zoo(spills[[1]][,which], main = "Net spillovers")
     } else {
         for (i in 1:length(spills)) {
-            plot.zoo(spills[[i]][,which], main = sprintf("Net spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("Net spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -261,23 +274,25 @@ plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_table
 #' Function to plot pairwise spillovers
 #' 
 #' Taking in list_of_spillovers, the function plots the pairwise spillovers
-#' using the plot.zoo function
+#' using the zoo::plot.zoo function
 #' 
 #' @param x a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param which a vector with indices specifying which plots to plot.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a plot of pairwise spillovers
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotPairwise.list_of_spills <- function(x, within = F, which = 1:ncol(utils::combn(nrow(x$list_of_tables[[1]]$tables[[1]]), 2))) {
+plotPairwise.list_of_spills <- function(x, within = F, which = 1:ncol(utils::combn(nrow(x$list_of_tables[[1]]$tables[[1]]), 2)), ...) {
     spills <- pairwise(x, within)
     if (length(spills)==1) {
-        plot.zoo(spills[[1]][,which], main = "Pairwise spillovers")
+        zoo::plot.zoo(spills[[1]][,which], main = "Pairwise spillovers")
     } else {
         for (i in 1:length(spills)) {
-            plot.zoo(spills[[i]][,which], main = sprintf("Pairwise spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("Pairwise spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -291,10 +306,11 @@ plotPairwise.list_of_spills <- function(x, within = F, which = 1:ncol(utils::com
 #' 
 #' @param x a list_of_spills object, ideally from the provided estimation 
 #'      functions
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-print.list_of_spills <- function(x) {
+print.list_of_spills <- function(x, ...) {
     cat("Surpressing printing of all the spillover tables, usually it is not a good\n
 idea to print them all. (Too many of them.) If you want to do that\n
 anyway use: lapply(\"..name..\", print).")

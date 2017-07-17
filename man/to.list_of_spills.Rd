@@ -4,13 +4,15 @@
 \alias{to.list_of_spills}
 \title{Function to compute to spillovers}
 \usage{
-\method{to}{list_of_spills}(x, within = F)
+\method{to}{list_of_spills}(x, within = F, ...)
 }
 \arguments{
 \item{x}{a list_of_spills object, ideally from rolling window estimation}
 
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
+
+\item{...}{for the sake of CRAN not to complain}
 }
 \value{
 a list containing the to spillovers

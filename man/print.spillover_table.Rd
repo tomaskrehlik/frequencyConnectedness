@@ -4,11 +4,13 @@
 \alias{print.spillover_table}
 \title{Function to print the spillover table object}
 \usage{
-\method{print}{spillover_table}(x)
+\method{print}{spillover_table}(x, ...)
 }
 \arguments{
 \item{x}{a spillover_table object, ideally from the provided estimation 
 functions}
+
+\item{...}{for the sake of CRAN not to complain}
 }
 \description{
 The function takes as an argument the spillover_table object and prints it

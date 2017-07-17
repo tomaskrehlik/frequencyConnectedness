@@ -5,22 +5,22 @@
 \title{Computing rolling spillover}
 \usage{
 spilloverRolling(func_spill, params_spill, func_est, params_est, data, window,
-  cluster = NULL, verbose = T)
+  cluster = NULL)
 }
 \arguments{
+\item{func_spill}{name of the function that returns FEVD for the estimtate est}
+
+\item{params_spill}{a list of parameters passed to the spillover function}
+
+\item{func_est}{name of the function to do the estimation with}
+
+\item{params_est}{a list of parameters passed to the estimation function}
+
 \item{data}{variable containing the dataset}
 
 \item{window}{length of the window to be rolled}
 
 \item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
-
-\item{func}{name of the function that returns FEVD for the estimtate est}
-
-\item{n.ahead}{how many periods ahead should the FEVD be computed, generally this number
-should be high enough so that it won't change with additional period}
-
-\item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
-set to zero}
 }
 \value{
 A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.

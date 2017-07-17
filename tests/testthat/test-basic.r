@@ -204,9 +204,3 @@ for (i in 1:length(estimates)) {
 	})
 
 }
-
-context("Examples in the README.md")
-
-test_that("The examples in the README.md will run.", {
-	require(knitr)
-})

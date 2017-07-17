@@ -10,7 +10,8 @@ irf <- function(est, n.ahead, ...) {
 	}
 }
 
-setMethod("residuals", signature(object = "BigVAR.results"), function(object) {
+#' @import methods
+methods::setMethod("residuals", signature(object = "BigVAR.results"), function(object) {
 	object@resids
 })
 
@@ -128,7 +129,7 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	}
 	# Here I compute the variance, and only include the frequencies mentioned
 	# in range. This is because of the co-integration setting, where I want to
-	# only standardize by variance from some frequency to 2π.
+	# only standardize by variance from some frequency to 2*pi.
 	denom <- diag(
 		Re(
 			Reduce('+', lapply(fftir, function(i) 
@@ -153,8 +154,8 @@ fftFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 #' estimate of the VAR.
 #' There are common complaints and requests whether the computation is ok and why
 #' it does not follow the original Pesaran Shin (1998) article. So let me clear two things
-#' out. First, the σ in the equation on page 20 refers to elements of Σ, not standard
-#' deviation. Second, the indexing is wrong, it should be σ_jj not σ_ii. Look, for example,
+#' out. First, the \eqn{\sigma} in the equation on page 20 refers to elements of \eqn{\Sigma}, not standard
+#' deviation. Second, the indexing is wrong, it should be \eqn{\sigma_jj} not \eqn{\sigma_ii}. Look, for example,
 #' to Diebold and Yilmaz (2012) or ECB WP by Dees, Holly, Pesaran, and Smith (2007)
 #' for the correct version.
 #'
@@ -242,7 +243,7 @@ fftGenFEVD <- function(est, n.ahead = 100, no.corr = F, range) {
 	# the ratios could get weird in principle.
 	# Here I compute the variance, and only include the frequencies mentioned
 	# in range. This is because of the co-integration setting, where I want to
-	# only standardize by variance from some frequency to 2π.
+	# only standardize by variance from some frequency to 2*pi.
 	denom <- diag(
 		Re(
 			Reduce('+', lapply(fftir, function(i) 

@@ -5,20 +5,24 @@
 \title{Function to plot to spillovers}
 \usage{
 \method{plotTo}{list_of_spills}(x, within = F,
-  which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]))
+  which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...)
 }
 \arguments{
 \item{x}{a list_of_spills object, ideally from rolling window estimation}
 
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
+
+\item{which}{a vector with indices specifying which plots to plot.}
+
+\item{...}{for the sake of CRAN not to complain}
 }
 \value{
 a plot of to spillovers
 }
 \description{
 Taking in list_of_spillovers, the function plots the to spillovers
-using the plot.zoo function
+using the zoo::plot.zoo function
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

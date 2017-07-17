@@ -6,11 +6,12 @@
 #' 
 #' @param x a spillover_table object, ideally from the provided estimation 
 #'      functions
+#' @param ... for the sake of CRAN not to complain
 #' 
+#' @import knitr
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-print.spillover_table <- function(x) {
-    require(knitr)
+print.spillover_table <- function(x, ...) {
     options(knitr.kable.NA = '')
     tables <- x$tables
     cat(sprintf("Spillover table for day: %s \n\n", as.character(x$date)))
@@ -30,7 +31,7 @@ print.spillover_table <- function(x) {
                 overall(x, within = F)[[1]]
                 )
             )
-        print(kable(output, format = "markdown", digits = 2))    
+        print(knitr::kable(output, format = "markdown", digits = 2))    
     } else {
         for (i in 1:length(tables)) {
             cat(sprintf("\n\nThe spillover table for band: %.2f to %.2f\n", x$bounds[i], x$bounds[i+1]))
@@ -51,7 +52,7 @@ print.spillover_table <- function(x) {
                     overall(x, within = T)[[i]]
                     )
                 )
-            print(kable(output, format = "markdown", digits = 2))    
+            print(knitr::kable(output, format = "markdown", digits = 2))    
         }
     }
 }
@@ -64,12 +65,13 @@ print.spillover_table <- function(x) {
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the overall spillover
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-overall.spillover_table <- function(x, within = F) {
+overall.spillover_table <- function(x, within = F, ...) {
     tables <- x$tables
     assets <- colnames(tables[[1]])
     if (within) {
@@ -101,12 +103,13 @@ overall.spillover_table <- function(x, within = F) {
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the to spillover
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-to.spillover_table <- function(x, within = F) {
+to.spillover_table <- function(x, within = F, ...) {
     tables <- x$tables
     assets <- colnames(tables[[1]])
     if (within) {
@@ -144,12 +147,13 @@ to.spillover_table <- function(x, within = F) {
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the from spillover
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-from.spillover_table <- function(x, within = F) {
+from.spillover_table <- function(x, within = F, ...) {
     tables <- x$tables
     assets <- colnames(tables[[1]])
     if (within) {
@@ -187,12 +191,13 @@ from.spillover_table <- function(x, within = F) {
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the pairwise spillover
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-pairwise.spillover_table <- function(x, within = F) {
+pairwise.spillover_table <- function(x, within = F, ...) {
     tables <- x$tables
     assets <- colnames(tables[[1]])
     combinations <- utils::combn(assets, 2)
@@ -233,12 +238,13 @@ pairwise.spillover_table <- function(x, within = F) {
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return a list containing the net spillover
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-net.spillover_table <- function(x, within = F) {
+net.spillover_table <- function(x, within = F, ...) {
     if (check_that_it_is_not_fft(x) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
     t <- to(x, within)
     f <- from(x, within)
@@ -257,12 +263,13 @@ net.spillover_table <- function(x, within = F) {
 #'      functions
 #' @param which which frequency bands to collapse. Should be a sequence like 1:2
 #'      or 1:5, etc.
+#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return spillover_table with less frequency bands.
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-collapseBounds.spillover_table <- function(x, which) {
+collapseBounds.spillover_table <- function(x, which, ...) {
     orig <- 1:length(x$tables)
     di <- setdiff(orig, which)
 

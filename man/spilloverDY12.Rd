@@ -14,8 +14,6 @@ should be high enough so that it won't change with additional period}
 
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
-
-\item{table}{boolean whether the full spillover table should be returned}
 }
 \value{
 spillover_table object

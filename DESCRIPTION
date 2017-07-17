@@ -8,7 +8,9 @@ Description: Accompanies a paper (Barunik, Krehlik (2017) <doi:10.2139/ssrn.2627
 Depends:
 	vars,
 	urca,
-    BigVAR
+    pbapply,
+    knitr,
+    methods
 Suggests: 
 	testthat,
 	stringr,
@@ -16,7 +18,8 @@ Suggests:
     reshape2,
     ggplot2,
     parallel,
-    zoo
+    zoo,
+    BigVAR
 License: GPL-2
 RoxygenNote: 6.0.1
 BugReports: https://github.com/tomaskrehlik/frequencyConnectedness/issues

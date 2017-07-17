@@ -4,7 +4,7 @@
 \alias{overall.spillover_table}
 \title{Function to compute overall spillovers}
 \usage{
-\method{overall}{spillover_table}(x, within = F)
+\method{overall}{spillover_table}(x, within = F, ...)
 }
 \arguments{
 \item{x}{a spillover_table object, ideally from the provided estimation 
@@ -12,6 +12,8 @@ functions}
 
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
+
+\item{...}{for the sake of CRAN not to complain}
 }
 \value{
 a list containing the overall spillover

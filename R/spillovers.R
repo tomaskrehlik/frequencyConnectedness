@@ -101,7 +101,6 @@ spilloverDY09 <- function(est, n.ahead = 100, no.corr) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @return spillover_table object
