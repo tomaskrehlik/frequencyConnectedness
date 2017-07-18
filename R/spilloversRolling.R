@@ -67,7 +67,7 @@ spilloverRolling <- function(func_spill, params_spill, func_est, params_est, dat
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverRollingDY09 <- function(data, n.ahead = 100, no.corr, func_est, params_est, window, cluster = NULL) {
-    return(spilloverRolling("spilloverDY09", params_spill = list(n.ahead = 100, no.corr = no.corr), func_est, params_est, data, window, cluster = cluster))
+    return(spilloverRolling("spilloverDY09", params_spill = list(n.ahead = n.ahead, no.corr = no.corr), func_est, params_est, data, window, cluster = cluster))
 }
 
 #' Computing rolling spillover from the generalized fevd according to Diebold Yilmaz (2012)
@@ -91,7 +91,7 @@ spilloverRollingDY09 <- function(data, n.ahead = 100, no.corr, func_est, params_
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverRollingDY12 <- function(data, n.ahead = 100, no.corr, func_est, params_est, window, cluster = NULL) {
-    return(spilloverRolling("spilloverDY12", params_spill = list(n.ahead = 100, no.corr = no.corr), func_est, params_est, data, window, cluster = cluster))
+    return(spilloverRolling("spilloverDY12", params_spill = list(n.ahead = n.ahead, no.corr = no.corr), func_est, params_est, data, window, cluster = cluster))
 }
 
 #' Computing rolling frequency spillover from a fevd as defined by Barunik, Krehlik (2015)
@@ -118,7 +118,7 @@ spilloverRollingDY12 <- function(data, n.ahead = 100, no.corr, func_est, params_
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverRollingBK09 <- function(data, n.ahead = 100, no.corr, partition, func_est, params_est, window, cluster = NULL) {
-    return(spilloverRolling("spilloverBK09", params_spill = list(n.ahead = 100, no.corr = no.corr, partition = partition), func_est, params_est, data, window, cluster = cluster))
+    return(spilloverRolling("spilloverBK09", params_spill = list(n.ahead = n.ahead, no.corr = no.corr, partition = partition), func_est, params_est, data, window, cluster = cluster))
 }
 
 #' Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2015)
@@ -145,7 +145,7 @@ spilloverRollingBK09 <- function(data, n.ahead = 100, no.corr, partition, func_e
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
 spilloverRollingBK12 <- function(data, n.ahead = 100, no.corr, partition, func_est, params_est, window, cluster = NULL) {
-    return(spilloverRolling("spilloverBK12", params_spill = list(n.ahead = 100, no.corr = no.corr, partition = partition), func_est, params_est, data, window, cluster = cluster))
+    return(spilloverRolling("spilloverBK12", params_spill = list(n.ahead = n.ahead, no.corr = no.corr, partition = partition), func_est, params_est, data, window, cluster = cluster))
 }
 
 #' The simulated time-series
