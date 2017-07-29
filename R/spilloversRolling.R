@@ -36,7 +36,7 @@ spilloverRolling <- function(func_spill, params_spill, func_est, params_est, dat
 
     out <- pbapply::pblapply(0:(nrow(data)-window), spill_est_call, cl = cluster)
 
-    if (class(data)=="zoo") {
+    if (class(data)[1]=="zoo") {
         dates <- zoo::index(data)[window:nrow(data)]
         for (i in 1:length(out)) {
             out[[i]]$date <- as.POSIXct(dates[i])
