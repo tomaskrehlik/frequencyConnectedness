@@ -1,3 +1,11 @@
+frequencyConnectedness v0.2.1 (Release date: )
+==============
+
+Changes:
+
+* Based on the pull request #2, the warning has been removed for cases when the class of data is longer than 1. Thanks go to `regisely`.
+
+
 frequencyConnectedness v0.2.0 (Release date: 2017-07-12)
 ==============
 
