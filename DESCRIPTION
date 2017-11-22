@@ -1,7 +1,7 @@
 Package: frequencyConnectedness
 Type: Package
 Title: Spectral Decomposition of Connectedness Measures
-Version: 0.1.6
+Version: 0.2.0
 Date: 2017-06-09
 Authors@R: person("Tomas", "Krehlik", email = "tomas.krehlik@gmail.com",   role = c("aut", "cre"))
 Description: Accompanies a paper (Barunik, Krehlik (2017) <doi:10.2139/ssrn.2627599>) dedicated to spectral decomposition of connectedness measures and their interpretation. We implement all the developed estimators as well as the historical counterparts. For more information, see the help or GitHub page (<https://github.com/tomaskrehlik/frequencyConnectedness>) for relevant information.
