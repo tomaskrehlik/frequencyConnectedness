@@ -18,10 +18,6 @@ should be high enough so that it won't change with additional period}
 
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
-
-\item{table}{boolean whether the full spillover table should be returned}
-
-\item{absolute}{boolean defining whether to compute the within or absolute spillover}
 }
 \value{
 A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.

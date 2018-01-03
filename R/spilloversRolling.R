@@ -3,26 +3,21 @@
 #' This function computes the rolling spillover using the standard VAR estimate.
 #' We implement the parallel version for faster processing. The window is of fixed window
 #' and is rolled over the data. Interpretation of the other parameters is the same as in the
-#' standard computation of spillover.
+#' standard computation of spillover. For usage, see how spilloverRollingDY09, etc. are implemented.
 #' 
-#' @param func name of the function that returns FEVD for the estimtate est
-#' @param data variable containing the dataset
-#' @param p lags in the VAR estimate.
-#' @param type which type of VAR to use, see help for VAR from vars package
+#' @param func_spill name of the function that returns FEVD for the estimtate est
+#' @param params_spill parameters from spillover estimation function as a list
+#' @param func_est name of the estimation function
+#' @param params_est parameters from the estimation function as a list
 #' @param window length of the window to be rolled
-#' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
-#'      should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
-#' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
-#'      set to zero
+#' @param data variable containing the dataset
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverRolling <- function(func_spill, params_spill, func_est, params_est, data, window, cluster = NULL, verbose = T) {
-    require(pbapply)
+spilloverRolling <- function(func_spill, params_spill, func_est, params_est, data, window, cluster = NULL) {
     # Get the spillover estimation function
     spill <- get(func_spill)
     # Get the estimation function
@@ -38,10 +33,10 @@ spilloverRolling <- function(func_spill, params_spill, func_est, params_est, dat
         parallel::clusterExport(cluster, c("data", "spill_est_call"), envir=environment())
     }
 
-    out <- pblapply(0:(nrow(data)-window), spill_est_call, cl = cluster)
+    out <- pbapply::pblapply(0:(nrow(data)-window), spill_est_call, cl = cluster)
 
     if (class(data)=="zoo") {
-        dates <- index(data)[window:nrow(data)]
+        dates <- zoo::index(data)[window:nrow(data)]
         for (i in 1:length(out)) {
             out[[i]]$date <- as.POSIXct(dates[i])
         }
@@ -58,14 +53,15 @@ spilloverRolling <- function(func_spill, params_spill, func_est, params_est, dat
 #' standard computation of spillover.
 #' 
 #' @param data variable containing the dataset
-#' @param p lags in the VAR estimate.
-#' @param type which type of VAR to use, see help for VAR from vars package
 #' @param window length of the window to be rolled
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #'      should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #'      set to zero
+#' @param func_est estimation function, usually would be VAR or BigVAR function to estimate
+#'      the multivariate system
+#' @param params_est parameters passed to the estimation function, as a list, for parameters
+#'      refer to documentation of the estimating function
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
 #' @export
@@ -83,14 +79,15 @@ spilloverRollingDY09 <- function(data, n.ahead = 100, no.corr, func_est, params_
 #' standard computation of spillover.
 #' 
 #' @param data variable containing the dataset
-#' @param p lags in the VAR estimate.
-#' @param type which type of VAR to use, see help for VAR from vars package
 #' @param window length of the window to be rolled
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #'      should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #'      set to zero
+#' @param func_est estimation function, usually would be VAR or BigVAR function to estimate
+#'      the multivariate system
+#' @param params_est parameters passed to the estimation function, as a list, for parameters
+#'      refer to documentation of the estimating function
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
 #' @export
@@ -100,7 +97,7 @@ spilloverRollingDY12 <- function(data, n.ahead = 100, no.corr, func_est, params_
     return(spilloverRolling("spilloverDY12", params_spill = list(n.ahead = 100, no.corr = no.corr), func_est, params_est, data, window, cluster = cluster))
 }
 
-#' Computing rolling frequency spillover from a fevd as defined by Barunik, Krehlik (2015)
+#' Computing rolling frequency spillover from a fevd as defined by Barunik, Krehlik (2018)
 #'
 #' This function computes the rolling spillover using the standard VAR estimate.
 #' We implement the parallel version for faster processing. The window is of fixed window
@@ -108,19 +105,18 @@ spilloverRollingDY12 <- function(data, n.ahead = 100, no.corr, func_est, params_
 #' standard computation of spillover.
 #' 
 #' @param data variable containing the dataset
-#' @param p lags in the VAR estimate.
-#' @param type which type of VAR to use, see help for VAR from vars package
 #' @param window length of the window to be rolled
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #'      should be high enough so that it won't change with additional period
-#' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #'      set to zero
-#' @param absolute boolean defining whether to compute the within or absolute spillover
+#' @param partition how to split up the estimated spillovers into frequency bands. Should be
+#'      a vector of bound points that starts with 0 and ends with pi+0.00001.
+#' @param func_est estimation function, usually would be VAR or BigVAR function to estimate
+#'      the multivariate system
+#' @param params_est parameters passed to the estimation function, as a list, for parameters
+#'      refer to documentation of the estimating function
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
-#'
-#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -129,7 +125,7 @@ spilloverRollingBK09 <- function(data, n.ahead = 100, no.corr, partition, func_e
     return(spilloverRolling("spilloverBK09", params_spill = list(n.ahead = 100, no.corr = no.corr, partition = partition), func_est, params_est, data, window, cluster = cluster))
 }
 
-#' Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2015)
+#' Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2018)
 #'
 #' This function computes the rolling spillover using the standard VAR estimate.
 #' We implement the parallel version for faster processing. The window is of fixed window
@@ -137,19 +133,18 @@ spilloverRollingBK09 <- function(data, n.ahead = 100, no.corr, partition, func_e
 #' standard computation of spillover.
 #' 
 #' @param data variable containing the dataset
-#' @param p lags in the VAR estimate.
-#' @param type which type of VAR to use, see help for VAR from vars package
 #' @param window length of the window to be rolled
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #'      should be high enough so that it won't change with additional period
-#' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #'      set to zero
-#' @param absolute boolean defining whether to compute the within or absolute spillover
+#' @param partition how to split up the estimated spillovers into frequency bands. Should be
+#'      a vector of bound points that starts with 0 and ends with pi+0.00001.
+#' @param func_est estimation function, usually would be VAR or BigVAR function to estimate
+#'      the multivariate system
+#' @param params_est parameters passed to the estimation function, as a list, for parameters
+#'      refer to documentation of the estimating function
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
-#'
-#' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>

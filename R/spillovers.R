@@ -11,7 +11,6 @@
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #'
@@ -38,11 +37,9 @@ spillover <- function(func, est, n.ahead, no.corr = F) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -80,7 +77,6 @@ spilloverFft <- function(func, est, n.ahead, partition, no.corr = F) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #'
@@ -103,7 +99,6 @@ spilloverDY09 <- function(est, n.ahead = 100, no.corr) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #'
@@ -114,7 +109,7 @@ spilloverDY12 <- function(est, n.ahead = 100, no.corr) {
 	return(spillover("genFEVD", est, n.ahead, no.corr = no.corr))
 }
 
-#' Computing the decomposed spillover from a fevd as defined by Barunik, Krehlik (2015)
+#' Computing the decomposed spillover from a fevd as defined by Barunik, Krehlik (2018)
 #'
 #' This function is an internal implementation of the frequency spillover.
 #' We apply the identification scheme suggested by fevd to the frequency
@@ -123,11 +118,9 @@ spilloverDY12 <- function(est, n.ahead = 100, no.corr) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
@@ -138,7 +131,7 @@ spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition) {
 	return(spilloverFft("fftFEVD", est = est, n.ahead = n.ahead, partition = partition, no.corr = no.corr))
 }
 
-#' Computing the decomposed spillover from a generalized fevd as defined by Barunik, Krehlik (2015)
+#' Computing the decomposed spillover from a generalized fevd as defined by Barunik, Krehlik (2018)
 #'
 #' This function is an internal implementation of the frequency spillover.
 #' We apply the identification scheme suggested by fevd to the frequency
@@ -147,11 +140,9 @@ spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition) {
 #' @param est the estimate of a system, typically VAR estimate in our case
 #' @param n.ahead how many periods ahead should the FEVD be computed, generally this number
 #' 		should be high enough so that it won't change with additional period
-#' @param table boolean whether the full spillover table should be returned
 #' @param no.corr boolean parameter whether the off-diagonal in the covariance matrix should be
 #' 		set to zero
 #' @param partition defines the frequency partitions to which the spillover should be decomposed
-#' @param absolute boolean defining whether to compute the within or absolute spillover
 #'
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'

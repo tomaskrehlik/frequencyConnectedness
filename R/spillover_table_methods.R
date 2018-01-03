@@ -1,6 +1,5 @@
 #' @export
-print.spillover_table <- function(x) {
-    require(knitr)
+print.spillover_table <- function(x, ...) {
     options(knitr.kable.NA = '')
     tables <- x$tables
     cat(sprintf("Spillover table for day: %s \n\n", as.character(x$date)))
@@ -20,7 +19,7 @@ print.spillover_table <- function(x) {
                 overall(x, within = F)[[1]]
                 )
             )
-        print(kable(output, format = "markdown", digits = 2))    
+        print(knitr::kable(output, format = "markdown", digits = 2))    
     } else {
         for (i in 1:length(tables)) {
             cat(sprintf("\n\nThe spillover table for band: %.2f to %.2f\n", x$bounds[i], x$bounds[i+1]))
@@ -41,17 +40,17 @@ print.spillover_table <- function(x) {
                     overall(x, within = T)[[i]]
                     )
                 )
-            print(kable(output, format = "markdown", digits = 2))    
+            print(knitr::kable(output, format = "markdown", digits = 2))    
         }
     }
 }
 
 #' @export
-overall.spillover_table <- function(x, within = F) {
-    tables <- x$tables
+overall.spillover_table <- function(spillover_table, within = F, ...) {
+    tables <- spillover_table$tables
     assets <- colnames(tables[[1]])
     if (within) {
-        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        if (check_that_it_is_not_fft(spillover_table)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
         return(
             lapply(
                 tables, 
@@ -82,11 +81,11 @@ overall.spillover_table <- function(x, within = F) {
 
 
 #' @export
-to.spillover_table <- function(x, within = F) {
-    tables <- x$tables
+to.spillover_table <- function(spillover_table, within = F, ...) {
+    tables <- spillover_table$tables
     assets <- colnames(tables[[1]])
     if (within) {
-        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        if (check_that_it_is_not_fft(spillover_table)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
         return(
             lapply(
                 tables, 
@@ -113,11 +112,11 @@ to.spillover_table <- function(x, within = F) {
 
 
 #' @export
-from.spillover_table <- function(x, within = F) {
-    tables <- x$tables
+from.spillover_table <- function(spillover_table, within = F, ...) {
+    tables <- spillover_table$tables
     assets <- colnames(tables[[1]])
     if (within) {
-        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        if (check_that_it_is_not_fft(spillover_table)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
         return(
             lapply(
                 tables, 
@@ -144,14 +143,14 @@ from.spillover_table <- function(x, within = F) {
 
 
 #' @export
-pairwise.spillover_table <- function(x, within = F) {
-    tables <- x$tables
+pairwise.spillover_table <- function(spillover_table, within = F, ...) {
+    tables <- spillover_table$tables
     assets <- colnames(tables[[1]])
     combinations <- utils::combn(assets, 2)
 
 # within = T
     if (within) {
-        if (check_that_it_is_not_fft(x)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+        if (check_that_it_is_not_fft(spillover_table)) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
         out <- lapply(
             tables, 
             function(tab) apply(
@@ -179,10 +178,10 @@ pairwise.spillover_table <- function(x, within = F) {
 
 
 #' @export
-net.spillover_table <- function(x, within = F) {
-    if (check_that_it_is_not_fft(x) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
-    t <- to(x, within)
-    f <- from(x, within)
+net.spillover_table <- function(spillover_table, within = F, ...) {
+    if (check_that_it_is_not_fft(spillover_table) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    t <- to(spillover_table, within)
+    f <- from(spillover_table, within)
     out <- lapply(1:length(t), function(i) t[[i]] - f[[i]])
     names(out) <- names(t)
     return(out)    
@@ -190,12 +189,12 @@ net.spillover_table <- function(x, within = F) {
 
 
 #' @export
-collapseBounds.spillover_table <- function(x, which) {
-    orig <- 1:length(x$tables)
+collapseBounds.spillover_table <- function(spillover_table, which) {
+    orig <- 1:length(spillover_table$tables)
     di <- setdiff(orig, which)
 
-    x$tables <- c(x$tables[di[di<max(which)]], list(Reduce(`+`, x$tables[which])), x$tables[di[di>max(which)]])
-    x$bounds <- x$bounds[-which[2:length(which)]]
+    spillover_table$tables <- c(spillover_table$tables[di[di<max(which)]], list(Reduce(`+`, spillover_table$tables[which])), spillover_table$tables[di[di>max(which)]])
+    spillover_table$bounds <- spillover_table$bounds[-which[2:length(which)]]
 
-    return(x)
+    return(spillover_table)
 }

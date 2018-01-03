@@ -2,13 +2,12 @@ Package: frequencyConnectedness
 Type: Package
 Title: Spectral Decomposition of Connectedness Measures
 Version: 0.2.0
-Date: 2017-06-09
+Date: 2018-02-01
 Authors@R: person("Tomas", "Krehlik", email = "tomas.krehlik@gmail.com",   role = c("aut", "cre"))
 Description: Accompanies a paper (Barunik, Krehlik (2017) <doi:10.2139/ssrn.2627599>) dedicated to spectral decomposition of connectedness measures and their interpretation. We implement all the developed estimators as well as the historical counterparts. For more information, see the help or GitHub page (<https://github.com/tomaskrehlik/frequencyConnectedness>) for relevant information.
 Depends:
 	vars,
-	urca,
-    BigVAR
+	urca
 Suggests: 
 	testthat,
 	stringr,
@@ -16,7 +15,12 @@ Suggests:
     reshape2,
     ggplot2,
     parallel,
-    zoo
+    zoo,
+    pbapply,
+    knitr,
+	BigVAR
+Imports: 
+    methods
 License: GPL-2
 RoxygenNote: 6.0.1
 BugReports: https://github.com/tomaskrehlik/frequencyConnectedness/issues

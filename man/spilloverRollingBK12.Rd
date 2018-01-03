@@ -2,7 +2,7 @@
 % Please edit documentation in R/spilloversRolling.R
 \name{spilloverRollingBK12}
 \alias{spilloverRollingBK12}
-\title{Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2015)}
+\title{Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2018)}
 \usage{
 spilloverRollingBK12(data, n.ahead = 100, no.corr, partition, func_est,
   params_est, window, cluster = NULL)
@@ -16,22 +16,18 @@ should be high enough so that it won't change with additional period}
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
 
-\item{partition}{defines the frequency partitions to which the spillover should be decomposed}
+\item{partition}{how to split up the estimated spillovers into frequency bands. Should be
+a vector of bound points that starts with 0 and ends with pi+0.00001.}
+
+\item{func_est}{estimation function, usually would be VAR or BigVAR function to estimate
+the multivariate system}
+
+\item{params_est}{parameters passed to the estimation function, as a list, for parameters
+refer to documentation of the estimating function}
 
 \item{window}{length of the window to be rolled}
 
 \item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
-
-\item{p}{lags in the VAR estimate.}
-
-\item{type}{which type of VAR to use, see help for VAR from vars package}
-
-\item{table}{boolean whether the full spillover table should be returned}
-
-\item{absolute}{boolean defining whether to compute the within or absolute spillover}
-}
-\value{
-A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 }
 \description{
 This function computes the rolling spillover using the standard VAR estimate.
