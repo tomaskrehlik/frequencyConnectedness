@@ -112,7 +112,7 @@ spilloverDY12 <- function(est, n.ahead = 100, no.corr) {
 	return(spillover("genFEVD", est, n.ahead, no.corr = no.corr))
 }
 
-#' Computing the decomposed spillover from a fevd as defined by Barunik, Krehlik (2015)
+#' Computing the decomposed spillover from a fevd as defined by Barunik, Krehlik (2018)
 #'
 #' This function is an internal implementation of the frequency spillover.
 #' We apply the identification scheme suggested by fevd to the frequency
@@ -134,7 +134,7 @@ spilloverBK09 <- function(est, n.ahead = 100, no.corr, partition) {
 	return(spilloverFft("fftFEVD", est = est, n.ahead = n.ahead, partition = partition, no.corr = no.corr))
 }
 
-#' Computing the decomposed spillover from a generalized fevd as defined by Barunik, Krehlik (2015)
+#' Computing the decomposed spillover from a generalized fevd as defined by Barunik, Krehlik (2018)
 #'
 #' This function is an internal implementation of the frequency spillover.
 #' We apply the identification scheme suggested by fevd to the frequency

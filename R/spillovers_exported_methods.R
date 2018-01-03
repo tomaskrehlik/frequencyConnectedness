@@ -1,165 +1,148 @@
-
-#' Function to compute overall spillovers
-#' 
-#' Taking in spillover_table or list_of spills object, the function computes 
-#' the overall spillover.
-#' 
-#' @param ... this argument can contain within = F or T as to whether to 
-#' compute the within spillovers if the spillover tables are frequency based.
-#' @param x either the spillover_table or list_of_spills object.
-#' 
-#' @return a list containing the overall spillover
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for computing overall spillovers
+#'
+#'
+#' @param spillover_table the output of spillover estimation function 
+#'        or rolling spillover estimation function
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return Value for overall spillover
+#'
 #' @export
-overall <- function(x, ...) UseMethod("overall", x)
-
-#' Function to compute overall spillovers
-#' 
-#' Taking in spillover_table or list_of spills object, the function computes 
-#' the overall spillover.
-#' 
-#' @param ... this argument can contain within = F or T as to whether to 
-#' compute the within spillovers if the spillover tables are frequency based.
-#' @param x either the spillover_table or list_of_spills object.
-#' 
-#' @return a list containing the overall spillover
-#' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
-#' @export
-to <- function(x, ...) UseMethod("to", x)
+overall <- function(spillover_table, ...) UseMethod("overall", spillover_table)
 
-#' Function to compute overall spillovers
-#' 
-#' Taking in spillover_table or list_of spills object, the function computes 
-#' the overall spillover.
-#' 
-#' @param ... this argument can contain within = F or T as to whether to 
-#' compute the within spillovers if the spillover tables are frequency based.
-#' @param x either the spillover_table or list_of_spills object.
-#' 
-#' @return a list containing the overall spillover
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for computing TO spillovers
+#'
+#'
+#' @param spillover_table the output of spillover estimation function 
+#'        or rolling spillover estimation function
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return Value for TO spillover
+#'
 #' @export
-from <- function(x, ...) UseMethod("from", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+to <- function(spillover_table, ...) UseMethod("to", spillover_table)
 
-#' Function to compute overall spillovers
-#' 
-#' Taking in spillover_table or list_of spills object, the function computes 
-#' the overall spillover.
-#' 
-#' @param ... this argument can contain within = F or T as to whether to 
-#' compute the within spillovers if the spillover tables are frequency based.
-#' @param x either the spillover_table or list_of_spills object.
-#' 
-#' @return a list containing the overall spillover
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for computing FROM spillovers
+#'
+#'
+#' @param spillover_table the output of spillover estimation function 
+#'        or rolling spillover estimation function
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return Value for FROM spillover
+#'
 #' @export
-pairwise <- function(x, ...) UseMethod("pairwise", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+from <- function(spillover_table, ...) UseMethod("from", spillover_table)
 
-#' Function to compute overall spillovers
-#' 
-#' Taking in spillover_table or list_of spills object, the function computes 
-#' the overall spillover.
-#' 
-#' @param ... this argument can contain within = F or T as to whether to 
-#' compute the within spillovers if the spillover tables are frequency based.
-#' @param x either the spillover_table or list_of_spills object.
-#' 
-#' @return a list containing the overall spillover
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for computing PAIRWISE spillovers
+#'
+#'
+#' @param spillover_table the output of spillover estimation function 
+#'        or rolling spillover estimation function
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return Value for PAIRWISE spillover
+#'
 #' @export
-net <- function(x, ...) UseMethod("net", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+pairwise <- function(spillover_table, ...) UseMethod("pairwise", spillover_table)
 
-#' Function to plot overall spillovers
-#' 
-#' Taking in list_of_spillovers, the function plots the overall spillovers
-#' using the zoo::plot.zoo function
-#' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
-#' @param ... contains two arguments within and which, for details see mtehod
-#'      plotOverall.list_of_spills
-#' 
-#' @return a plot of overall spillovers
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for computing NET spillovers
+#'
+#'
+#' @param spillover_table the output of spillover estimation function 
+#'        or rolling spillover estimation function
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return Value for NET spillover
+#'
 #' @export
-plotOverall <- function(x, ...) UseMethod("plotOverall", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+net <- function(spillover_table, ...) UseMethod("net", spillover_table)
 
-#' Function to plot to spillovers
-#' 
-#' Taking in list_of_spillovers, the function plots the to spillovers
-#' using the zoo::plot.zoo function
-#' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
-#' @param ... contains two arguments within and which, for details see mtehod
-#'      plotTo.list_of_spills
-#' 
-#' @return a plot of to spillovers
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for ploting overall spillovers
+#'
+#'
+#' @param spillover_table the output of rolling spillover estimation function 
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return The plot
+#'
 #' @export
-plotTo <- function(x, ...) UseMethod("plotTo", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plotOverall <- function(spillover_table, ...) UseMethod("plotOverall", spillover_table)
 
-#' Function to plot from spillovers
-#' 
-#' Taking in list_of_spillovers, the function plots the from spillovers
-#' using the zoo::plot.zoo function
-#' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
-#' @param ... contains two arguments within and which, for details see mtehod
-#'      plotFrom.list_of_spills
-#' 
-#' @return a plot of from spillovers
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for ploting TO spillovers
+#'
+#'
+#' @param spillover_table the output of rolling spillover estimation function 
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return The plot
+#'
 #' @export
-plotFrom <- function(x, ...) UseMethod("plotFrom", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plotTo <- function(spillover_table, ...) UseMethod("plotTo", spillover_table)
 
-#' Function to plot net spillovers
-#' 
-#' Taking in list_of_spillovers, the function plots the net spillovers
-#' using the zoo::plot.zoo function
-#' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
-#' @param ... contains two arguments within and which, for details see mtehod
-#'      plotNet.list_of_spills
-#' 
-#' @return a plot of net spillovers
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for ploting FROM spillovers
+#'
+#'
+#' @param spillover_table the output of rolling spillover estimation function 
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return The plot
+#'
 #' @export
-plotNet <- function(x, ...) UseMethod("plotNet", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plotFrom <- function(spillover_table, ...) UseMethod("plotFrom", spillover_table)
 
-#' Function to plot pairwise spillovers
-#' 
-#' Taking in list_of_spillovers, the function plots the pairwise spillovers
-#' using the zoo::plot.zoo function
-#' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
-#' @param ... contains two arguments within and which, for details see mtehod
-#'      plotPairwise.list_of_spills
-#' 
-#' @return a plot of pairwise spillovers
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for ploting NET spillovers
+#'
+#'
+#' @param spillover_table the output of rolling spillover estimation function 
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return The plot
+#'
 #' @export
-plotPairwise <- function(x, ...) UseMethod("plotPairwise", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plotNet <- function(spillover_table, ...) UseMethod("plotNet", spillover_table)
 
-#' Function to collapse bounds
-#' 
-#' Taking in spillover_table, if the spillover_table is frequency based, it 
-#' allows you to collapse several frequency bands into one.
-#' 
-#' @param x a spillover_table object, ideally from the provided estimation 
-#'      functions
-#' @param ... contains which saying which bounds to collapse
-#' 
-#' @return spillover_table with less frequency bands.
-#' 
-#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' Method for ploting PAIRWISE spillovers
+#'
+#'
+#' @param spillover_table the output of rolling spillover estimation function 
+#' @param ... other arguments like whether it is within or absolute spillover
+#'        in case of the frequency spillovers
+#'
+#' @return The plot
+#'
 #' @export
-collapseBounds <- function(x, ...) UseMethod("collapseBounds", x)
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plotPairwise <- function(spillover_table, ...) UseMethod("plotPairwise", spillover_table)
+
+#' Method for for collapsing bound for frequency spillovers
+#'
+#'
+#' @param spillover_table the output of spillover estimation function 
+#'        or rolling spillover estimation function
+#' @param which integer vector indicating which of the frequency bounds
+#'        we want to have collapsed
+#'
+#' @return New spillover object with collapsed bounds
+#'
+#' @export
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+collapseBounds <- function(spillover_table, which) UseMethod("collapseBounds")

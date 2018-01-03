@@ -2,7 +2,7 @@
 % Please edit documentation in R/spillovers.R
 \name{spilloverBK09}
 \alias{spilloverBK09}
-\title{Computing the decomposed spillover from a fevd as defined by Barunik, Krehlik (2015)}
+\title{Computing the decomposed spillover from a fevd as defined by Barunik, Krehlik (2018)}
 \usage{
 spilloverBK09(est, n.ahead = 100, no.corr, partition)
 }

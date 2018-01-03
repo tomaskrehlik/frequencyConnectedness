@@ -2,6 +2,7 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{collapseBounds}
 \alias{collapseBounds}
+<<<<<<< HEAD
 \title{Function to collapse bounds}
 \usage{
 collapseBounds(x, ...)
@@ -18,6 +19,24 @@ spillover_table with less frequency bands.
 \description{
 Taking in spillover_table, if the spillover_table is frequency based, it 
 allows you to collapse several frequency bands into one.
+=======
+\title{Method for for collapsing bound for frequency spillovers}
+\usage{
+collapseBounds(spillover_table, which)
+}
+\arguments{
+\item{spillover_table}{the output of spillover estimation function 
+or rolling spillover estimation function}
+
+\item{which}{integer vector indicating which of the frequency bounds
+we want to have collapsed}
+}
+\value{
+New spillover object with collapsed bounds
+}
+\description{
+Method for for collapsing bound for frequency spillovers
+>>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

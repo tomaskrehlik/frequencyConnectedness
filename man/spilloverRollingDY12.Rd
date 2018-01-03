@@ -16,9 +16,17 @@ should be high enough so that it won't change with additional period}
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
 
+<<<<<<< HEAD
 \item{func_est}{a name of the function to estimate with, for example "var" for VAR from vars package}
 
 \item{params_est}{a list of the parameters to pass to the function besides the data that are passed as a first element.}
+=======
+\item{func_est}{estimation function, usually would be VAR or BigVAR function to estimate
+the multivariate system}
+
+\item{params_est}{parameters passed to the estimation function, as a list, for parameters
+refer to documentation of the estimating function}
+>>>>>>> BigVAR
 
 \item{window}{length of the window to be rolled}
 

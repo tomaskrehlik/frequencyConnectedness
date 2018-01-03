@@ -12,13 +12,13 @@
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-overall.list_of_spills <- function(x, within = F, ...) {
-    T <- length(x$list_of_tables)
-    n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
-    if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
-    temp <- lapply(x$list_of_tables, function(tab) overall(tab, within))
+overall.list_of_spills <- function(spillover_table, within = F, ...) {
+    T <- length(spillover_table$list_of_tables)
+    n_bands <- (length((spillover_table$list_of_tables[[1]])$bounds)-1)
+    if (check_that_it_is_not_fft(spillover_table[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    temp <- lapply(spillover_table$list_of_tables, function(tab) overall(tab, within))
     out <- lapply(1:n_bands, function(j) t(t(sapply(1:T, function(i) temp[[i]][[j]]))))
-    dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
+    dates <- do.call(c, lapply(spillover_table$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
             out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
@@ -41,13 +41,13 @@ overall.list_of_spills <- function(x, within = F, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-to.list_of_spills <- function(x, within = F, ...) {
-    T <- length(x$list_of_tables)
-    n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
-    if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
-    temp <- lapply(x$list_of_tables, function(tab) to(tab, within))
+to.list_of_spills <- function(spillover_table, within = F, ...) {
+    T <- length(spillover_table$list_of_tables)
+    n_bands <- (length((spillover_table$list_of_tables[[1]])$bounds)-1)
+    if (check_that_it_is_not_fft(spillover_table[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    temp <- lapply(spillover_table$list_of_tables, function(tab) to(tab, within))
     out <- lapply(1:n_bands, function(j) t(sapply(1:T, function(i) temp[[i]][[j]])))
-    dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
+    dates <- do.call(c, lapply(spillover_table$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
             out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
@@ -70,13 +70,13 @@ to.list_of_spills <- function(x, within = F, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-from.list_of_spills <- function(x, within = F, ...) {
-    T <- length(x$list_of_tables)
-    n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
-    if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
-    temp <- lapply(x$list_of_tables, function(tab) from(tab, within))
+from.list_of_spills <- function(spillover_table, within = F, ...) {
+    T <- length(spillover_table$list_of_tables)
+    n_bands <- (length((spillover_table$list_of_tables[[1]])$bounds)-1)
+    if (check_that_it_is_not_fft(spillover_table[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    temp <- lapply(spillover_table$list_of_tables, function(tab) from(tab, within))
     out <- lapply(1:n_bands, function(j) t(sapply(1:T, function(i) temp[[i]][[j]])))
-    dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
+    dates <- do.call(c, lapply(spillover_table$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
             out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
@@ -99,13 +99,13 @@ from.list_of_spills <- function(x, within = F, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-net.list_of_spills <- function(x, within = F, ...) {
-    T <- length(x$list_of_tables)
-    n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
-    if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
-    temp <- lapply(x$list_of_tables, function(tab) net(tab, within))
+net.list_of_spills <- function(spillover_table, within = F, ...) {
+    T <- length(spillover_table$list_of_tables)
+    n_bands <- (length((spillover_table$list_of_tables[[1]])$bounds)-1)
+    if (check_that_it_is_not_fft(spillover_table[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    temp <- lapply(spillover_table$list_of_tables, function(tab) net(tab, within))
     out <- lapply(1:n_bands, function(j) t(sapply(1:T, function(i) temp[[i]][[j]])))
-    dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
+    dates <- do.call(c, lapply(spillover_table$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
             out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
@@ -128,13 +128,13 @@ net.list_of_spills <- function(x, within = F, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-pairwise.list_of_spills <- function(x, within = F, ...) {
-    T <- length(x$list_of_tables)
-    n_bands <- (length((x$list_of_tables[[1]])$bounds)-1)
-    if (check_that_it_is_not_fft(x[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
-    temp <- lapply(x$list_of_tables, function(tab) pairwise(tab, within))
+pairwise.list_of_spills <- function(spillover_table, within = F, ...) {
+    T <- length(spillover_table$list_of_tables)
+    n_bands <- (length((spillover_table$list_of_tables[[1]])$bounds)-1)
+    if (check_that_it_is_not_fft(spillover_table[[1]][[1]]) & within) warning("You are setting within to FALSE. In DY case, the within and absolute spillovers are the same.")
+    temp <- lapply(spillover_table$list_of_tables, function(tab) pairwise(tab, within))
     out <- lapply(1:n_bands, function(j) t(sapply(1:T, function(i) temp[[i]][[j]])))
-    dates <- do.call(c, lapply(x$list_of_tables, function(i) i$date))
+    dates <- do.call(c, lapply(spillover_table$list_of_tables, function(i) i$date))
     if (length(dates)==nrow(out[[1]])) {
         for (i in 1:length(out)) {
             out[[i]] <- zoo::zoo(out[[i]], order.by = dates)
@@ -158,9 +158,9 @@ pairwise.list_of_spills <- function(x, within = F, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-collapseBounds.list_of_spills <- function(x, which, ...) {
-    x$lists_of_tables <- lapply(x$lists_of_tables, function(i) collapseBounds(i, which))
-    return(x)
+collapseBounds.list_of_spills <- function(spillover_table, which) {
+    spillover_table$lists_of_tables <- lapply(spillover_table$lists_of_tables, function(i) collapseBounds(i, which))
+    return(spillover_table)
 }
 
 #' Function to plot overall spillovers
@@ -177,13 +177,13 @@ collapseBounds.list_of_spills <- function(x, which, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotOverall.list_of_spills <- function(x, within = F, ...) {
-    spills <- overall(x, within)
+plotOverall.list_of_spills <- function(spillover_table, within = F, ...) {
+    spills <- overall(spillover_table, within)
     if (length(spills)==1) {
         zoo::plot.zoo(spills[[1]], main = "Overall spillovers", ylab = "")
     } else {
         for (i in 1:length(spills)) {
-            zoo::plot.zoo(spills[[i]], main = sprintf("Overall spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]), ylab = "")
+            zoo::plot.zoo(spills[[i]], main = sprintf("Overall spillovers on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]), ylab = "")
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -204,13 +204,13 @@ plotOverall.list_of_spills <- function(x, within = F, ...) {
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...) {
-    spills <- to(x, within)
+plotTo.list_of_spills <- function(spillover_table, within = F, which = 1:nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), ...) {
+    spills <- to(spillover_table, within)
     if (length(spills)==1) {
         zoo::plot.zoo(spills[[1]][,which], main = "To spillovers")
     } else {
         for (i in 1:length(spills)) {
-            zoo::plot.zoo(spills[[i]][,which], main = sprintf("To spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("To spillovers on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -231,13 +231,13 @@ plotTo.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...) {
-    spills <- from(x, within)
+plotFrom.list_of_spills <- function(spillover_table, within = F, which = 1:nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), ...) {
+    spills <- from(spillover_table, within)
     if (length(spills)==1) {
         zoo::plot.zoo(spills[[1]][,which], main = "From spillovers")
     } else {
         for (i in 1:length(spills)) {
-            zoo::plot.zoo(spills[[i]][,which], main = sprintf("From spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("From spillovers on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -258,13 +258,13 @@ plotFrom.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tabl
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_tables[[1]]$tables[[1]]), ...) {
-    spills <- net(x, within)
+plotNet.list_of_spills <- function(spillover_table, within = F, which = 1:nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), ...) {
+    spills <- net(spillover_table, within)
     if (length(spills)==1) {
         zoo::plot.zoo(spills[[1]][,which], main = "Net spillovers")
     } else {
         for (i in 1:length(spills)) {
-            zoo::plot.zoo(spills[[i]][,which], main = sprintf("Net spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("Net spillovers on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
@@ -286,13 +286,13 @@ plotNet.list_of_spills <- function(x, within = F, which = 1:nrow(x$list_of_table
 #' 
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
-plotPairwise.list_of_spills <- function(x, within = F, which = 1:ncol(utils::combn(nrow(x$list_of_tables[[1]]$tables[[1]]), 2)), ...) {
-    spills <- pairwise(x, within)
+plotPairwise.list_of_spills <- function(spillover_table, within = F, which = 1:ncol(utils::combn(nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), 2)), ...) {
+    spills <- pairwise(spillover_table, within)
     if (length(spills)==1) {
         zoo::plot.zoo(spills[[1]][,which], main = "Pairwise spillovers")
     } else {
         for (i in 1:length(spills)) {
-            zoo::plot.zoo(spills[[i]][,which], main = sprintf("Pairwise spillovers on band: %.2f to %.2f.", x$list_of_tables[[1]]$bounds[i], x$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(spills[[i]][,which], main = sprintf("Pairwise spillovers on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }

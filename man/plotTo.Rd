@@ -2,6 +2,7 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{plotTo}
 \alias{plotTo}
+<<<<<<< HEAD
 \title{Function to plot to spillovers}
 \usage{
 plotTo(x, ...)
@@ -18,6 +19,23 @@ a plot of to spillovers
 \description{
 Taking in list_of_spillovers, the function plots the to spillovers
 using the zoo::plot.zoo function
+=======
+\title{Method for ploting TO spillovers}
+\usage{
+plotTo(spillover_table, ...)
+}
+\arguments{
+\item{spillover_table}{the output of rolling spillover estimation function}
+
+\item{...}{other arguments like whether it is within or absolute spillover
+in case of the frequency spillovers}
+}
+\value{
+The plot
+}
+\description{
+Method for ploting TO spillovers
+>>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>
