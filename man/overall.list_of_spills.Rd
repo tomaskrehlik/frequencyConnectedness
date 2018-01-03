@@ -7,12 +7,12 @@
 \method{overall}{list_of_spills}(spillover_table, within = F, ...)
 }
 \arguments{
+\item{spillover_table}{a list_of_spills object, ideally from rolling window estimation}
+
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
 
 \item{...}{for the sake of CRAN not to complain}
-
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
 }
 \value{
 a list containing the overall spillovers

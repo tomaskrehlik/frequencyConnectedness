@@ -26,6 +26,8 @@ the multivariate system}
 refer to documentation of the estimating function}
 
 \item{window}{length of the window to be rolled}
+
+\item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
 }
 \description{
 This function computes the rolling spillover using the standard VAR estimate.

@@ -7,7 +7,9 @@ Authors@R: person("Tomas", "Krehlik", email = "tomas.krehlik@gmail.com",   role 
 Description: Accompanies a paper (Barunik, Krehlik (2017) <doi:10.2139/ssrn.2627599>) dedicated to spectral decomposition of connectedness measures and their interpretation. We implement all the developed estimators as well as the historical counterparts. For more information, see the help or GitHub page (<https://github.com/tomaskrehlik/frequencyConnectedness>) for relevant information.
 Depends:
 	vars,
-	urca
+	urca,
+    knitr,
+    pbapply
 Suggests: 
 	testthat,
 	stringr,
@@ -16,8 +18,6 @@ Suggests:
     ggplot2,
     parallel,
     zoo,
-    pbapply,
-    knitr,
 	BigVAR
 Imports: 
     methods

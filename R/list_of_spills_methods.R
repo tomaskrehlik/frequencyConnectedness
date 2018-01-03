@@ -3,7 +3,7 @@
 #' Taking in list_of_spillovers, the function computes the overall spillovers
 #' for all the individual spillover_table.
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param ... for the sake of CRAN not to complain
@@ -32,7 +32,7 @@ overall.list_of_spills <- function(spillover_table, within = F, ...) {
 #' Taking in list_of_spillovers, the function computes the to spillovers
 #' for all the individual spillover_table.
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param ... for the sake of CRAN not to complain
@@ -61,7 +61,7 @@ to.list_of_spills <- function(spillover_table, within = F, ...) {
 #' Taking in list_of_spillovers, the function computes the from spillovers
 #' for all the individual spillover_table.
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param ... for the sake of CRAN not to complain
@@ -90,7 +90,7 @@ from.list_of_spills <- function(spillover_table, within = F, ...) {
 #' Taking in list_of_spillovers, the function computes the net spillovers
 #' for all the individual spillover_table.
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param ... for the sake of CRAN not to complain
@@ -119,7 +119,7 @@ net.list_of_spills <- function(spillover_table, within = F, ...) {
 #' Taking in list_of_spillovers, the function computes the pairwise spillovers
 #' for all the individual spillover_table.
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param ... for the sake of CRAN not to complain
@@ -148,7 +148,7 @@ pairwise.list_of_spills <- function(spillover_table, within = F, ...) {
 #' Taking in list_of_spills, if the individual spillover_tables are frequency 
 #' based, it allows you to collapse several frequency bands into one.
 #' 
-#' @param x a list_of_spills object, ideally from the provided estimation 
+#' @param spillover_table a list_of_spills object, ideally from the provided estimation 
 #'      functions
 #' @param which which frequency bands to collapse. Should be a sequence like 1:2
 #'      or 1:5, etc.
@@ -168,7 +168,7 @@ collapseBounds.list_of_spills <- function(spillover_table, which) {
 #' Taking in list_of_spillovers, the function plots the overall spillovers
 #' using the zoo::plot.zoo function
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param ... for the sake of CRAN not to complain
@@ -194,7 +194,7 @@ plotOverall.list_of_spills <- function(spillover_table, within = F, ...) {
 #' Taking in list_of_spillovers, the function plots the to spillovers
 #' using the zoo::plot.zoo function
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param which a vector with indices specifying which plots to plot.
@@ -221,7 +221,7 @@ plotTo.list_of_spills <- function(spillover_table, within = F, which = 1:nrow(sp
 #' Taking in list_of_spillovers, the function plots the from spillovers
 #' using the zoo::plot.zoo function
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param which a vector with indices specifying which plots to plot.
@@ -248,7 +248,7 @@ plotFrom.list_of_spills <- function(spillover_table, within = F, which = 1:nrow(
 #' Taking in list_of_spillovers, the function plots the net spillovers
 #' using the zoo::plot.zoo function
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param which a vector with indices specifying which plots to plot.
@@ -276,7 +276,7 @@ plotNet.list_of_spills <- function(spillover_table, within = F, which = 1:nrow(s
 #' Taking in list_of_spillovers, the function plots the pairwise spillovers
 #' using the zoo::plot.zoo function
 #' 
-#' @param x a list_of_spills object, ideally from rolling window estimation
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
 #' @param which a vector with indices specifying which plots to plot.

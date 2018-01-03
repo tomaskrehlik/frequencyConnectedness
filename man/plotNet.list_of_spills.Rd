@@ -8,14 +8,14 @@
   which = 1:nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), ...)
 }
 \arguments{
+\item{spillover_table}{a list_of_spills object, ideally from rolling window estimation}
+
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
 
 \item{which}{a vector with indices specifying which plots to plot.}
 
 \item{...}{for the sake of CRAN not to complain}
-
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
 }
 \value{
 a plot of net spillovers

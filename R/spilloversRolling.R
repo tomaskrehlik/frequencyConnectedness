@@ -64,8 +64,6 @@ spilloverRolling <- function(func_spill, params_spill, func_est, params_est, dat
 #' @param params_est parameters passed to the estimation function, as a list, for parameters
 #'      refer to documentation of the estimating function
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
-#' @param func_est a name of the function to estimate with, for example "var" for VAR from vars package
-#' @param params_est a list of the parameters to pass to the function besides the data that are passed as a first element.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -92,8 +90,6 @@ spilloverRollingDY09 <- function(data, n.ahead = 100, no.corr, func_est, params_
 #' @param params_est parameters passed to the estimation function, as a list, for parameters
 #'      refer to documentation of the estimating function
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
-#' @param func_est a name of the function to estimate with, for example "var" for VAR from vars package
-#' @param params_est a list of the parameters to pass to the function besides the data that are passed as a first element.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
@@ -121,6 +117,7 @@ spilloverRollingDY12 <- function(data, n.ahead = 100, no.corr, func_est, params_
 #'      the multivariate system
 #' @param params_est parameters passed to the estimation function, as a list, for parameters
 #'      refer to documentation of the estimating function
+#' @param cluster either NULL for no parallel processing or the variable containing the cluster.
 #'
 #' @export
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>

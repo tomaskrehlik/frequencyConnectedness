@@ -25,10 +25,6 @@ refer to documentation of the estimating function}
 \item{window}{length of the window to be rolled}
 
 \item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
-
-\item{func_est}{a name of the function to estimate with, for example "var" for VAR from vars package}
-
-\item{params_est}{a list of the parameters to pass to the function besides the data that are passed as a first element.}
 }
 \description{
 This function computes the rolling spillover using the standard VAR estimate.

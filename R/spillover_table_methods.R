@@ -61,7 +61,7 @@ print.spillover_table <- function(x, ...) {
 #' 
 #' Taking in spillover_table, the function computes the overall spillover.
 #' 
-#' @param x a spillover_table object, ideally from the provided estimation 
+#' @param spillover_table a spillover_table object, ideally from the provided estimation 
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
@@ -99,7 +99,7 @@ overall.spillover_table <- function(spillover_table, within = F, ...) {
 #' 
 #' Taking in spillover_table, the function computes the to spillover.
 #' 
-#' @param x a spillover_table object, ideally from the provided estimation 
+#' @param spillover_table a spillover_table object, ideally from the provided estimation 
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
@@ -143,7 +143,7 @@ to.spillover_table <- function(spillover_table, within = F, ...) {
 #' 
 #' Taking in spillover_table, the function computes the from spillover.
 #' 
-#' @param x a spillover_table object, ideally from the provided estimation 
+#' @param spillover_table a spillover_table object, ideally from the provided estimation 
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
@@ -187,7 +187,7 @@ from.spillover_table <- function(spillover_table, within = F, ...) {
 #' 
 #' Taking in spillover_table, the function computes the pairwise spillover.
 #' 
-#' @param x a spillover_table object, ideally from the provided estimation 
+#' @param spillover_table a spillover_table object, ideally from the provided estimation 
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
@@ -234,7 +234,7 @@ pairwise.spillover_table <- function(spillover_table, within = F, ...) {
 #' 
 #' Taking in spillover_table, the function computes the net spillover.
 #' 
-#' @param x a spillover_table object, ideally from the provided estimation 
+#' @param spillover_table a spillover_table object, ideally from the provided estimation 
 #'      functions
 #' @param within whether to compute the within spillovers if the spillover
 #'      tables are frequency based.
@@ -259,7 +259,7 @@ net.spillover_table <- function(spillover_table, within = F, ...) {
 #' Taking in spillover_table, if the spillover_table is frequency based, it 
 #' allows you to collapse several frequency bands into one.
 #' 
-#' @param x a spillover_table object, ideally from the provided estimation 
+#' @param spillover_table a spillover_table object, ideally from the provided estimation 
 #'      functions
 #' @param which which frequency bands to collapse. Should be a sequence like 1:2
 #'      or 1:5, etc.
