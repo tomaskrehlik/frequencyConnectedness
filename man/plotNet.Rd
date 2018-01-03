@@ -2,24 +2,6 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{plotNet}
 \alias{plotNet}
-<<<<<<< HEAD
-\title{Function to plot net spillovers}
-\usage{
-plotNet(x, ...)
-}
-\arguments{
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
-
-\item{...}{contains two arguments within and which, for details see mtehod
-plotNet.list_of_spills}
-}
-\value{
-a plot of net spillovers
-}
-\description{
-Taking in list_of_spillovers, the function plots the net spillovers
-using the zoo::plot.zoo function
-=======
 \title{Method for ploting NET spillovers}
 \usage{
 plotNet(spillover_table, ...)
@@ -35,7 +17,6 @@ The plot
 }
 \description{
 Method for ploting NET spillovers
->>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

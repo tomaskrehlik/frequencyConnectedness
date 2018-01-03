@@ -2,24 +2,6 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{plotOverall}
 \alias{plotOverall}
-<<<<<<< HEAD
-\title{Function to plot overall spillovers}
-\usage{
-plotOverall(x, ...)
-}
-\arguments{
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
-
-\item{...}{contains two arguments within and which, for details see mtehod
-plotOverall.list_of_spills}
-}
-\value{
-a plot of overall spillovers
-}
-\description{
-Taking in list_of_spillovers, the function plots the overall spillovers
-using the zoo::plot.zoo function
-=======
 \title{Method for ploting overall spillovers}
 \usage{
 plotOverall(spillover_table, ...)
@@ -35,7 +17,6 @@ The plot
 }
 \description{
 Method for ploting overall spillovers
->>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

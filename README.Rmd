@@ -199,7 +199,7 @@ If you would be interested in having your script included, write me an e-mail, o
 
 Because the package might change in the future, there is a set of test to always preserve the integrity of the original functions. You can read what is tested in the [testfile](tests/testthat/test-basic.r). Also provided that you have the `testthat` package installed, you can run the tests yourself.
 
-````{r}
+````{r, eval=F}
 library(frequencyConnectedness)
 library(testthat)
 test_package("frequencyConnectedness")

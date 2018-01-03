@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-# frequencyConnectedness
-[![Build Status](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)](https://travis-ci.org/tomaskrehlik/frequencyConnectedness)
-=======
 [![Build
 Status](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)
->>>>>>> BigVAR
 
 A package implementing frequency dependent connectedness due to
 [Barunik, Krehlik (2018) (forthcoming in
@@ -85,14 +80,6 @@ Let’s walk through some basics. First load packages and get some data.
     ## Loading required package: methods
 
     ## Loading required package: lmtest
-
-    ## Loading required package: pbapply
-
-    ## Loading required package: knitr
-
-    ## **********
-    ## The syntax has changed since the version 0.1.6. check out the README at the github.com/tomaskrehlik/frequencyConnectedness .
-    ## **********
 
     ## 
     ## Attaching package: 'frequencyConnectedness'
@@ -719,9 +706,6 @@ tests yourself.
     library(frequencyConnectedness)
     library(testthat)
     test_package("frequencyConnectedness")
-
-    ## ══ testthat results  ══════════════════════════════════════════════════════
-    ## OK: 41 SKIPPED: 0 FAILED: 0
 
 License
 -------

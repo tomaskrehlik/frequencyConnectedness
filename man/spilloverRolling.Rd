@@ -10,19 +10,11 @@ spilloverRolling(func_spill, params_spill, func_est, params_est, data, window,
 \arguments{
 \item{func_spill}{name of the function that returns FEVD for the estimtate est}
 
-<<<<<<< HEAD
-\item{params_spill}{a list of parameters passed to the spillover function}
-
-\item{func_est}{name of the function to do the estimation with}
-
-\item{params_est}{a list of parameters passed to the estimation function}
-=======
 \item{params_spill}{parameters from spillover estimation function as a list}
 
 \item{func_est}{name of the estimation function}
 
 \item{params_est}{parameters from the estimation function as a list}
->>>>>>> BigVAR
 
 \item{data}{variable containing the dataset}
 

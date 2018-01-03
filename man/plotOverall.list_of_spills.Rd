@@ -4,15 +4,15 @@
 \alias{plotOverall.list_of_spills}
 \title{Function to plot overall spillovers}
 \usage{
-\method{plotOverall}{list_of_spills}(x, within = F, ...)
+\method{plotOverall}{list_of_spills}(spillover_table, within = F, ...)
 }
 \arguments{
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
-
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
 
 \item{...}{for the sake of CRAN not to complain}
+
+\item{x}{a list_of_spills object, ideally from rolling window estimation}
 }
 \value{
 a plot of overall spillovers

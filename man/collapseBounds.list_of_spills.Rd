@@ -4,14 +4,14 @@
 \alias{collapseBounds.list_of_spills}
 \title{Function to collapse bounds}
 \usage{
-\method{collapseBounds}{list_of_spills}(x, which, ...)
+\method{collapseBounds}{list_of_spills}(spillover_table, which)
 }
 \arguments{
-\item{x}{a list_of_spills object, ideally from the provided estimation 
-functions}
-
 \item{which}{which frequency bands to collapse. Should be a sequence like 1:2
 or 1:5, etc.}
+
+\item{x}{a list_of_spills object, ideally from the provided estimation 
+functions}
 
 \item{...}{for the sake of CRAN not to complain}
 }

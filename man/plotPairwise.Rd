@@ -2,24 +2,6 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{plotPairwise}
 \alias{plotPairwise}
-<<<<<<< HEAD
-\title{Function to plot pairwise spillovers}
-\usage{
-plotPairwise(x, ...)
-}
-\arguments{
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
-
-\item{...}{contains two arguments within and which, for details see mtehod
-plotPairwise.list_of_spills}
-}
-\value{
-a plot of pairwise spillovers
-}
-\description{
-Taking in list_of_spillovers, the function plots the pairwise spillovers
-using the zoo::plot.zoo function
-=======
 \title{Method for ploting PAIRWISE spillovers}
 \usage{
 plotPairwise(spillover_table, ...)
@@ -35,7 +17,6 @@ The plot
 }
 \description{
 Method for ploting PAIRWISE spillovers
->>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

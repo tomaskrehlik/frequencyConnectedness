@@ -4,14 +4,14 @@
 \alias{collapseBounds.spillover_table}
 \title{Function to collapse bounds}
 \usage{
-\method{collapseBounds}{spillover_table}(x, which, ...)
+\method{collapseBounds}{spillover_table}(spillover_table, which)
 }
 \arguments{
-\item{x}{a spillover_table object, ideally from the provided estimation 
-functions}
-
 \item{which}{which frequency bands to collapse. Should be a sequence like 1:2
 or 1:5, etc.}
+
+\item{x}{a spillover_table object, ideally from the provided estimation 
+functions}
 
 \item{...}{for the sake of CRAN not to complain}
 }

@@ -19,18 +19,6 @@ set to zero}
 \item{partition}{how to split up the estimated spillovers into frequency bands. Should be
 a vector of bound points that starts with 0 and ends with pi+0.00001.}
 
-<<<<<<< HEAD
-\item{func_est}{a name of the function to estimate with, for example "var" for VAR from vars package}
-
-\item{params_est}{a list of the parameters to pass to the function besides the data that are passed as a first element.}
-
-\item{window}{length of the window to be rolled}
-
-\item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
-}
-\value{
-A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
-=======
 \item{func_est}{estimation function, usually would be VAR or BigVAR function to estimate
 the multivariate system}
 
@@ -38,9 +26,6 @@ the multivariate system}
 refer to documentation of the estimating function}
 
 \item{window}{length of the window to be rolled}
-
-\item{cluster}{either NULL for no parallel processing or the variable containing the cluster.}
->>>>>>> BigVAR
 }
 \description{
 This function computes the rolling spillover using the standard VAR estimate.

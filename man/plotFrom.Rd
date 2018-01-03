@@ -2,24 +2,6 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{plotFrom}
 \alias{plotFrom}
-<<<<<<< HEAD
-\title{Function to plot from spillovers}
-\usage{
-plotFrom(x, ...)
-}
-\arguments{
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
-
-\item{...}{contains two arguments within and which, for details see mtehod
-plotFrom.list_of_spills}
-}
-\value{
-a plot of from spillovers
-}
-\description{
-Taking in list_of_spillovers, the function plots the from spillovers
-using the zoo::plot.zoo function
-=======
 \title{Method for ploting FROM spillovers}
 \usage{
 plotFrom(spillover_table, ...)
@@ -35,7 +17,6 @@ The plot
 }
 \description{
 Method for ploting FROM spillovers
->>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

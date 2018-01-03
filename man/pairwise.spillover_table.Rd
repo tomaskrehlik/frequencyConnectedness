@@ -4,16 +4,16 @@
 \alias{pairwise.spillover_table}
 \title{Function to compute pairwise spillovers}
 \usage{
-\method{pairwise}{spillover_table}(x, within = F, ...)
+\method{pairwise}{spillover_table}(spillover_table, within = F, ...)
 }
 \arguments{
-\item{x}{a spillover_table object, ideally from the provided estimation 
-functions}
-
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
 
 \item{...}{for the sake of CRAN not to complain}
+
+\item{x}{a spillover_table object, ideally from the provided estimation 
+functions}
 }
 \value{
 a list containing the pairwise spillover

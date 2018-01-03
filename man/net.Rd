@@ -2,24 +2,6 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{net}
 \alias{net}
-<<<<<<< HEAD
-\title{Function to compute overall spillovers}
-\usage{
-net(x, ...)
-}
-\arguments{
-\item{x}{either the spillover_table or list_of_spills object.}
-
-\item{...}{this argument can contain within = F or T as to whether to 
-compute the within spillovers if the spillover tables are frequency based.}
-}
-\value{
-a list containing the overall spillover
-}
-\description{
-Taking in spillover_table or list_of spills object, the function computes 
-the overall spillover.
-=======
 \title{Method for computing NET spillovers}
 \usage{
 net(spillover_table, ...)
@@ -36,7 +18,6 @@ Value for NET spillover
 }
 \description{
 Method for computing NET spillovers
->>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>

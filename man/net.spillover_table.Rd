@@ -4,16 +4,16 @@
 \alias{net.spillover_table}
 \title{Function to compute net spillovers}
 \usage{
-\method{net}{spillover_table}(x, within = F, ...)
+\method{net}{spillover_table}(spillover_table, within = F, ...)
 }
 \arguments{
-\item{x}{a spillover_table object, ideally from the provided estimation 
-functions}
-
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
 
 \item{...}{for the sake of CRAN not to complain}
+
+\item{x}{a spillover_table object, ideally from the provided estimation 
+functions}
 }
 \value{
 a list containing the net spillover

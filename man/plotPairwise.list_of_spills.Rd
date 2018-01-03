@@ -4,19 +4,19 @@
 \alias{plotPairwise.list_of_spills}
 \title{Function to plot pairwise spillovers}
 \usage{
-\method{plotPairwise}{list_of_spills}(x, within = F,
-  which = 1:ncol(utils::combn(nrow(x$list_of_tables[[1]]$tables[[1]]), 2)),
-  ...)
+\method{plotPairwise}{list_of_spills}(spillover_table, within = F,
+  which = 1:ncol(utils::combn(nrow(spillover_table$list_of_tables[[1]]$tables[[1]]),
+  2)), ...)
 }
 \arguments{
-\item{x}{a list_of_spills object, ideally from rolling window estimation}
-
 \item{within}{whether to compute the within spillovers if the spillover
 tables are frequency based.}
 
 \item{which}{a vector with indices specifying which plots to plot.}
 
 \item{...}{for the sake of CRAN not to complain}
+
+\item{x}{a list_of_spills object, ideally from rolling window estimation}
 }
 \value{
 a plot of pairwise spillovers

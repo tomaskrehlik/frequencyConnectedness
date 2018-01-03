@@ -14,12 +14,9 @@ should be high enough so that it won't change with additional period}
 
 \item{no.corr}{boolean parameter whether the off-diagonal in the covariance matrix should be
 set to zero}
-<<<<<<< HEAD
 }
 \value{
 spillover_table object
-=======
->>>>>>> BigVAR
 }
 \description{
 This function is an internal implementation of the spillover.

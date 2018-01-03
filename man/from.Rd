@@ -2,24 +2,6 @@
 % Please edit documentation in R/spillovers_exported_methods.R
 \name{from}
 \alias{from}
-<<<<<<< HEAD
-\title{Function to compute overall spillovers}
-\usage{
-from(x, ...)
-}
-\arguments{
-\item{x}{either the spillover_table or list_of_spills object.}
-
-\item{...}{this argument can contain within = F or T as to whether to 
-compute the within spillovers if the spillover tables are frequency based.}
-}
-\value{
-a list containing the overall spillover
-}
-\description{
-Taking in spillover_table or list_of spills object, the function computes 
-the overall spillover.
-=======
 \title{Method for computing FROM spillovers}
 \usage{
 from(spillover_table, ...)
@@ -36,7 +18,6 @@ Value for FROM spillover
 }
 \description{
 Method for computing FROM spillovers
->>>>>>> BigVAR
 }
 \author{
 Tomas Krehlik <tomas.krehlik@gmail.com>
