@@ -2,8 +2,8 @@
 Status](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)
 
 A package implementing frequency dependent connectedness due to
-[Barunik, Krehlik (2018) (forthcoming in
-JFE)](http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2627599 "Barunik, J., Krehlk, T., Measuring the Frequency Dynamics of Financial and Macroeconomic Connectedness")
+[Barunik, Krehlik
+(2018)](https://academic.oup.com/jfec/article-abstract/16/2/271/4868603?redirectedFrom=fulltext "Barunik, J., Krehlik, T., Measuring the Frequency Dynamics of Financial Connectedness and Systemic Risk")
 as well as the traditional definitions of [Diebold, Yilmaz (2009,
 2012)](http://www.sciencedirect.com/science/article/pii/S016920701100032X "Diebold, F. X., Yilmaz, K., Better to give than to receive: Predictive directional measurement of volatility spillovers").
 See the papers for detailed description.
