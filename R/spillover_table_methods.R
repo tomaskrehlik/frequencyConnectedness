@@ -263,7 +263,6 @@ net.spillover_table <- function(spillover_table, within = F, ...) {
 #'      functions
 #' @param which which frequency bands to collapse. Should be a sequence like 1:2
 #'      or 1:5, etc.
-#' @param ... for the sake of CRAN not to complain
 #' 
 #' @return spillover_table with less frequency bands.
 #' 
