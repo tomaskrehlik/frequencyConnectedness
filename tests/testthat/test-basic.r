@@ -1,6 +1,17 @@
 # Various tests
 library(vars)
 
+context("Rolling spillovers")
+test_that("NA data has descriptive error", {
+	data(exampleSim)
+	exampleSim <- exampleSim[1:200,]
+        exampleSim[2, 1] = NaN
+        params_est = list(p = 2, type = "const")
+        
+	H <- 200
+	expect_error(spilloverRollingDY09(exampleSim, n.ahead = 100, no.corr = F, "VAR", params_est = params_est, window = 100), "Your data contains")
+})
+
 context("FEVD checks")
 test_that("The FFT FEVD reconstructs on the original one", {
 	data(exampleSim)
@@ -29,13 +40,12 @@ test_that("The FEVD from our package is the same as from vars package", {
 	exampleSim <- exampleSim[1:100,]
 	est <- VAR(exampleSim, p = 4, type ="const")
 	H <- 200
-	expect_that(
+	expect_true(
 		all(
 			frequencyConnectedness::fevd(est, n.ahead = H, no.corr = F)-
 			t(sapply(vars::fevd(est, H), function(i) i[H,]))
 			<1e-5
-			), 
-		is_true()
+			)
 		)
 })
 
@@ -131,21 +141,17 @@ for (i in 1:length(estimates)) {
 		# Create random bounds that cover the whole range
 		H <- 200
 
-		expect_that(
-			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY09(estimates[[i]], n.ahead = H, no.corr=F)) < 100, 
-			is_true()
+		expect_true(
+			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY09(estimates[[i]], n.ahead = H, no.corr=F)) < 100
 			)
-		expect_that(
-			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY12(estimates[[i]], n.ahead = H, no.corr=F)) < 100, 
-			is_true()
+		expect_true(
+			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY12(estimates[[i]], n.ahead = H, no.corr=F)) < 100 
 			)
-		expect_that(
-			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY09(estimates[[i]], n.ahead = H, no.corr=T)) < 100, 
-			is_true()
+		expect_true(
+			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY09(estimates[[i]], n.ahead = H, no.corr=T)) < 100
 			)
-		expect_that(
-			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY12(estimates[[i]], n.ahead = H, no.corr=T)) < 100, 
-			is_true()
+		expect_true(
+			frequencyConnectedness::overall(frequencyConnectedness::spilloverDY12(estimates[[i]], n.ahead = H, no.corr=T)) < 100
 			)
 	})
 
@@ -153,15 +159,13 @@ for (i in 1:length(estimates)) {
 		# Create random bounds that cover the whole range
 		H <- 200
 
-		expect_that(
+		expect_true(
 			all(
-				frequencyConnectedness::to(frequencyConnectedness::spilloverDY09(estimates[[i]], n.ahead = H, no.corr=F))[[1]] < 100), 
-			is_true()
+				frequencyConnectedness::to(frequencyConnectedness::spilloverDY09(estimates[[i]], n.ahead = H, no.corr=F))[[1]] < 100)
 			)
-		expect_that(
+		expect_true(
 			all(
-				frequencyConnectedness::to(frequencyConnectedness::spilloverDY12(estimates[[i]], n.ahead = H, no.corr=F))[[1]] < 100), 
-			is_true()
+				frequencyConnectedness::to(frequencyConnectedness::spilloverDY12(estimates[[i]], n.ahead = H, no.corr=F))[[1]] < 100)
 			)
 	})
 

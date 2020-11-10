@@ -12,13 +12,18 @@
 #' @param window length of the window to be rolled
 #' @param data variable containing the dataset
 #' @param cluster either NULL for no parallel processing or the variable containing the cluster.
+#' @param check_data whether to check the data for NAs before starting estimation. Typically should be left true unless the underlying estimate is providing a way how to infer those NAs.
 #'
 #' @return A corresponding spillover value on a given freqeuncy band, ordering of bands corresponds to the ordering of original bounds.
 #'
 #' @import pbapply
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 
-spilloverRolling <- function(func_spill, params_spill, func_est, params_est, data, window, cluster = NULL) {
+spilloverRolling <- function(func_spill, params_spill, func_est, params_est, data, window, cluster = NULL, check_data = TRUE) {
+    # Stop if data contain any NAs
+    if (anyNA(data)) {
+        stop("Your data contains NAs, estimation will probably fail.")
+    }
     # Get the spillover estimation function
     spill <- get(func_spill)
     # Get the estimation function

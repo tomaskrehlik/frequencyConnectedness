@@ -1,27 +1,27 @@
 Package: frequencyConnectedness
 Type: Package
 Title: Spectral Decomposition of Connectedness Measures
-Version: 0.2.2
-Date: 2020-02-04
+Version: 0.2.3
+Date: 2020-11-10
 Authors@R: person("Tomas", "Krehlik", email = "tomas.krehlik@gmail.com",   role = c("aut", "cre"))
 Description: Accompanies a paper (Barunik, Krehlik (2018) <doi:10.1093/jjfinec/nby001>) dedicated to spectral decomposition of connectedness measures and their interpretation. We implement all the developed estimators as well as the historical counterparts. For more information, see the help or GitHub page (<https://github.com/tomaskrehlik/frequencyConnectedness>) for relevant information.
 Depends:
 	vars,
 	urca,
-    knitr,
-    pbapply
+	knitr,
+	pbapply
 Suggests: 
 	testthat,
 	stringr,
 	mAr,
-    reshape2,
-    ggplot2,
-    parallel,
-    zoo,
+	reshape2,
+	ggplot2,
+	parallel,
+	zoo,
 	BigVAR
 Imports: 
     methods
 License: GPL-2
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1
 BugReports: https://github.com/tomaskrehlik/frequencyConnectedness/issues
 URL: https://github.com/tomaskrehlik/frequencyConnectedness

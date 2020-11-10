@@ -1,3 +1,10 @@
+frequencyConnectedness v0.2.3 (Release date: 2020-11-10)
+==============
+
+Changes:
+
+* Added check in rolling spillovers for the NA elements. Those would typically result in errors in estimation that might be more cryptic than just reflecting that user passed data with NAs inside the data. Optional argument to disable.
+
 frequencyConnectedness v0.2.2 (Release date: 2020-02-04)
 ==============
 

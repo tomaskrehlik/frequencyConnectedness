@@ -4,8 +4,15 @@
 \alias{spilloverRollingDY12}
 \title{Computing rolling spillover from the generalized fevd according to Diebold Yilmaz (2012)}
 \usage{
-spilloverRollingDY12(data, n.ahead = 100, no.corr, func_est, params_est,
-  window, cluster = NULL)
+spilloverRollingDY12(
+  data,
+  n.ahead = 100,
+  no.corr,
+  func_est,
+  params_est,
+  window,
+  cluster = NULL
+)
 }
 \arguments{
 \item{data}{variable containing the dataset}

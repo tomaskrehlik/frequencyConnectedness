@@ -4,9 +4,13 @@
 \alias{plotPairwise.list_of_spills}
 \title{Function to plot pairwise spillovers}
 \usage{
-\method{plotPairwise}{list_of_spills}(spillover_table, within = F,
+\method{plotPairwise}{list_of_spills}(
+  spillover_table,
+  within = F,
   which = 1:ncol(utils::combn(nrow(spillover_table$list_of_tables[[1]]$tables[[1]]),
-  2)), ...)
+    2)),
+  ...
+)
 }
 \arguments{
 \item{spillover_table}{a list_of_spills object, ideally from rolling window estimation}

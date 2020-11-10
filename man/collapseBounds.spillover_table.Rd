@@ -12,8 +12,6 @@ functions}
 
 \item{which}{which frequency bands to collapse. Should be a sequence like 1:2
 or 1:5, etc.}
-
-\item{...}{for the sake of CRAN not to complain}
 }
 \value{
 spillover_table with less frequency bands.

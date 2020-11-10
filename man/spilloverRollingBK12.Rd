@@ -4,8 +4,16 @@
 \alias{spilloverRollingBK12}
 \title{Computing rolling frequency spillover from a generalized fevd as defined by Barunik, Krehlik (2018)}
 \usage{
-spilloverRollingBK12(data, n.ahead = 100, no.corr, partition, func_est,
-  params_est, window, cluster = NULL)
+spilloverRollingBK12(
+  data,
+  n.ahead = 100,
+  no.corr,
+  partition,
+  func_est,
+  params_est,
+  window,
+  cluster = NULL
+)
 }
 \arguments{
 \item{data}{variable containing the dataset}

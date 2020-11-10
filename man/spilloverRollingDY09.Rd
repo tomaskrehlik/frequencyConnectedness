@@ -4,8 +4,15 @@
 \alias{spilloverRollingDY09}
 \title{Computing rolling spillover according to Diebold Yilmaz (2009)}
 \usage{
-spilloverRollingDY09(data, n.ahead = 100, no.corr, func_est, params_est,
-  window, cluster = NULL)
+spilloverRollingDY09(
+  data,
+  n.ahead = 100,
+  no.corr,
+  func_est,
+  params_est,
+  window,
+  cluster = NULL
+)
 }
 \arguments{
 \item{data}{variable containing the dataset}

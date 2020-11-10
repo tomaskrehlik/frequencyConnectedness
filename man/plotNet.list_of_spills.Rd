@@ -4,8 +4,12 @@
 \alias{plotNet.list_of_spills}
 \title{Function to plot net spillovers}
 \usage{
-\method{plotNet}{list_of_spills}(spillover_table, within = F,
-  which = 1:nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), ...)
+\method{plotNet}{list_of_spills}(
+  spillover_table,
+  within = F,
+  which = 1:nrow(spillover_table$list_of_tables[[1]]$tables[[1]]),
+  ...
+)
 }
 \arguments{
 \item{spillover_table}{a list_of_spills object, ideally from rolling window estimation}
