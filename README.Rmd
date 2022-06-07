@@ -1,6 +1,6 @@
 ---
 title: "frequencyConnectedness"
-output: md_document
+output: github_document
 ---
 
 [![Build Status](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)](https://travis-ci.org/tomaskrehlik/frequencyConnectedness.svg?branch=master)
@@ -182,13 +182,18 @@ If you have more cores at your disposal as is usual in the computers nowadays, i
 
 ````{r, eval = F}
 library(parallel)
-cl <- makeCluster(4) # Assign R cores to the job
+library(frequencyConnectedness)
 
-...
-code from previous box
-...
+exampleSim <- exampleSim[1:600,]
+params_est = list(p = 2, type = "const")
 
-stopCluster()
+# Export the relevant variables to the cluster so that it can use them
+cl <- makeCluster(16)
+clusterExport(cl, c("params_est", "exampleSim"))
+
+sp <- spilloverRollingDY09(exampleSim, n.ahead = 100, no.corr = F, "VAR", params_est = params_est, window = 100, cluster=cl)
+
+stopCluster(cl)
 ````
 
 ## Replication of paper and tests
