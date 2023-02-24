@@ -22,7 +22,7 @@ spillover <- function(func, est, n.ahead, no.corr = F) {
 	tab <- f(est, n.ahead, no.corr = no.corr)
 	if (class(est)%in%c("varest","vec2var")) {
 		rownames(tab) <- colnames(tab) <- colnames(est$y)
-	} else if (class(est)=="BigVAR.results") {
+	} else if (is(est, "BigVAR.results")) {
 		rownames(tab) <- colnames(tab) <- colnames(est@Data)
 	}
 	return(structure(list(tables = list(tab), bounds = c(pi+0.00001, 0), date = NULL), class = "spillover_table"))
@@ -56,7 +56,7 @@ spilloverFft <- function(func, est, n.ahead, partition, no.corr = F) {
 		for (i in 1:length(decomp)) {
 			rownames(decomp[[i]]) <- colnames(decomp[[i]]) <- colnames(est$y)
 		}
-	} else if (class(est)=="BigVAR.results") {
+	} else if (is(est, "BigVAR.results")) {
 		for (i in 1:length(decomp)) {
 			rownames(decomp[[i]]) <- colnames(decomp[[i]]) <- colnames(est@Data)
 		}

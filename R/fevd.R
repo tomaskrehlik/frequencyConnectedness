@@ -2,7 +2,7 @@ irf <- function(est, n.ahead, ...) {
 	if (class(est) %in% c("varest", "vec2var")) {
 		# cat("The model is from the vars package, using irf function from there.")
 		return(vars::irf(est, n.ahead = n.ahead, boot = F, ortho = F))
-	} else if (class(est)=="BigVAR.results") {
+	} else if (is(est, "BigVAR.results")) {
 		# cat("The model is from BigVAR package, using own irf function.")
 		return(irf.bigvar(est, n.ahead = n.ahead))
 	} else {

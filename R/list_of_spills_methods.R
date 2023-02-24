@@ -312,12 +312,12 @@ plotPairwise.list_of_spills <- function(spillover_table, within = F, which = 1:n
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 #' @export
 plotSpecific.list_of_spills <- function(spillover_table, i, j, ...) {
-    num_bands <- length(sp$list_of_tables[[1]])
+    num_bands <- length(spillover_table$list_of_tables[[1]])
     if (num_bands==1) {
-        zoo::plot.zoo(sapply(sp$list_of_tables, function(t) {t$tables[[1]][i, j]}), main="Spillover from i to j.")
+        zoo::plot.zoo(sapply(spillover_table$list_of_tables, function(t) {t$tables[[1]][i, j]}), main="Spillover from i to j.")
     } else {
         for (k in 1:num_bands) {
-            zoo::plot.zoo(sapply(sp$list_of_tables, function(t) {t$tables[[k]][i, j]}), main=sprintf("Spillover from i to j. on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
+            zoo::plot.zoo(sapply(spillover_table$list_of_tables, function(t) {t$tables[[k]][i, j]}), main=sprintf("Spillover from i to j. on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
             invisible(readline(prompt="Press [enter] to continue"))
         }
     }
