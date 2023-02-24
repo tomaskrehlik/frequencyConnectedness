@@ -297,6 +297,32 @@ plotPairwise.list_of_spills <- function(spillover_table, within = F, which = 1:n
     }
 }
 
+#' Function to plot specific spilover from i to j
+#' 
+#' Taking in list_of_spillovers, the function plots the spillover from i to j
+#' using the zoo::plot.zoo function
+#' 
+#' @param spillover_table a list_of_spills object, ideally from rolling window estimation
+#' @param i from variable
+#' @param j to variable
+#' @param ... for the sake of CRAN not to complain
+#' 
+#' @return a plot of pairwise spillovers
+#' 
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+#' @export
+plotSpecific.list_of_spills <- function(spillover_table, i, j, ...) {
+    num_bands <- length(sp$list_of_tables[[1]])
+    if (num_bands==1) {
+        zoo::plot.zoo(sapply(sp$list_of_tables, function(t) {t$tables[[1]][i, j]}), main="Spillover from i to j.")
+    } else {
+        for (k in 1:num_bands) {
+            zoo::plot.zoo(sapply(sp$list_of_tables, function(t) {t$tables[[k]][i, j]}), main=sprintf("Spillover from i to j. on band: %.2f to %.2f.", spillover_table$list_of_tables[[1]]$bounds[i], spillover_table$list_of_tables[[1]]$bounds[i+1]))
+            invisible(readline(prompt="Press [enter] to continue"))
+        }
+    }
+}
+
 #' Function to not print the list_of_spills object
 #' 
 #' Usually it is not a good idea to print the list_of_spills object, hence

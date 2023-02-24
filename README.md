@@ -11,18 +11,6 @@ as well as the traditional definitions of [Diebold, Yilmaz (2009,
 2012)](http://www.sciencedirect.com/science/article/pii/S016920701100032X "Diebold, F. X., Yilmaz, K., Better to give than to receive: Predictive directional measurement of volatility spillovers").
 See the papers for detailed description.
 
-## NOTICE
-
-There is a new version of the interface coming with the version `0.2.0`.
-If you implemented anything prior to this version, you can install the
-older stable version using
-
-``` r
-# install.packages("devtools")
-library(devtools)
-install_github("tomaskrehlik/frequencyConnectedness", tag = "0.1.6") 
-```
-
 ## Installation
 
 The stable version can be installed from `CRAN` by the standard means of
@@ -50,9 +38,9 @@ an issue, if that is the case and I will try to incorporate it.
 
 For the time being the following is available:
 
--   Traditional estimation of VAR
--   Fitting of the VECM model
--   Using `BigVAR` to fit VAR models with various penalization schemes
+- Traditional estimation of VAR
+- Fitting of the VECM model
+- Using `BigVAR` to fit VAR models with various penalization schemes
 
 For the illustration purposes we include some simulated data and
 volatilities data from the [Ox-Man
@@ -88,10 +76,6 @@ library(frequencyConnectedness)
     ## Loading required package: knitr
 
     ## Loading required package: pbapply
-
-    ## **********
-    ## The syntax has changed since the version 0.1.6. check out the README at the github.com/tomaskrehlik/frequencyConnectedness .
-    ## **********
 
     ## 
     ## Attaching package: 'frequencyConnectedness'
@@ -467,13 +451,12 @@ sp <- spilloverRollingDY09(exampleSim, n.ahead = 100, no.corr = F, "VAR", params
 In general, the `spilloverRolling....` function takes the following
 arguments:
 
--   data, as `exampleSim`
--   the arguments for relevant spillover function, as
-    `n.ahead, no.corr`, and alternatively `partition` in case of the
-    `BK` variant.
--   window, what window you should roll
--   name of function used for estimates, in this case `"VAR"`, and list
-    of parameters for this function called `params_est`
+- data, as `exampleSim`
+- the arguments for relevant spillover function, as `n.ahead, no.corr`,
+  and alternatively `partition` in case of the `BK` variant.
+- window, what window you should roll
+- name of function used for estimates, in this case `"VAR"`, and list of
+  parameters for this function called `params_est`
 
 Using this, one can plot the resulting spillover measures.
 
@@ -481,31 +464,31 @@ Using this, one can plot the resulting spillover measures.
 plotOverall(sp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 plotTo(sp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 ``` r
 plotFrom(sp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
 
 ``` r
 plotNet(sp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->
 
 ``` r
 plotPairwise(sp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-5.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-5.png)<!-- -->
 
 It is generally not a good idea to print all the spillover tables as
 they are not informative.
@@ -677,34 +660,14 @@ sp <- spilloverRollingBK12(log(volatilities[apply(volatilities>0, 1, all),])[1:1
 plotOverall(sp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-    ## Press [enter] to continue
-
-![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
-
-    ## Press [enter] to continue
-
-![](README_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->
-
-    ## Press [enter] to continue
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->
 
 ``` r
 # I only plot 5 of the To indicators as plotting all of them is not nice
 plotTo(sp, which = 1:5)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-4.png)<!-- -->
-
-    ## Press [enter] to continue
-
-![](README_files/figure-gfm/unnamed-chunk-11-5.png)<!-- -->
-
-    ## Press [enter] to continue
-
-![](README_files/figure-gfm/unnamed-chunk-11-6.png)<!-- -->
-
-    ## Press [enter] to continue
+![](README_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-10-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-10-6.png)<!-- -->
 
 ``` r
 # You can extract the to spillovers

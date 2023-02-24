@@ -7,8 +7,7 @@
 \method{plotPairwise}{list_of_spills}(
   spillover_table,
   within = F,
-  which = 1:ncol(utils::combn(nrow(spillover_table$list_of_tables[[1]]$tables[[1]]),
-    2)),
+  which = 1:ncol(utils::combn(nrow(spillover_table$list_of_tables[[1]]$tables[[1]]), 2)),
   ...
 )
 }

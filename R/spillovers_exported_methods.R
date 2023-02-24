@@ -133,6 +133,18 @@ plotNet <- function(spillover_table, ...) UseMethod("plotNet", spillover_table)
 #' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
 plotPairwise <- function(spillover_table, ...) UseMethod("plotPairwise", spillover_table)
 
+#' Method for ploting specific pair spillover
+#'
+#'
+#' @param spillover_table the output of rolling spillover estimation function 
+#' @param ... other arguments like which specifi pair to plot.
+#'
+#' @return The plot
+#'
+#' @export
+#' @author Tomas Krehlik <tomas.krehlik@@gmail.com>
+plotSpecific <- function(spillover_table, ...) UseMethod("plotSpecific", spillover_table)
+
 #' Method for for collapsing bound for frequency spillovers
 #'
 #'

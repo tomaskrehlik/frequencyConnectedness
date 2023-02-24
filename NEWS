@@ -1,3 +1,11 @@
+frequencyConnectedness v0.2.4 (Release date: 2023-02-23)
+==============
+
+Changes:
+
+* Added plotting method for rolling spillovers that plots a specific element within the list of tables.
+* Small cleanup.
+
 frequencyConnectedness v0.2.3 (Release date: 2020-11-10)
 ==============
 

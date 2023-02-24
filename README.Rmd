@@ -7,16 +7,6 @@ output: github_document
 
 A package implementing frequency dependent connectedness due to [Barunik, Krehlik (2018)][BK2018] as well as the traditional definitions of [Diebold, Yilmaz (2009, 2012)][DY09]. See the papers for detailed description.
 
-## NOTICE
-
-There is a new version of the interface coming with the version `0.2.0`. If you implemented anything prior to this version, you can install the older stable version using
-
-```{r, eval = F}
-# install.packages("devtools")
-library(devtools)
-install_github("tomaskrehlik/frequencyConnectedness", tag = "0.1.6") 
-```
-
 ## Installation
 
 The stable version can be installed from `CRAN` by the standard means of using `install.packages("frequencyConnectedness")`. If there is any other development version, you can install it using the following instructions.
